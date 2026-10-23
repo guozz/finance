@@ -449,7 +449,7 @@
         </button>
         <button onclick="switchWorkspaceTab('loanscpf')" id="ws-tab-loanscpf" class="liquid-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 flex items-center gap-2">
           <i class="fa-solid fa-calculator text-indigo-300"></i>
-          <span>Loans/BT, Salary & CPF ($32k Amundi)</span>
+          <span>Loans/BT, Salary & CPF</span>
           <span id="loanscpf-tab-pill" class="px-1.5 py-0.2 text-[10px] mono rounded bg-indigo-400/20 text-indigo-200 border border-indigo-400/30">Auto-Amort</span>
         </button>
         <button onclick="switchWorkspaceTab('utilities')" id="ws-tab-utilities" class="liquid-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 flex items-center gap-2">
@@ -502,7 +502,7 @@
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> Liquid Net Worth
             </span>
             <span class="flex items-center gap-1.5 text-indigo-300 font-medium">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 inline-block"></span> CPF + Amundi UT ($32k)
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 inline-block"></span> CPF + CPFIS UT
             </span>
             <span class="flex items-center gap-1.5 text-rose-300 font-medium">
               <span class="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span> Liabilities & Loans
@@ -518,7 +518,7 @@
 
     <!-- 5-Card Interactive Spatial KPI Ribbon -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
-      <!-- KPI 1: All-In Net Worth (Liquid + CPF/Amundi + BTO) -->
+      <!-- KPI 1: All-In Net Worth (Liquid + CPF + Property) -->
       <div onclick="spotlightSection('mod-networth')" class="kpi-card liquid-glass rounded-3xl p-4 sm:p-5 relative overflow-hidden" title="Click to spotlight Net Worth, CPF & Assets">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-semibold uppercase tracking-widest text-slate-300">All-In Net Worth</span>
@@ -526,15 +526,15 @@
             <i class="fa-solid fa-gem text-xs"></i>
           </span>
         </div>
-        <div id="kpi-nw-bto" class="text-xl sm:text-2xl font-bold text-white mono mt-1.5 tracking-tight">$930,103.16</div>
+        <div id="kpi-nw-bto" class="text-xl sm:text-2xl font-bold text-white mono mt-1.5 tracking-tight">$0.00</div>
         <div class="mt-2.5 pt-2 border-t border-white/10 space-y-1 text-[11px]">
           <div class="flex items-center justify-between">
             <span class="text-slate-400">Liquid NW:</span>
-            <span id="kpi-nw-liquid" class="mono font-semibold text-emerald-300">$347,103.16</span>
+            <span id="kpi-nw-liquid" class="mono font-semibold text-emerald-300">$0.00</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-slate-400">Excl. BTO (Liq+CPF):</span>
-            <span id="kpi-nw-excl-bto" class="mono font-semibold text-sky-300">$530,103.16</span>
+            <span class="text-slate-400">Excl. Property (Liq+CPF):</span>
+            <span id="kpi-nw-excl-bto" class="mono font-semibold text-sky-300">$0.00</span>
           </div>
         </div>
       </div>
@@ -542,41 +542,41 @@
       <!-- KPI 2: DBS SOM vs EOM & Total Liquid Cash -->
       <div onclick="spotlightSection('mod-cash')" class="kpi-card liquid-glass rounded-3xl p-4 sm:p-5 relative overflow-hidden" title="Click to spotlight DBS SOM/EOM & Bank Cash">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-semibold uppercase tracking-widest text-sky-200">DBS SOM → EOM & Cash</span>
+          <span class="text-[10px] font-semibold uppercase tracking-widest text-sky-200">SOM → EOM & Cash</span>
           <span id="kpi-dbs-delta-badge" class="px-2 py-0.5 text-[10px] font-bold mono rounded-full bg-emerald-400/20 text-emerald-200 border border-emerald-300/30">
-            +$650.00
+            +$0.00
           </span>
         </div>
-        <div id="kpi-total-cash" class="text-xl sm:text-2xl font-bold text-sky-300 mono mt-1.5 tracking-tight">$12,903.16</div>
+        <div id="kpi-total-cash" class="text-xl sm:text-2xl font-bold text-sky-300 mono mt-1.5 tracking-tight">$0.00</div>
         <div class="mt-2.5 pt-2 border-t border-white/10 space-y-1 text-[11px]">
           <div class="flex items-center justify-between">
-            <span class="text-slate-400">DBS SOM → EOM:</span>
-            <span id="kpi-dbs-som-eom" class="mono font-semibold text-white">$8,553 → $9,203</span>
+            <span class="text-slate-400">SOM → EOM:</span>
+            <span id="kpi-dbs-som-eom" class="mono font-semibold text-white">$0 → $0</span>
           </div>
           <div class="flex items-center justify-between">
             <span class="text-slate-400">Free Cashflow:</span>
-            <span id="kpi-net-savings" class="mono font-semibold text-emerald-300">+$542.40</span>
+            <span id="kpi-net-savings" class="mono font-semibold text-emerald-300">+$0.00</span>
           </div>
         </div>
       </div>
 
-      <!-- KPI 3: CPF & CPFIS ($32k Amundi UT) + Salary Engine -->
+      <!-- KPI 3: CPF & CPFIS + Salary Engine -->
       <div onclick="switchWorkspaceTab('loanscpf')" class="kpi-card liquid-glass rounded-3xl p-4 sm:p-5 relative overflow-hidden" title="Click to open Salary, Bonus & CPF/CPFIS Engine">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-semibold uppercase tracking-widest text-indigo-200">CPF + $32k Amundi UT</span>
+          <span class="text-[10px] font-semibold uppercase tracking-widest text-indigo-200">CPF + CPFIS Portfolio</span>
           <span class="w-7 h-7 rounded-xl bg-indigo-400/15 border border-indigo-300/25 flex items-center justify-center text-indigo-300">
-            <i class="fa-solid fa-Piggy-bank fa-building-shield text-xs"></i>
+            <i class="fa-solid fa-building-shield text-xs"></i>
           </span>
         </div>
-        <div id="kpi-cpf-total" class="text-xl sm:text-2xl font-bold text-indigo-300 mono mt-1.5 tracking-tight">$183,000.00</div>
+        <div id="kpi-cpf-total" class="text-xl sm:text-2xl font-bold text-indigo-300 mono mt-1.5 tracking-tight">$0.00</div>
         <div class="mt-2.5 pt-2 border-t border-white/10 space-y-1 text-[11px]">
           <div class="flex items-center justify-between">
-            <span class="text-slate-400">CPFIS Amundi UT:</span>
-            <span id="kpi-amundi-val" class="mono font-semibold text-emerald-300">$32,000.00</span>
+            <span class="text-slate-400">CPFIS UT:</span>
+            <span id="kpi-amundi-val" class="mono font-semibold text-emerald-300">$0.00</span>
           </div>
           <div class="flex items-center justify-between">
             <span class="text-slate-400">Mo. CPF Inflow (37%):</span>
-            <span id="kpi-cpf-inflow" class="mono font-semibold text-indigo-200">+$2,567.06</span>
+            <span id="kpi-cpf-inflow" class="mono font-semibold text-indigo-200">+$0.00</span>
           </div>
         </div>
       </div>
@@ -586,16 +586,16 @@
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-semibold uppercase tracking-widest text-slate-300">Unpaid Commitments</span>
           <span id="kpi-paid-pct-badge" class="px-2 py-0.5 text-[10px] font-semibold mono rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/30">
-            31.5% Paid
+            0.0% Paid
           </span>
         </div>
-        <div id="kpi-unpaid-bills" class="text-xl sm:text-2xl font-bold text-amber-300 mono mt-1.5 tracking-tight">$3,428.00</div>
+        <div id="kpi-unpaid-bills" class="text-xl sm:text-2xl font-bold text-amber-300 mono mt-1.5 tracking-tight">$0.00</div>
         <div class="w-full bg-slate-950/60 h-1.5 rounded-full mt-2 overflow-hidden border border-white/10">
-          <div id="kpi-bills-progress" class="bg-gradient-to-r from-emerald-400 to-sky-400 h-full transition-all duration-500" style="width: 31.5%"></div>
+          <div id="kpi-bills-progress" class="bg-gradient-to-r from-emerald-400 to-sky-400 h-full transition-all duration-500" style="width: 0%"></div>
         </div>
         <div class="flex justify-between text-[11px] text-slate-300 mt-1.5 mono">
-          <span>Paid: <strong id="kpi-paid-bills" class="text-emerald-300">$1,580</strong></span>
-          <span>Total: <strong id="kpi-total-bills" class="text-white">$5,008</strong></span>
+          <span>Paid: <strong id="kpi-paid-bills" class="text-emerald-300">$0</strong></span>
+          <span>Total: <strong id="kpi-total-bills" class="text-white">$0</strong></span>
         </div>
       </div>
 
@@ -610,16 +610,16 @@
         <div class="flex items-baseline justify-between mt-1.5">
           <div>
             <span class="text-[10px] text-slate-400 block">Net HH Cash</span>
-            <span id="kpi-hh-net" class="text-lg font-bold text-amber-300 mono">$48.50</span>
+            <span id="kpi-hh-net" class="text-lg font-bold text-amber-300 mono">$0.00</span>
           </div>
           <div class="text-right">
             <span class="text-[10px] text-slate-400 block">U-Save Wallet</span>
-            <span id="kpi-usave-wallet" class="text-lg font-bold text-emerald-300 mono">$142.00</span>
+            <span id="kpi-usave-wallet" class="text-lg font-bold text-emerald-300 mono">$0.00</span>
           </div>
         </div>
         <div class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[11px]">
           <span class="text-slate-400">Travel (SGD/USD):</span>
-          <span id="kpi-travel-summary" class="mono font-semibold text-violet-300">$900 / US$2,148</span>
+          <span id="kpi-travel-summary" class="mono font-semibold text-violet-300">$0 / US$0</span>
         </div>
       </div>
     </section>
@@ -683,15 +683,15 @@
         <div class="mt-5 pt-4 border-t border-white/15 grid grid-cols-3 gap-3 liquid-well rounded-2xl p-3.5">
           <div>
             <span class="text-[11px] text-slate-400 uppercase tracking-wider block">Paid (Col C)</span>
-            <span id="bills-paid-total" class="text-sm sm:text-base font-bold text-emerald-300 mono">$1,580.00</span>
+            <span id="bills-paid-total" class="text-sm sm:text-base font-bold text-emerald-300 mono">$0.00</span>
           </div>
           <div>
             <span class="text-[11px] text-slate-400 uppercase tracking-wider block">Unpaid (Col D)</span>
-            <span id="bills-unpaid-total" class="text-sm sm:text-base font-bold text-amber-300 mono">$3,428.00</span>
+            <span id="bills-unpaid-total" class="text-sm sm:text-base font-bold text-amber-300 mono">$0.00</span>
           </div>
           <div class="text-right">
             <span class="text-[11px] text-slate-400 uppercase tracking-wider block">Total Outflow</span>
-            <span id="bills-all-total" class="text-sm sm:text-base font-bold text-white mono">$5,008.00</span>
+            <span id="bills-all-total" class="text-sm sm:text-base font-bold text-white mono">$0.00</span>
           </div>
         </div>
       </div>
@@ -705,9 +705,9 @@
             <div>
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                <h2 class="text-base font-bold text-white tracking-tight">2. Salary, Bonus & DBS Cash</h2>
+                <h2 class="text-base font-bold text-white tracking-tight">2. Salary, Bonus & Bank Cash</h2>
               </div>
-              <p class="text-[11px] text-slate-300 mt-0.5">Base $5,888 + $1,050 Allow • Feb/Aug Bonus • Dec AWS</p>
+              <p class="text-[11px] text-slate-300 mt-0.5">Base + Allowance • Feb/Aug Bonus • Dec AWS</p>
             </div>
             <div class="flex items-center gap-1.5">
               <button onclick="switchWorkspaceTab('loanscpf')" class="liquid-btn px-2.5 py-1.5 rounded-xl text-[11px] font-semibold text-indigo-200 flex items-center gap-1" title="Open Full Salary, Bonus & CPF Engine">
@@ -733,7 +733,7 @@
 
           <div class="my-3 py-2 px-3 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center text-xs">
             <span class="text-slate-300">Net Take-Home Minus Total Bills:</span>
-            <span id="module-free-cashflow" class="mono font-bold text-emerald-300">+$542.40</span>
+            <span id="module-free-cashflow" class="mono font-bold text-emerald-300">+$0.00</span>
           </div>
 
           <!-- 25th Payday Allocation Waterfall Bar -->
@@ -742,7 +742,7 @@
           </div>
 
           <!-- DBS SOM vs EOM Balance Monitor Card -->
-          <div id="dbs-som-eom-card" data-interactive-row="true" data-edit-key="dbs-som-eom" onclick="handleRowInteraction(() => {}, 'dbs-som-eom')" class="liquid-well rounded-2xl p-3.5 my-3 border border-sky-400/30 cursor-pointer space-y-2" title="Double-tap or hold to edit DBS Starting-of-Month (SOM) and End-of-Month (EOM) balances">
+          <div id="dbs-som-eom-card" data-interactive-row="true" data-edit-key="dbs-som-eom" onclick="handleRowInteraction(() => {}, 'dbs-som-eom')" class="liquid-well rounded-2xl p-3.5 my-3 border border-sky-400/30 cursor-pointer space-y-2" title="Double-tap or hold to edit Starting-of-Month (SOM) and End-of-Month (EOM) balances">
             <!-- Populated dynamically by JS -->
           </div>
 
@@ -762,7 +762,7 @@
 
           <div class="mt-3 pt-2.5 px-3.5 py-2.5 rounded-2xl bg-sky-500/15 border border-sky-400/30 flex justify-between items-center">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-200">Total Liquid Cash</span>
-            <span id="module-total-cash" class="mono font-bold text-base text-sky-300">$12,903.16</span>
+            <span id="module-total-cash" class="mono font-bold text-base text-sky-300">$0.00</span>
           </div>
         </div>
 
@@ -774,7 +774,7 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
                 <h2 class="text-base font-bold text-white tracking-tight">3. Loans, CPF & Net Worth</h2>
               </div>
-              <p class="text-[11px] text-slate-300 mt-0.5">Auto Loan/BT Amortisation, CPF & $32k Amundi UT</p>
+              <p class="text-[11px] text-slate-300 mt-0.5">Auto Loan/BT Amortisation, CPF & CPFIS UT</p>
             </div>
             <div class="flex items-center gap-1.5">
               <button onclick="switchWorkspaceTab('loanscpf')" class="liquid-btn px-2.5 py-1.5 rounded-xl text-[11px] font-semibold text-amber-200 flex items-center gap-1" title="Open Auto Loan & BT Amortisation Calculator">
@@ -800,12 +800,12 @@
 
           <div class="mt-2.5 py-1.5 px-3 rounded-xl bg-rose-500/10 border border-rose-400/20 flex justify-between items-center text-xs">
             <span class="text-rose-200 font-medium">Total Deducted Liabilities:</span>
-            <span id="module-total-liab" class="mono font-bold text-rose-300">-$125,800.00</span>
+            <span id="module-total-liab" class="mono font-bold text-rose-300">-$0.00</span>
           </div>
 
-          <!-- CPF & CPFIS ($32k Amundi UT) Quick Box -->
+          <!-- CPF & CPFIS Quick Box -->
           <div class="flex items-center justify-between mt-4 mb-2 pt-2 border-t border-white/10">
-            <span class="text-[11px] font-semibold uppercase tracking-widest text-indigo-300">CPF & CPFIS ($32k Amundi UT)</span>
+            <span class="text-[11px] font-semibold uppercase tracking-widest text-indigo-300">CPF & CPFIS Portfolio</span>
             <button onclick="switchWorkspaceTab('loanscpf')" class="text-[11px] text-indigo-300 hover:text-indigo-200 font-semibold flex items-center gap-1">
               <span>CPF Engine</span>
               <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -872,15 +872,15 @@
           <div class="mt-4 pt-3 border-t border-white/15 space-y-1.5 liquid-well rounded-2xl p-3 text-xs">
             <div class="flex justify-between items-center">
               <span class="text-slate-300">SGD Event Items:</span>
-              <span id="events-sgd-sum" class="mono font-bold text-violet-300">$900.00</span>
+              <span id="events-sgd-sum" class="mono font-bold text-violet-300">$0.00</span>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-slate-300">USD Event Items:</span>
-              <span id="events-usd-sum" class="mono font-bold text-rose-300">US$2,148.00</span>
+              <span id="events-usd-sum" class="mono font-bold text-rose-300">US$0.00</span>
             </div>
             <div class="flex justify-between items-center pt-1 border-t border-white/10 text-[11px] text-slate-400">
               <span>Combined Est. (SGD @ 1.34):</span>
-              <span id="events-combined-sgd" class="mono font-semibold text-white">$3,778.32</span>
+              <span id="events-combined-sgd" class="mono font-semibold text-white">$0.00</span>
             </div>
           </div>
         </div>
@@ -893,7 +893,7 @@
               <p class="text-[11px] text-slate-300 mt-0.5">Double-click cap box to edit</p>
             </div>
             <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-400/20 text-amber-200 border border-amber-300/30 rounded-full">
-              HLWC / HLMC
+              REWARDS CAP
             </span>
           </div>
           <!-- Card Caps & Notes -->
@@ -906,7 +906,7 @@
             <label class="text-[11px] font-semibold uppercase tracking-wider text-slate-300 block mb-1.5">
               Month Strategy & Payday Notes
             </label>
-            <textarea id="month-notes-input" rows="2" oninput="updateMonthNotes(this.value)" placeholder="Add reminders for 25th EOM transfer, GSX loan milestones, or bonus allocations..." class="w-full rounded-2xl liquid-well p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-400/50 resize-none"></textarea>
+            <textarea id="month-notes-input" rows="2" oninput="updateMonthNotes(this.value)" placeholder="Add reminders for 25th EOM transfer, loan milestones, or bonus allocations..." class="w-full rounded-2xl liquid-well p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-400/50 resize-none"></textarea>
           </div>
         </div>
 
@@ -918,7 +918,7 @@
     <!-- =================================================================== -->
     <section id="workspace-loanscpf" class="hidden space-y-6">
 
-      <!-- Top Banner: Singapore Payroll (Base $5,888 + $1,050 Allow + AWS/Bonus) & CPF/CPFIS Engine -->
+      <!-- Top Banner: Singapore Payroll & CPF/CPFIS Engine -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         <!-- Left 6 Cols: Salary, Variable Bonus (Feb/Aug), Dec AWS & CPF Contribution Engine -->
@@ -929,7 +929,7 @@
                 Singapore Payroll & CPF Engine (OW Ceiling $8,000)
               </span>
               <h2 class="text-lg font-bold text-white mt-1">
-                Salary ($5,888 + $1,050), Bonus (Feb/Aug) & Dec AWS
+                Salary, Variable Bonus (Feb/Aug) & Dec AWS
               </h2>
             </div>
             <button onclick="syncPayrollAcrossAllMonths()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-400 to-sky-400 text-slate-950 shadow-lg hover:brightness-110 transition flex items-center gap-1.5" title="Recalculate salary, bonuses, and CPF inflows across all 14 months">
@@ -949,7 +949,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               <div onclick="selectMonth('2026-12')" class="liquid-well rounded-xl p-2.5 border border-white/10 hover:border-emerald-400/40 cursor-pointer transition">
                 <div class="text-xs font-bold text-emerald-300">🎄 DEC 2026</div>
-                <div class="text-[11px] text-slate-300 mt-0.5">1.0M AWS (+$5,888 Gross)</div>
+                <div class="text-[11px] text-slate-300 mt-0.5">Year-End AWS Payout</div>
               </div>
               <div onclick="selectMonth('2027-02')" class="liquid-well rounded-xl p-2.5 border border-white/10 hover:border-sky-400/40 cursor-pointer transition">
                 <div class="text-xs font-bold text-sky-300">🎯 FEB 2027</div>
@@ -961,13 +961,13 @@
               </div>
               <div onclick="selectMonth('2027-12')" class="liquid-well rounded-xl p-2.5 border border-white/10 hover:border-emerald-400/40 cursor-pointer transition">
                 <div class="text-xs font-bold text-emerald-300">🎄 DEC 2027</div>
-                <div class="text-[11px] text-slate-300 mt-0.5">1.0M AWS (+$5,888 Gross)</div>
+                <div class="text-[11px] text-slate-300 mt-0.5">Year-End AWS Payout</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Right 6 Cols: CPF OA/SA/MA Balances & CPFIS ($32k Amundi UT) Tracker -->
+        <!-- Right 6 Cols: CPF OA/SA/MA Balances & CPFIS Tracker -->
         <div class="lg:col-span-6 liquid-glass rounded-3xl p-5 sm:p-6 border border-indigo-400/30 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
@@ -975,10 +975,10 @@
                 CPF & CPFIS Investment Portfolio (2.5% OA / 4% SA & MA)
               </span>
               <h2 class="text-lg font-bold text-white mt-1">
-                CPF Accounts & CPFIS Amundi UT (~$32,000)
+                CPF Accounts & CPFIS Unit Trust
               </h2>
             </div>
-            <button onclick="rollForwardCpfAndAmundi14M()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-400 to-purple-400 text-slate-950 shadow-lg hover:brightness-110 transition flex items-center gap-1.5" title="Roll CPF OA/SA/MA contributions, Dec statutory interest, and Amundi UT growth forward through Dec 2027">
+            <button onclick="rollForwardCpfAndAmundi14M()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-400 to-purple-400 text-slate-950 shadow-lg hover:brightness-110 transition flex items-center gap-1.5" title="Roll CPF OA/SA/MA contributions, Dec statutory interest, and CPFIS UT growth forward through Dec 2027">
               <i class="fa-solid fa-chart-line"></i>
               <span>Auto-Roll CPF + Interest to Dec 27</span>
             </button>
@@ -990,18 +990,47 @@
         </div>
       </div>
 
-      <!-- Middle Card: Mother ($91k -> $6k Plan) & Post-May 2027 GSX Freed Cashflow Simulator -->
+      <!-- Middle Card: Target Liability Paydown & Freed Cashflow Simulator -->
       <div class="liquid-glass rounded-3xl p-5 sm:p-6 border border-emerald-400/30 space-y-4">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <div>
             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-400/20 text-emerald-200 border border-emerald-400/40">
-              Family Liability & Post-GSX Cashflow Redirect
+              Liability Target & Freed Cashflow Redirect
             </span>
             <h2 class="text-lg font-bold text-white mt-1">
-              Mother Balance Target ($91,000 → $6,000 Plan) & May 2027 GSX Payoff Boost
+              Long-Term Liability Paydown & Post-Maturity Cashflow Boost
             </h2>
             <p class="text-xs text-slate-300">
-              Once <strong>GSX PLoan (#34)</strong> finishes in <strong>May 2027</strong>, <strong>+$1,288/mo</strong> of monthly cashflow is freed up from June 2027 onwards. Track your progress toward the $6,000 target below or simulate redirecting post-May 2027 cashflow.
+              Once your primary term loan matures in <strong>May 2027</strong>, monthly installment cashflow is freed up from June 2027 onwards. Track your progress toward your target liability goal or simulate redirecting post-May 2027 freed cashflow.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button onclick="redirectPostGsxToMother()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 shadow-lg hover:brightness-110 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Redirect Freed Loan Cashflow (Jun–Dec 27)</span>
+            </button>
+          </div>
+        </div>
+        <div id="mother-plan-box" class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- Bottom Full-Width Card: Auto Loan & Balance Transfer (BT) Amortisation Engine -->
+      <div class="liquid-glass rounded-3xl p-5 sm:p-6 border border-rose-400/30 space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-400/20 text-rose-200 border border-rose-400/40">
+                Automated Debt & Balance Transfer Engine
+              </span>
+              <span class="text-xs mono text-amber-300 font-semibold" id="amort-active-month-label">November 2026</span>
+            </div>
+            <h2 class="text-lg sm:text-xl font-bold text-white mt-1">
+              Auto Loan & Balance Transfer (BT) Amortisation Schedule
+            </h2>
+            <p class="text-xs text-slate-300 max-w-3xl">
+              Tracks monthly principal reduction, effective interest/flat-rate split, and remaining principal across term loans and revolving <strong>Balance Transfers</strong>. Click <strong>Auto-Amortise & Sync 14M</strong> to propagate principal paydowns into every month's Bills and Liabilities.
             </p>
           </div>
           <div class="flex flex-wrap items-center gap-2 shrink-0">
@@ -1029,8 +1058,8 @@
             <h2 class="text-lg sm:text-xl font-bold text-white mt-1">
               Auto Loan & Balance Transfer (BT) Amortisation Schedule
             </h2>
-            <p class="text-xs text-slate-300 max-w-3xl">
-              Tracks monthly principal reduction, effective interest/flat-rate split, and remaining principal across term loans (e.g., <strong>GSX PLoan #28–#34</strong>) and revolving <strong>Balance Transfers (WLM / CIMB / POSB)</strong>. Click <strong>Auto-Amortise & Sync 14M</strong> to propagate principal paydowns into every month's Bills and Liabilities.
+            <span class="text-xs text-slate-300 max-w-3xl">
+              Tracks monthly principal reduction, effective interest/flat-rate split, and remaining principal across term loans and revolving <strong>Balance Transfers</strong>. Click <strong>Auto-Amortise & Sync 14M</strong> to propagate principal paydowns into every month's Bills and Liabilities.
             </p>
           </div>
 
@@ -1062,12 +1091,12 @@
               <thead>
                 <tr class="border-b border-white/15 text-[10px] uppercase tracking-wider text-slate-400 font-sans">
                   <th class="py-2 px-2.5">Month</th>
-                  <th class="py-2 px-2.5 text-right">GSX Installment</th>
+                  <th class="py-2 px-2.5 text-right">Term Loan Inst.</th>
                   <th class="py-2 px-2.5 text-right">BT / Interest Outflow</th>
                   <th class="py-2 px-2.5 text-right">Principal Reduced</th>
                   <th class="py-2 px-2.5 text-right">Interest / Fee Cost</th>
-                  <th class="py-2 px-2.5 text-right">GSX Ending Bal</th>
-                  <th class="py-2 px-2.5 text-right">BT / Other Ending Bal</th>
+                  <th class="py-2 px-2.5 text-right">Term Loan End Bal</th>
+                  <th class="py-2 px-2.5 text-right">BT / Other End Bal</th>
                   <th class="py-2 px-2.5 text-right">Total Debt Remaining</th>
                 </tr>
               </thead>
@@ -1314,6 +1343,10 @@
               <i class="fa-solid fa-paste text-amber-300"></i>
               <span>Load Pasted Sync Code</span>
             </button>
+            <button onclick="wipeLocalDataToPublicDefault()" class="liquid-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-rose-300 border border-rose-400/40 flex items-center gap-1.5" title="Clear browser localStorage back to zeroed public state">
+              <i class="fa-solid fa-eraser text-rose-400"></i>
+              <span>Wipe Local Browser Data</span>
+            </button>
           </div>
           <textarea id="sync-code-textarea" rows="2" placeholder="Paste your Sync Code here to restore all 14 months instantly..." class="w-full rounded-xl bg-slate-950/80 border border-white/15 p-2.5 text-[11px] mono text-sky-200 placeholder-slate-500 focus:outline-none focus:border-sky-400"></textarea>
         </div>
@@ -1474,33 +1507,33 @@
     // 14-Month Horizon Definition (Nov 2026 -> Dec 2027) with Singapore 2-Room HDB Rebate & Bonus/AWS Schedule
     const MONTH_KEYS = [
       { id: '2026-11', label: 'Nov 26', full: 'November 2026', gsxInst: 28, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
-      { id: '2026-12', label: 'Dec 26', full: 'December 2026 (1M AWS)', gsxInst: 29, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: 'AWS', defaultAwsMonths: 1.0, defaultBonusMonths: 0 },
+      { id: '2026-12', label: 'Dec 26', full: 'December 2026 (AWS)', gsxInst: 29, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: 'AWS', defaultAwsMonths: 1.0, defaultBonusMonths: 0 },
       { id: '2027-01', label: 'Jan 27', full: 'January 2027', gsxInst: 30, isRebateMonth: true, uSavePayout: 95, sccRebateMonths: 1.0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
-      { id: '2027-02', label: 'Feb 27', full: 'February 2027 (Variable Bonus)', gsxInst: 31, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: 'BONUS', defaultAwsMonths: 0, defaultBonusMonths: 1.5 },
+      { id: '2027-02', label: 'Feb 27', full: 'February 2027 (Bonus)', gsxInst: 31, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: 'BONUS', defaultAwsMonths: 0, defaultBonusMonths: 0 },
       { id: '2027-03', label: 'Mar 27', full: 'March 2027', gsxInst: 32, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
       { id: '2027-04', label: 'Apr 27', full: 'April 2027', gsxInst: 33, isRebateMonth: true, uSavePayout: 95, sccRebateMonths: 1.0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
-      { id: '2027-05', label: 'May 27', full: 'May 2027 (GSX Final)', gsxInst: 34, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
+      { id: '2027-05', label: 'May 27', full: 'May 2027', gsxInst: 34, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
       { id: '2027-06', label: 'Jun 27', full: 'June 2027', gsxInst: null, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
       { id: '2027-07', label: 'Jul 27', full: 'July 2027', gsxInst: null, isRebateMonth: true, uSavePayout: 95, sccRebateMonths: 0.5, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
-      { id: '2027-08', label: 'Aug 27', full: 'August 2027 (Variable Bonus)', gsxInst: null, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: 'BONUS', defaultAwsMonths: 0, defaultBonusMonths: 1.5 },
+      { id: '2027-08', label: 'Aug 27', full: 'August 2027 (Bonus)', gsxInst: null, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: 'BONUS', defaultAwsMonths: 0, defaultBonusMonths: 0 },
       { id: '2027-09', label: 'Sep 27', full: 'September 2027', gsxInst: null, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
       { id: '2027-10', label: 'Oct 27', full: 'October 2027', gsxInst: null, isRebateMonth: true, uSavePayout: 95, sccRebateMonths: 1.0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
       { id: '2027-11', label: 'Nov 27', full: 'November 2027', gsxInst: null, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: null, defaultAwsMonths: 0, defaultBonusMonths: 0 },
-      { id: '2027-12', label: 'Dec 27', full: 'December 2027 (1M AWS)', gsxInst: null, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: 'AWS', defaultAwsMonths: 1.0, defaultBonusMonths: 0 }
+      { id: '2027-12', label: 'Dec 27', full: 'December 2027 (AWS)', gsxInst: null, isRebateMonth: false, uSavePayout: 0, sccRebateMonths: 0, bonusType: 'AWS', defaultAwsMonths: 1.0, defaultBonusMonths: 0 }
     ];
 
     // Helper to compute exact Singapore CPF & Take-Home Pay from Payroll object
     // Enforces Singapore CPF OW Ceiling ($8,000/mo) and CPF Annual Salary Limit ($102,000/yr -> AW Ceiling)
-    function computePayrollBreakdown(payroll, annualOwSubjectToCpf = 83256) {
-      const base = Number(payroll?.base) || 5888;
-      const allowance = Number(payroll?.allowance) || 1050;
-      const ordinaryWage = base + allowance; // $6,938.00
+    function computePayrollBreakdown(payroll, annualOwSubjectToCpf = null) {
+      const base = Number(payroll?.base ?? 0);
+      const allowance = Number(payroll?.allowance ?? 0);
+      const ordinaryWage = base + allowance;
 
-      const awsMonths = Number(payroll?.awsMonths) || 0;
+      const awsMonths = Number(payroll?.awsMonths ?? 0);
       const awsGross = Number((base * awsMonths).toFixed(2));
 
-      const bonusMonths = Number(payroll?.bonusMonths) || 0;
-      const bonusCustomExtra = Number(payroll?.bonusExtraDollar) || 0;
+      const bonusMonths = Number(payroll?.bonusMonths ?? 0);
+      const bonusCustomExtra = Number(payroll?.bonusExtraDollar ?? 0);
       const bonusGross = Number((base * bonusMonths + bonusCustomExtra).toFixed(2));
 
       const additionalWage = awsGross + bonusGross;
@@ -1508,12 +1541,13 @@
 
       // Singapore CPF 2026/2027 OW Ceiling is $8,000/mo (Age <= 55: 20% Employee, 17% Employer)
       const cpfSubjectOW = Math.min(ordinaryWage, 8000);
-      const empCpfOW = Number((cpfSubjectOW * 0.20).toFixed(2)); // $1,387.60 on $6,938
-      const erCpfOW = Number((cpfSubjectOW * 0.17).toFixed(2));  // $1,179.46 on $6,938
+      const empCpfOW = Number((cpfSubjectOW * 0.20).toFixed(2));
+      const erCpfOW = Number((cpfSubjectOW * 0.17).toFixed(2));
 
       // Singapore CPF AW Ceiling = $102,000 - Total Annual OW Subject to CPF
+      const estAnnualOw = annualOwSubjectToCpf !== null ? annualOwSubjectToCpf : (cpfSubjectOW * 12);
       const enforceAwCeiling = payroll?.enforceAwCeiling !== false;
-      const maxAwSubject = enforceAwCeiling ? Math.max(0, 102000 - annualOwSubjectToCpf) : additionalWage;
+      const maxAwSubject = enforceAwCeiling ? Math.max(0, 102000 - estAnnualOw) : additionalWage;
       const cpfSubjectAW = Math.min(additionalWage, maxAwSubject);
 
       const empCpfAW = Number((cpfSubjectAW * 0.20).toFixed(2));
@@ -1523,7 +1557,7 @@
       const totalErCpf = Number((erCpfOW + erCpfAW).toFixed(2));
       const totalCpfInflow = Number((totalEmpCpf + totalErCpf).toFixed(2));
 
-      const netOrdinaryTakeHome = Number((ordinaryWage - empCpfOW).toFixed(2)); // $5,550.40
+      const netOrdinaryTakeHome = Number((ordinaryWage - empCpfOW).toFixed(2));
       const netBonusAwsTakeHome = Number((additionalWage - empCpfAW).toFixed(2));
       const totalNetTakeHome = Number((netOrdinaryTakeHome + netBonusAwsTakeHome).toFixed(2));
 
@@ -1558,213 +1592,117 @@
       };
     }
 
+    // Sanitized Public Default Template (Zero Personal Data in Source Code)
+    // Load your personal ledger anytime via "iPhone Direct & Sync" -> "Load Pasted Sync Code"
     function createDefaultLedger() {
       const data = {};
-      let runningUSaveWallet = 142.00; // Carry-over from Oct 2026 payout into Nov 2026
-      let runningDbsSom = 8553.16;     // Starting of Month DBS balance for Nov 2026
-      let runningOa = 64500.00;
-      let runningSa = 42800.00;
-      let runningMa = 36200.00;
-      let runningAmundi = 32000.00;    // $32k CPFIS Investment in Amundi Unit Trust
+      let runningUSaveWallet = 0.00;
 
       MONTH_KEYS.forEach((m, index) => {
-        const isNov26 = m.id === '2026-11';
         const gsxActive = m.gsxInst !== null;
-
-        // GSX Loan Amortisation: $14,000 starting principal in Nov 26 over 7 remaining installments (#28 to #34)
-        const gsxStartPrincipal = gsxActive ? Math.max(0, Number((14000 - index * 2000).toFixed(2))) : 0;
-        const gsxMonthlyPayment = gsxActive ? 1288.00 : 0;
-        const gsxPrincipalPortion = gsxActive ? Math.min(gsxStartPrincipal, 1185.00) : 0;
-        const gsxInterestPortion = gsxActive ? Number((gsxMonthlyPayment - gsxPrincipalPortion).toFixed(2)) : 0;
-        const gsxEndPrincipal = gsxActive ? Math.max(0, Number((gsxStartPrincipal - gsxPrincipalPortion).toFixed(2))) : 0;
-
-        // Balance Transfer / WLM Facility Amortisation
-        const btStartPrincipal = Math.max(0, Number((12000 - index * 500).toFixed(2)));
-        const btMonthlyPayment = 200.00; // WLM interest / BT payment
-        const btInterestPortion = 200.00;
-        const btExtraPrincipal = 500.00;
-        const btEndPrincipal = Math.max(0, Number((btStartPrincipal - btExtraPrincipal).toFixed(2)));
-
-        // Payroll config for this month
         const payroll = {
-          base: 5888.00,
-          allowance: 1050.00,
-          awsMonths: m.defaultAwsMonths,
-          bonusMonths: m.defaultBonusMonths,
+          base: 0.00,
+          allowance: 0.00,
+          awsMonths: 0,
+          bonusMonths: 0,
           bonusExtraDollar: 0,
           autoSyncInflows: true
         };
-        const payCalc = computePayrollBreakdown(payroll);
 
-        // DBS SOM & EOM progression
-        const dbsSom = Number(runningDbsSom.toFixed(2));
-        const monthlySurplus = isNov26 ? 650.00 : (650.00 + payCalc.netBonusAwsTakeHome + (gsxActive ? 0 : 1288));
-        const dbsEom = Number((dbsSom + monthlySurplus).toFixed(2));
-        runningDbsSom = dbsEom; // Next month SOM starts at this month's EOM
-
-        const projectedStocks = 460000 + index * 3500;
-
-        // Accrue CPF OA, SA, MA & CPFIS Amundi UT ($32k base)
-        if (index > 0) {
-          runningOa = Number((runningOa + payCalc.oaInflow).toFixed(2));
-          runningSa = Number((runningSa + payCalc.saInflow).toFixed(2));
-          runningMa = Number((runningMa + payCalc.maInflow).toFixed(2));
-          runningAmundi = Number((runningAmundi * 1.005).toFixed(2)); // ~6% p.a. (~0.5%/mo) illustrative UT growth
-        }
-
-        // Calculate default U-Save wallet progression for 2-Room HDB
-        const startWallet = runningUSaveWallet;
         const newPayout = m.uSavePayout;
-        const defaultSpGross = 86.00; // Elec $52 + Water $22 + Refuse $12
-        const totalAvailableUSave = startWallet + newPayout;
-        const usedUSave = Math.min(totalAvailableUSave, defaultSpGross);
-        runningUSaveWallet = Math.max(0, Number((totalAvailableUSave - usedUSave).toFixed(2)));
-
-        const baseBills = [
-          { id: 'b1', due: '5', name: 'Food', amount: 300, paid: false },
-          { id: 'b2', due: '7', name: 'Cashflow', amount: 300, paid: isNov26 ? true : false },
-          { id: 'b3', due: '15', name: 'M1', amount: 240, paid: false },
-          { id: 'b4', due: '18', name: 'WLM interest (BT)', amount: 200, paid: false },
-          { id: 'b5', due: '21', name: 'OCBC N', amount: 80, paid: isNov26 ? true : false },
-          { id: 'b6', due: '25', name: 'HSBC', amount: 1200, paid: isNov26 ? true : false },
-          { id: 'b7', due: '28', name: 'DBS W', amount: 1100, paid: false },
-          { id: 'b8', due: '28', name: 'DBS Alt', amount: 300, paid: false }
-        ];
-
-        if (gsxActive) {
-          baseBills.push({
-            id: 'b9',
-            due: '28',
-            name: `GSX PLoan (#${m.gsxInst})`,
-            amount: gsxMonthlyPayment,
-            paid: false
-          });
-        }
-
-        const inflowsList = [
-          { id: 'i1', name: 'Gross Ordinary Pay ($5,888 + $1,050)', amount: payCalc.ordinaryWage, isTakeHome: false },
-          { id: 'i2', name: 'Net Salary (25th • After 20% CPF)', amount: payCalc.netOrdinaryTakeHome, isTakeHome: true }
-        ];
-
-        if (payCalc.awsGross > 0) {
-          inflowsList.push({
-            id: 'i_aws',
-            name: `1-Month AWS (Net after 20% CPF)`,
-            amount: Number((payCalc.awsGross * 0.80).toFixed(2)),
-            isTakeHome: true
-          });
-        }
-        if (payCalc.bonusGross > 0) {
-          inflowsList.push({
-            id: 'i_bonus',
-            name: `Variable Bonus (${payroll.bonusMonths}M Net after CPF)`,
-            amount: Number((payCalc.bonusGross * 0.80).toFixed(2)),
-            isTakeHome: true
-          });
-        }
-        inflowsList.push({
-          id: 'i3',
-          name: 'CMA Claim / Reimbursements',
-          amount: isNov26 ? 1551.76 : 0.00,
-          isTakeHome: true
-        });
+        const startWallet = runningUSaveWallet;
+        runningUSaveWallet = Number((startWallet + newPayout).toFixed(2));
 
         data[m.id] = {
           payroll,
           dbsTracker: {
-            som: dbsSom,
-            eom: dbsEom
+            som: 0.00,
+            eom: 0.00
           },
           cpf: {
-            cpfisAmundi: runningAmundi,
-            oa: runningOa,
-            sa: runningSa,
-            ma: runningMa,
+            cpfisAmundi: 0.00,
+            oa: 0.00,
+            sa: 0.00,
+            ma: 0.00,
             monthlyGrowthPct: 0.5
           },
           loanFacilities: [
             {
               id: 'lf_gsx',
-              name: 'GSX Personal Loan',
+              name: 'Term Loan A',
               type: 'TERM',
               instNumber: m.gsxInst,
               totalInst: 34,
               maturityLabel: 'May 2027',
-              startPrincipal: gsxStartPrincipal,
-              monthlyPayment: gsxMonthlyPayment,
-              eirPct: 6.5,
-              principalReduced: gsxPrincipalPortion,
-              interestCost: gsxInterestPortion,
-              endPrincipal: gsxEndPrincipal,
+              startPrincipal: 0,
+              monthlyPayment: 0,
+              eirPct: 0,
+              principalReduced: 0,
+              interestCost: 0,
+              endPrincipal: 0,
               active: gsxActive
             },
             {
               id: 'lf_wlm',
-              name: 'WLM / Balance Transfer Line',
+              name: 'Balance Transfer Line',
               type: 'BT',
               instNumber: index + 1,
               totalInst: 14,
-              maturityLabel: 'Revolving / May 27',
-              startPrincipal: btStartPrincipal,
-              monthlyPayment: btMonthlyPayment,
-              eirPct: 2.0,
-              principalReduced: btExtraPrincipal,
-              interestCost: btInterestPortion,
-              endPrincipal: btEndPrincipal,
+              maturityLabel: 'Revolving',
+              startPrincipal: 0,
+              monthlyPayment: 0,
+              eirPct: 0,
+              principalReduced: 0,
+              interestCost: 0,
+              endPrincipal: 0,
               active: true
             }
           ],
-          bills: baseBills,
-          inflows: inflowsList,
+          bills: [
+            { id: 'b1', due: '5', name: 'Food & Dining', amount: 0, paid: false },
+            { id: 'b2', due: '15', name: 'Telco / Broadband', amount: 0, paid: false },
+            { id: 'b3', due: '25', name: 'Primary Credit Card', amount: 0, paid: false },
+            { id: 'b4', due: '28', name: 'Monthly Term Loan', amount: 0, paid: false }
+          ],
+          inflows: [
+            { id: 'i1', name: 'Gross Ordinary Pay', amount: 0, isTakeHome: false },
+            { id: 'i2', name: 'Net Salary (25th • After CPF)', amount: 0, isTakeHome: true },
+            { id: 'i3', name: 'Expense Claim / Reimbursements', amount: 0, isTakeHome: true }
+          ],
           bankAccounts: [
-            { id: 'c1', name: '360 / DBS Saving', amount: 3700.00 },
-            { id: 'c2', name: 'DBS EOM', amount: dbsEom },
-            { id: 'c3', name: 'OCBC 360', amount: 0.00 }
+            { id: 'c1', name: 'Savings Account', amount: 0.00 },
+            { id: 'c2', name: 'DBS EOM', amount: 0.00 },
+            { id: 'c3', name: 'Secondary Account', amount: 0.00 }
           ],
           liabilities: [
-            { id: 'l1', name: 'LJH', note: 'Held Balance', amount: 20800 },
-            { id: 'l2', name: 'Mother', note: 'Plan to 6k', amount: 91000 },
-            { id: 'l3', name: 'GSX Principal', note: gsxActive ? `#${m.gsxInst}/34 • Due May 27` : 'Paid Off!', amount: gsxStartPrincipal }
+            { id: 'l1', name: 'Custodial Balance', note: 'Held Balance', amount: 0 },
+            { id: 'l2', name: 'Family Loan Plan', note: 'Target Plan', amount: 0 },
+            { id: 'l3', name: 'Term Loan Principal', note: gsxActive ? `#${m.gsxInst}/34` : 'Cleared', amount: 0 }
           ],
           assets: [
-            { id: 'a1', name: 'STOCK Portfolio', note: '208k / 267k', amount: projectedStocks, isLiquid: true },
-            { id: 'a2', name: 'BTO Valuation Equity', note: 'Property', amount: 400000, isLiquid: false }
+            { id: 'a1', name: 'Stock Portfolio', note: 'Brokerage', amount: 0, isLiquid: true },
+            { id: 'a2', name: 'Property Valuation Equity', note: 'Property', amount: 0, isLiquid: false }
           ],
-          events: isNov26
-            ? [
-                { id: 'e1', name: 'BKK Flight', tag: 'ONLINE', currency: 'SGD', amount: 400 },
-                { id: 'e2', name: 'BKK Taxi', tag: 'PHYSICAL', currency: 'SGD', amount: 100 },
-                { id: 'e3', name: 'BKK Hotel (4N)', tag: 'PHYSICAL', currency: 'SGD', amount: 400 },
-                { id: 'e4', name: 'RSNA Conference', tag: 'CONF', currency: 'USD', amount: 2148 }
-              ]
-            : [
-                { id: 'e1', name: 'Monthly Travel / Dining Fund', tag: 'PHYSICAL', currency: 'SGD', amount: 350 }
-              ],
+          events: [
+            { id: 'e1', name: 'Travel / Event Budget', tag: 'ONLINE', currency: 'SGD', amount: 0 }
+          ],
           utilities: {
             uSaveStartWallet: startWallet,
             uSaveCredited: newPayout,
             sccRebateMonths: m.sccRebateMonths,
             items: [
-              { id: 'u1', category: 'SP', name: 'SP Electricity (2-Rm ~175 kWh)', note: 'SP Group', amount: 52.00, paid: isNov26 },
-              { id: 'u2', category: 'SP', name: 'SP Water & Waterborne Tax', note: 'SP Group', amount: 22.00, paid: isNov26 },
-              { id: 'u3', category: 'SP', name: 'SP Refuse Removal & Piped Gas', note: 'SP Group', amount: 12.00, paid: isNov26 },
-              { id: 'u4', category: 'SCC', name: 'Town Council S&CC (2-Room HDB)', note: '1st of Month', amount: 48.50, paid: isNov26 },
-              { id: 'u5', category: 'OTHER', name: 'Home Fiber Broadband', note: '15th Auto-GIRO', amount: 49.90, paid: false }
+              { id: 'u1', category: 'SP', name: 'SP Electricity (2-Rm HDB)', note: 'SP Group', amount: 0.00, paid: false },
+              { id: 'u2', category: 'SP', name: 'SP Water & Waterborne Tax', note: 'SP Group', amount: 0.00, paid: false },
+              { id: 'u3', category: 'SP', name: 'SP Refuse Removal & Gas', note: 'SP Group', amount: 0.00, paid: false },
+              { id: 'u4', category: 'SCC', name: 'Town Council S&CC (2-Room HDB)', note: '1st of Month', amount: 0.00, paid: false },
+              { id: 'u5', category: 'OTHER', name: 'Home Fiber Broadband', note: '15th Auto-GIRO', amount: 0.00, paid: false }
             ]
           },
           cardCap: {
             cap: 3000,
-            spent: isNov26 ? 1560 : 850
+            spent: 0
           },
-          notes: isNov26
-            ? 'Move EOM balance on 25th payday. Track DBS SOM ($8,553.16) -> EOM ($9,203.16), BKK HLWC spend & RSNA USD budget.'
-            : m.bonusType === 'AWS'
-            ? `🎄 1-Month AWS ($5,888 Gross / +$4,710.40 Net Take-Home) credited with 25th payday.`
-            : m.bonusType === 'BONUS'
-            ? `🎯 Variable Bonus Month! Adjust bonus multiplier in Payroll Engine to auto-update Net Pay & CPF.`
-            : gsxActive
-            ? `25th payday cycle. GSX installment #${m.gsxInst}/34 active until May 2027.`
-            : 'GSX PLoan fully cleared! Redirect $1,288/mo freed cashflow into stock portfolio or Mother repayment plan.'
+          notes: ''
         };
       });
       return data;
@@ -2607,11 +2545,31 @@
                 <span class="text-[10px] text-slate-400 block">Allowance ($)</span>
                 <input type="number" step="50" value="${mObj.payroll.allowance}" oninput="updatePayrollField('allowance', this.value)" class="glass-input mono text-xs w-full font-semibold" />
               </div>
-          <div class="my-3 py-2 px-3 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center text-xs">
-            <span class="text-slate-300">Net Take-Home Minus Total Bills:</span>
-            <span id="module-free-cashflow" class="mono font-bold text-emerald-300">+$542.40</span>
-          </div>
-        `;
+              <div>
+                <span class="text-[10px] text-emerald-300 block">Dec AWS (Months)</span>
+                <input type="number" step="0.5" value="${mObj.payroll.awsMonths}" oninput="updatePayrollField('awsMonths', this.value)" class="glass-input mono text-xs w-full font-semibold text-emerald-300" />
+              </div>
+              <div>
+                <span class="text-[10px] text-sky-300 block">Feb/Aug Bonus (Months)</span>
+                <input type="number" step="0.25" value="${mObj.payroll.bonusMonths}" oninput="updatePayrollField('bonusMonths', this.value)" class="glass-input mono text-xs w-full font-semibold text-sky-300" />
+              </div>
+            </div>
+          `;
+        } else {
+          payrollCard.classList.remove('editing-row');
+          payrollCard.innerHTML = `
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-emerald-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-money-check-dollar"></i>
+                <span>Base ${fmtSGD(pay.base)} + Allow ${fmtSGD(pay.allowance)}</span>
+              </span>
+              <span class="mono text-[11px] text-slate-300">CPF (20%): <strong class="text-rose-300">-${fmtSGD(pay.totalEmpCpf)}</strong></span>
+            </div>
+            <div class="flex items-center justify-between text-[11px] mt-1.5 pt-1.5 border-t border-white/10">
+              <span class="text-slate-400">Net Take-Home (25th): <strong class="mono text-emerald-300">${fmtSGD(pay.totalNetTakeHome)}</strong></span>
+              <span class="text-indigo-200 mono">+37% CPF: <strong>${fmtSGD(pay.totalCpfInflow)}</strong></span>
+            </div>
+          `;
         }
       }
 
@@ -2696,35 +2654,36 @@
       // 3. Mini Loan & BT Amortisation Snapshot in Module 2B
       const miniAmort = document.getElementById('mini-amort-banner');
       if (miniAmort) {
-        const gsxFac = (mObj.loanFacilities || []).find(f => f.id === 'lf_gsx');
+        const gsxFac = (mObj.loanFacilities || [])[0];
+        const facName = gsxFac ? gsxFac.name : 'Term Loan';
         miniAmort.innerHTML = `
           <div class="flex items-center justify-between">
             <span class="font-semibold text-rose-200 flex items-center gap-1.5">
-              <i class="fa-solid fa-Trending-down fa-chart-Simple text-amber-300"></i>
+              <i class="fa-solid fa-chart-simple text-amber-300"></i>
               <span>Auto Loan & BT Amortisation</span>
             </span>
             <span class="text-[10px] mono px-2 py-0.5 rounded bg-amber-400/20 text-amber-200">Prin -${fmtSGD(metrics.totalPrincipalReduced)}/mo</span>
           </div>
           <div class="flex items-center justify-between text-[11px] text-slate-300">
-            <span>GSX: <strong class="mono text-white">${gsxFac && gsxFac.active ? `#${gsxFac.instNumber}/34 (${fmtSGD(gsxFac.endPrincipal)} left)` : 'Cleared ✓'}</strong></span>
+            <span>${facName}: <strong class="mono text-white">${gsxFac && gsxFac.active ? `#${gsxFac.instNumber || 1}/${gsxFac.totalInst || 34} (${fmtSGD(gsxFac.endPrincipal)} left)` : 'Cleared ✓'}</strong></span>
             <span>Int/Fee: <strong class="mono text-rose-300">${fmtSGD(metrics.totalInterestCost)}</strong></span>
           </div>
         `;
       }
 
-      // 4. CPF & CPFIS ($32k Amundi UT) Quick Box in Module 2B
+      // 4. CPF & CPFIS Quick Box in Module 2B
       const cpfQuick = document.getElementById('cpf-quick-box');
       if (cpfQuick) {
         if (isRowEditing('cpf-quick')) {
           cpfQuick.classList.add('editing-row');
           cpfQuick.innerHTML = `
             <div class="flex items-center justify-between text-xs font-bold text-indigo-300 mb-1">
-              <span>Quick Edit CPF & Amundi UT ($32k)</span>
+              <span>Quick Edit CPF & CPFIS UT</span>
               ${!state.globalUnlocked ? `<button onclick="lockActiveRow(event)" class="px-2 py-0.5 rounded bg-sky-400 text-slate-950 font-bold text-[10px]">Done</button>` : ''}
             </div>
             <div class="grid grid-cols-2 gap-2 text-xs">
               <div>
-                <span class="text-[10px] text-emerald-300 block">CPFIS Amundi UT ($)</span>
+                <span class="text-[10px] text-emerald-300 block">CPFIS Unit Trust ($)</span>
                 <input type="number" step="500" value="${mObj.cpf.cpfisAmundi}" oninput="updateCpfField('cpfisAmundi', this.value)" class="glass-input mono text-xs w-full font-bold text-emerald-300" />
               </div>
               <div>
@@ -2747,7 +2706,7 @@
             <div class="flex items-center justify-between">
               <span class="text-emerald-300 font-semibold flex items-center gap-1.5">
                 <i class="fa-solid fa-seedling"></i>
-                <span>CPFIS — Amundi Unit Trust</span>
+                <span>CPFIS — Unit Trust Investment</span>
               </span>
               <span class="mono font-bold text-emerald-300">${fmtSGD(metrics.cpfisAmundi)}</span>
             </div>
@@ -2766,7 +2725,7 @@
               </div>
             </div>
             <div class="flex justify-between items-center pt-1.5 border-t border-white/10 text-xs">
-              <span class="text-indigo-200 font-semibold">Total CPF + Amundi UT:</span>
+              <span class="text-indigo-200 font-semibold">Total CPF + CPFIS UT:</span>
               <span class="mono font-bold text-indigo-300">${fmtSGD(metrics.totalCpfAndAmundi)}</span>
             </div>
           `;
@@ -3071,46 +3030,49 @@
               </span>
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-indigo-500/15 border border-indigo-400/30">
-              <span class="font-bold text-indigo-200 uppercase tracking-wider">Combined CPF + CPFIS ($32k Amundi UT) Wealth:</span>
+              <span class="font-bold text-indigo-200 uppercase tracking-wider">Combined CPF + CPFIS Wealth:</span>
               <span class="mono text-base font-bold text-white">${fmtSGD(metrics.totalCpfAndAmundi)}</span>
             </div>
           </div>
         `;
       }
 
-      // 2B. Mother ($91k -> $6k Plan) & Post-May 2027 GSX Cashflow Redirect Tracker
+      // 2B. Target Liability Plan & Post-May 2027 Freed Cashflow Tracker
       const motherBox = document.getElementById('mother-plan-box');
       if (motherBox) {
-        const motherLiab = mObj.liabilities.find(l => l.name.toLowerCase().includes('mother'));
-        const currentMotherBal = motherLiab ? Number(motherLiab.amount) : 91000;
-        const targetBal = 6000;
+        const targetLiab = mObj.liabilities.find(l => l.name.toLowerCase().includes('mother') || l.name.toLowerCase().includes('family')) || mObj.liabilities[1] || mObj.liabilities[0];
+        const liabLabel = targetLiab ? targetLiab.name : 'Target Liability';
+        const currentMotherBal = targetLiab ? Number(targetLiab.amount) : 0;
+        const targetBal = currentMotherBal > 0 ? 6000 : 0;
         const toGo = Math.max(0, currentMotherBal - targetBal);
-        const startRef = 91000;
-        const progressPct = Math.min(100, Math.max(0, ((startRef - currentMotherBal) / (startRef - targetBal)) * 100));
+        const startRef = Math.max(currentMotherBal, 91000);
+        const progressPct = currentMotherBal > 0 ? Math.min(100, Math.max(0, ((startRef - currentMotherBal) / Math.max(1, startRef - targetBal)) * 100)) : 0;
 
-        const dec27Mother = state.months['2027-12']?.liabilities?.find(l => l.name.toLowerCase().includes('mother'))?.amount ?? currentMotherBal;
+        const dec27Liab = state.months['2027-12']?.liabilities?.find(l => l.name === liabLabel)?.amount ?? currentMotherBal;
+        const primaryTermLoan = (state.months['2026-11']?.loanFacilities || [])[0];
+        const freedMonthly = primaryTermLoan ? Number(primaryTermLoan.monthlyPayment) : 0;
 
         motherBox.innerHTML = `
           <div class="liquid-well rounded-2xl p-3.5 border border-white/10">
-            <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Current Mother Balance</span>
+            <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Current ${liabLabel} Balance</span>
             <span class="mono text-base font-bold text-rose-300 mt-0.5 block">${fmtSGD(currentMotherBal)}</span>
-            <span class="text-[10px] text-slate-400">Target: <strong class="mono text-emerald-300">$6,000.00</strong></span>
+            <span class="text-[10px] text-slate-400">Target Floor: <strong class="mono text-emerald-300">${fmtSGD(targetBal)}</strong></span>
           </div>
           <div class="liquid-well rounded-2xl p-3.5 border border-white/10">
-            <span class="text-[10px] uppercase tracking-wider text-amber-300 block">Remaining to $6k Goal</span>
+            <span class="text-[10px] uppercase tracking-wider text-amber-300 block">Remaining to Goal</span>
             <span class="mono text-base font-bold text-amber-300 mt-0.5 block">${fmtSGD(toGo)}</span>
             <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1.5 border border-white/10">
               <div class="bg-emerald-400 h-full" style="width: ${progressPct}%"></div>
             </div>
           </div>
           <div class="liquid-well rounded-2xl p-3.5 border border-white/10">
-            <span class="text-[10px] uppercase tracking-wider text-sky-300 block">Post-May 27 Freed GSX Cash</span>
-            <span class="mono text-base font-bold text-sky-300 mt-0.5 block">+$1,288.00/mo</span>
-            <span class="text-[10px] text-slate-400">7 Mos (Jun–Dec 27) = <strong class="mono text-white">$9,016</strong></span>
+            <span class="text-[10px] uppercase tracking-wider text-sky-300 block">Post-May 27 Freed Loan Cash</span>
+            <span class="mono text-base font-bold text-sky-300 mt-0.5 block">+${fmtSGD(freedMonthly)}/mo</span>
+            <span class="text-[10px] text-slate-400">7 Mos (Jun–Dec 27) = <strong class="mono text-white">${fmtSGD(freedMonthly * 7)}</strong></span>
           </div>
           <div class="liquid-well rounded-2xl p-3.5 border border-emerald-400/30">
             <span class="text-[10px] uppercase tracking-wider text-emerald-200 block">Projected Dec 2027 Bal</span>
-            <span class="mono text-base font-bold text-emerald-300 mt-0.5 block">${fmtSGD(dec27Mother)}</span>
+            <span class="mono text-base font-bold text-emerald-300 mt-0.5 block">${fmtSGD(dec27Liab)}</span>
             <span class="text-[10px] text-slate-400">Across 14M Horizon</span>
           </div>
         `;
@@ -3993,11 +3955,25 @@
           renderAll();
           scheduleSave();
           closeIosGuideModal();
-          showToast('Loaded 14-Month Sync Code successfully!');
+          showToast('Restored all 14 Months from Sync Code!');
         }
       } catch (e) {
-        showToast('Invalid Sync Code format');
+        showToast('Invalid Sync Code — please copy the full code');
       }
+    };
+
+    // Wipe Local Browser Storage back to Public Sanitized Zero State
+    window.wipeLocalDataToPublicDefault = () => {
+      try {
+        localStorage.removeItem('finance_26_27_state_v2');
+      } catch (e) {}
+      state.months = JSON.parse(JSON.stringify(DEFAULT_LEDGER_TEMPLATE));
+      state.editingKey = null;
+      const textarea = document.getElementById('sync-code-textarea');
+      if (textarea) textarea.value = '';
+      renderAll();
+      closeIosGuideModal();
+      showToast('Wiped local data back to public $0.00 template');
     };
 
     // Download a self-contained index.html with current state baked in (ready for Netlify Drop / Tiiny.host)
@@ -4059,26 +4035,7 @@
       }
       renderAll();
       scheduleSave();
-      showToast('Rolled CPF + Statutory Interest (2.5% OA / 4% SA & MA) + Amundi to Dec 27');
-    };
-
-    window.rollForwardCpfAndAmundi14M = () => {
-      const startIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
-      if (startIdx < 0) return;
-
-      for (let i = startIdx + 1; i < MONTH_KEYS.length; i++) {
-        const prevObj = state.months[MONTH_KEYS[i - 1].id];
-        const currObj = state.months[MONTH_KEYS[i].id];
-        const pay = computePayrollBreakdown(currObj.payroll);
-
-        currObj.cpf.oa = Number((prevObj.cpf.oa + pay.oaInflow).toFixed(2));
-        currObj.cpf.sa = Number((prevObj.cpf.sa + pay.saInflow).toFixed(2));
-        currObj.cpf.ma = Number((prevObj.cpf.ma + pay.maInflow).toFixed(2));
-        currObj.cpf.cpfisAmundi = Number((prevObj.cpf.cpfisAmundi * 1.005).toFixed(2));
-      }
-      renderAll();
-      scheduleSave();
-      showToast('Auto-rolled CPF OA/SA/MA + $32k Amundi UT through Dec 2027');
+      showToast('Rolled CPF + Statutory Interest (2.5% OA / 4% SA & MA) + CPFIS to Dec 27');
     };
 
     window.updateLoanFacility = (idx, field, val) => {
