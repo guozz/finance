@@ -175,13 +175,63 @@
         padding-top: max(0.5rem, env(safe-area-inset-top));
         padding-left: max(0.5rem, env(safe-area-inset-left));
         padding-right: max(0.5rem, env(safe-area-inset-right));
-        padding-bottom: calc(env(safe-area-inset-bottom) + 5.25rem);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 6.5rem);
       }
     }
 
-    /* iOS Floating Bottom Tab Dock */
+    /* Upgraded iOS 18 Floating Bottom Tab Dock */
     .ios-bottom-dock {
-      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+      padding-bottom: max(0.65rem, env(safe-area-inset-bottom));
+    }
+
+    .ios-dock-shell {
+      background: linear-gradient(
+        165deg,
+        rgba(24, 34, 60, 0.88) 0%,
+        rgba(8, 13, 26, 0.94) 100%
+      ) !important;
+      backdrop-filter: blur(28px) saturate(190%) !important;
+      -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.24) !important;
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.78),
+        0 4px 16px rgba(56, 189, 248, 0.12),
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.35) !important;
+    }
+
+    .ios-dock-btn {
+      position: relative;
+      min-height: 54px;
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .ios-dock-btn:active {
+      transform: scale(0.93);
+    }
+
+    .ios-dock-btn.pill-active {
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.28) 0%, rgba(99, 102, 241, 0.28) 100%) !important;
+      border: 1px solid rgba(56, 189, 248, 0.55) !important;
+      box-shadow: 0 6px 18px var(--accent-glow), inset 0 1px 1px rgba(255, 255, 255, 0.45) !important;
+      color: #ffffff !important;
+    }
+
+    .ios-dock-btn.pill-active::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 18px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--accent-primary);
+      box-shadow: 0 0 8px var(--accent-primary);
+    }
+
+    .collapsible-header {
+      cursor: pointer;
+      user-select: none;
     }
 
     .mono {
@@ -482,7 +532,7 @@
     <div id="clean-mode-config-bar" class="hidden liquid-glass rounded-2xl p-2.5 px-3.5 border border-sky-400/30 flex flex-wrap items-center justify-between gap-2 text-[11px]">
       <div class="flex items-center gap-1.5 text-sky-200 font-semibold">
         <i class="fa-solid fa-sliders text-sky-400"></i>
-        <span>Visible Tabs & Cards:</span>
+        <span id="clean-mode-profile-label">Visible Tabs & Cards (My Ledger):</span>
       </div>
       <div id="clean-mode-chips" class="flex flex-wrap items-center gap-1.5">
         <!-- Populated dynamically by JS -->
@@ -628,9 +678,10 @@
       <div id="mod-bills" class="lg:col-span-7 liquid-glass rounded-3xl p-4 sm:p-6 flex flex-col justify-between">
         <div>
           <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-            <div class="flex items-center gap-2">
+            <div onclick="toggleModuleCollapse('bills')" class="collapsible-header flex items-center gap-2 py-0.5 pr-2 rounded-xl hover:bg-white/5 transition" title="Tap header to expand or collapse">
               <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
               <h2 class="text-sm sm:text-base font-bold text-white tracking-tight">1. Monthly Bills & Commitments</h2>
+              <i id="collapse-icon-bills" class="fa-solid fa-chevron-up text-[11px] text-slate-400 ml-1 transition-transform"></i>
             </div>
 
             <!-- Layout Switcher Pills -->
@@ -650,24 +701,26 @@
             </div>
           </div>
 
-          <!-- Sub-bar for Quick Actions -->
-          <div class="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-white/10 text-xs">
-            <div class="flex items-center gap-1.5">
-              <button onclick="markAllBillsStatus(true)" class="liquid-btn px-2.5 py-1 rounded-lg text-[11px] text-emerald-300 flex items-center gap-1">
-                <i class="fa-solid fa-check-double"></i> All Paid
-              </button>
-              <button onclick="markAllBillsStatus(false)" class="liquid-btn px-2.5 py-1 rounded-lg text-[11px] text-amber-300 flex items-center gap-1">
-                <i class="fa-solid fa-rotate-left"></i> Reset
+          <div id="mod-body-bills">
+            <!-- Sub-bar for Quick Actions -->
+            <div class="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-white/10 text-xs">
+              <div class="flex items-center gap-1.5">
+                <button onclick="markAllBillsStatus(true)" class="liquid-btn px-2.5 py-1 rounded-lg text-[11px] text-emerald-300 flex items-center gap-1">
+                  <i class="fa-solid fa-check-double"></i> All Paid
+                </button>
+                <button onclick="markAllBillsStatus(false)" class="liquid-btn px-2.5 py-1 rounded-lg text-[11px] text-amber-300 flex items-center gap-1">
+                  <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+              </div>
+              <button onclick="addBillRow()" class="liquid-btn px-3 py-1 rounded-lg text-[11px] font-semibold text-sky-200 flex items-center gap-1">
+                <i class="fa-solid fa-plus text-sky-400"></i> Add Bill
               </button>
             </div>
-            <button onclick="addBillRow()" class="liquid-btn px-3 py-1 rounded-lg text-[11px] font-semibold text-sky-200 flex items-center gap-1">
-              <i class="fa-solid fa-plus text-sky-400"></i> Add Bill
-            </button>
-          </div>
 
-          <!-- Dynamic Bills Viewport -->
-          <div id="bills-viewport" class="min-h-[240px]">
-            <!-- Populated by JS -->
+            <!-- Dynamic Bills Viewport -->
+            <div id="bills-viewport" class="min-h-[240px]">
+              <!-- Populated by JS -->
+            </div>
           </div>
         </div>
 
@@ -694,9 +747,10 @@
         <!-- 2A: Income, Payroll Breakdown & Liquid Bank Accounts -->
         <div id="mod-cash" class="liquid-glass rounded-3xl p-4 sm:p-6">
           <div class="flex items-center justify-between mb-2.5">
-            <div class="flex items-center gap-2">
+            <div onclick="toggleModuleCollapse('cash')" class="collapsible-header flex items-center gap-2 py-0.5 pr-2 rounded-xl hover:bg-white/5 transition" title="Tap header to expand or collapse">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
               <h2 class="text-sm sm:text-base font-bold text-white tracking-tight">2. Salary & Bank Accounts</h2>
+              <i id="collapse-icon-cash" class="fa-solid fa-chevron-up text-[11px] text-slate-400 ml-1 transition-transform"></i>
             </div>
             <div class="flex items-center gap-1.5">
               <button onclick="switchWorkspaceTab('loanscpf')" class="liquid-btn px-2.5 py-1 rounded-xl text-[11px] font-semibold text-indigo-200 flex items-center gap-1">
@@ -710,35 +764,37 @@
             </div>
           </div>
 
-          <!-- Compact Interactive Payroll & Bonus Summary Pill -->
-          <div id="payroll-quick-card" data-interactive-row="true" data-edit-key="payroll-card" onclick="handleRowInteraction(() => switchWorkspaceTab('loanscpf'), 'payroll-card')" class="liquid-well rounded-2xl p-2.5 mb-2.5 border border-emerald-400/25 cursor-pointer transition hover:border-emerald-400/50">
-            <!-- Populated dynamically by JS -->
-          </div>
+          <div id="mod-body-cash">
+            <!-- Compact Interactive Payroll & Bonus Summary Pill -->
+            <div id="payroll-quick-card" data-interactive-row="true" data-edit-key="payroll-card" onclick="handleRowInteraction(() => switchWorkspaceTab('loanscpf'), 'payroll-card')" class="liquid-well rounded-2xl p-2.5 mb-2.5 border border-emerald-400/25 cursor-pointer transition hover:border-emerald-400/50">
+              <!-- Populated dynamically by JS -->
+            </div>
 
-          <!-- Monthly Inflows List -->
-          <div id="inflows-list" class="space-y-1 text-sm">
-            <!-- Populated by JS -->
-          </div>
+            <!-- Monthly Inflows List -->
+            <div id="inflows-list" class="space-y-1 text-sm">
+              <!-- Populated by JS -->
+            </div>
 
-          <!-- 25th Payday Allocation Waterfall Bar -->
-          <div id="payday-waterfall-box" class="liquid-well rounded-2xl p-2.5 my-2.5 border border-white/10 space-y-1.5 text-[11px]">
-            <!-- Populated dynamically by JS -->
-          </div>
+            <!-- 25th Payday Allocation Waterfall Bar -->
+            <div id="payday-waterfall-box" class="liquid-well rounded-2xl p-2.5 my-2.5 border border-white/10 space-y-1.5 text-[11px]">
+              <!-- Populated dynamically by JS -->
+            </div>
 
-          <div class="hidden" id="module-free-cashflow"></div>
+            <div class="hidden" id="module-free-cashflow"></div>
 
-          <!-- Bank Accounts Header -->
-          <div class="flex items-center justify-between mt-3 mb-1.5 pt-2 border-t border-white/10">
-            <span class="text-[10px] font-semibold uppercase tracking-widest text-sky-300">Liquid Bank Accounts</span>
-            <button onclick="addInflowOrBankRow('bankAccounts')" class="liquid-btn px-2 py-0.5 rounded-lg text-[10px] font-medium text-sky-200 flex items-center gap-1">
-              <i class="fa-solid fa-plus text-sky-400"></i>
-              <span>Add Bank</span>
-            </button>
-          </div>
+            <!-- Bank Accounts Header -->
+            <div class="flex items-center justify-between mt-3 mb-1.5 pt-2 border-t border-white/10">
+              <span class="text-[10px] font-semibold uppercase tracking-widest text-sky-300">Liquid Bank Accounts</span>
+              <button onclick="addInflowOrBankRow('bankAccounts')" class="liquid-btn px-2 py-0.5 rounded-lg text-[10px] font-medium text-sky-200 flex items-center gap-1">
+                <i class="fa-solid fa-plus text-sky-400"></i>
+                <span>Add Bank</span>
+              </button>
+            </div>
 
-          <!-- Bank Accounts List -->
-          <div id="banks-list" class="space-y-1 text-sm">
-            <!-- Populated by JS -->
+            <!-- Bank Accounts List -->
+            <div id="banks-list" class="space-y-1 text-sm">
+              <!-- Populated by JS -->
+            </div>
           </div>
 
           <div class="mt-2.5 pt-2 px-3 py-2 rounded-2xl bg-sky-500/15 border border-sky-400/30 flex justify-between items-center">
@@ -750,9 +806,10 @@
         <!-- 2B: Liabilities, CPF & Net Worth Assets -->
         <div id="mod-networth" class="liquid-glass rounded-3xl p-4 sm:p-6">
           <div class="flex items-center justify-between mb-2.5">
-            <div class="flex items-center gap-2">
+            <div onclick="toggleModuleCollapse('networth')" class="collapsible-header flex items-center gap-2 py-0.5 pr-2 rounded-xl hover:bg-white/5 transition" title="Tap header to expand or collapse">
               <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
               <h2 class="text-sm sm:text-base font-bold text-white tracking-tight">3. Liabilities, CPF & Assets</h2>
+              <i id="collapse-icon-networth" class="fa-solid fa-chevron-up text-[11px] text-slate-400 ml-1 transition-transform"></i>
             </div>
             <div class="flex items-center gap-1.5">
               <button onclick="switchWorkspaceTab('loanscpf')" class="liquid-btn px-2.5 py-1 rounded-xl text-[11px] font-semibold text-amber-200 flex items-center gap-1">
@@ -766,39 +823,50 @@
             </div>
           </div>
 
-          <!-- Liabilities List -->
-          <div id="liabilities-list" class="space-y-1 text-sm">
-            <!-- Populated by JS -->
-          </div>
+          <div id="mod-body-networth">
+            <!-- Liabilities List -->
+            <div id="liabilities-list" class="space-y-1 text-sm">
+              <!-- Populated by JS -->
+            </div>
 
-          <div class="mt-2 py-1.5 px-3 rounded-xl bg-rose-500/10 border border-rose-400/20 flex justify-between items-center text-xs">
-            <span class="text-rose-200 font-medium">Total Liabilities:</span>
-            <span id="module-total-liab" class="mono font-bold text-rose-300">-$0.00</span>
-          </div>
+            <div class="mt-2 py-1.5 px-3 rounded-xl bg-rose-500/10 border border-rose-400/20 flex justify-between items-center text-xs">
+              <span class="text-rose-200 font-medium">Total Liabilities:</span>
+              <span id="module-total-liab" class="mono font-bold text-rose-300">-$0.00</span>
+            </div>
 
-          <!-- CPF & CPFIS Quick Box -->
-          <div class="flex items-center justify-between mt-3 mb-1.5 pt-2 border-t border-white/10">
-            <span class="text-[10px] font-semibold uppercase tracking-widest text-indigo-300">CPF & CPFIS Portfolio</span>
-            <button onclick="switchWorkspaceTab('loanscpf')" class="text-[10px] text-indigo-300 hover:text-indigo-200 font-semibold flex items-center gap-1">
-              <span>CPF Engine</span>
-              <i class="fa-solid fa-arrow-right text-[9px]"></i>
-            </button>
-          </div>
-          <div id="cpf-quick-box" data-interactive-row="true" data-edit-key="cpf-quick" onclick="handleRowInteraction(() => switchWorkspaceTab('loanscpf'), 'cpf-quick')" class="liquid-well rounded-2xl p-2.5 space-y-1.5 text-xs border border-indigo-400/25 cursor-pointer">
-            <!-- Populated dynamically by JS -->
-          </div>
+            <!-- CPF & CPFIS Quick Box -->
+            <div class="flex items-center justify-between mt-3 mb-1.5 pt-2 border-t border-white/10">
+              <span class="text-[10px] font-semibold uppercase tracking-widest text-indigo-300">CPF & CPFIS Portfolio</span>
+              <button onclick="switchWorkspaceTab('loanscpf')" class="text-[10px] text-indigo-300 hover:text-indigo-200 font-semibold flex items-center gap-1">
+                <span>CPF Engine</span>
+                <i class="fa-solid fa-arrow-right text-[9px]"></i>
+              </button>
+            </div>
+            <div id="cpf-quick-box" data-interactive-row="true" data-edit-key="cpf-quick" onclick="handleRowInteraction(() => switchWorkspaceTab('loanscpf'), 'cpf-quick')" class="liquid-well rounded-2xl p-2.5 space-y-1.5 text-xs border border-indigo-400/25 cursor-pointer">
+              <!-- Populated dynamically by JS -->
+            </div>
 
-          <!-- Core Assets Header -->
-          <div class="flex items-center justify-between mt-3 mb-1.5 pt-2 border-t border-white/10">
-            <span class="text-[10px] font-semibold uppercase tracking-widest text-emerald-300">Investments & Property</span>
-            <button onclick="addInflowOrBankRow('assets')" class="liquid-btn px-2 py-0.5 rounded-lg text-[10px] font-medium text-emerald-200 flex items-center gap-1">
-              <i class="fa-solid fa-plus text-emerald-400"></i>
-              <span>Add Asset</span>
-            </button>
-          </div>
+            <!-- Core Assets Header (With 14M Sync Button) -->
+            <div class="flex items-center justify-between mt-3 mb-1.5 pt-2 border-t border-white/10">
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] font-semibold uppercase tracking-widest text-emerald-300">Investments & Property</span>
+                <span class="px-1.5 py-0.2 rounded text-[9px] mono bg-emerald-500/15 text-emerald-300 border border-emerald-400/25" title="Edits automatically sync forward across subsequent months">Auto-Sync 14M</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <button onclick="syncAssetsAcross14Months()" class="liquid-btn px-2 py-0.5 rounded-lg text-[10px] font-medium text-sky-200 flex items-center gap-1" title="Sync current month's Investments & Property across all 14 months">
+                  <i class="fa-solid fa-arrows-rotate text-sky-400 text-[9px]"></i>
+                  <span>Sync 14M</span>
+                </button>
+                <button onclick="addInflowOrBankRow('assets')" class="liquid-btn px-2 py-0.5 rounded-lg text-[10px] font-medium text-emerald-200 flex items-center gap-1">
+                  <i class="fa-solid fa-plus text-emerald-400"></i>
+                  <span>Add Asset</span>
+                </button>
+              </div>
+            </div>
 
-          <div id="assets-list" class="space-y-1 text-sm">
-            <!-- Populated by JS -->
+            <div id="assets-list" class="space-y-1 text-sm">
+              <!-- Populated by JS -->
+            </div>
           </div>
         </div>
       </div>
@@ -1283,28 +1351,28 @@
 
   </div>
 
-  <!-- iPhone / Mobile Floating Bottom Navigation Dock (Visible on Mobile Screens) -->
-  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 px-2.5 pb-2 pt-1 ios-bottom-dock pointer-events-none">
-    <div class="liquid-glass rounded-2xl p-1 flex items-center justify-around border border-white/20 shadow-2xl pointer-events-auto">
-      <button onclick="switchWorkspaceTab('all')" id="mob-tab-all" class="flex-1 py-1.5 rounded-xl flex flex-col items-center gap-0.5 text-[10px] font-semibold pill-active">
-        <i class="fa-solid fa-table-columns text-xs"></i>
-        <span>Command</span>
+  <!-- Upgraded iPhone / Mobile Floating Bottom Navigation Dock -->
+  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 px-3 pb-2 pt-1 ios-bottom-dock pointer-events-none">
+    <div class="ios-dock-shell rounded-[26px] p-1.5 flex items-center justify-between gap-1 pointer-events-auto">
+      <button onclick="switchWorkspaceTab('all')" id="mob-tab-all" class="ios-dock-btn flex-1 py-2 px-1 rounded-[20px] flex flex-col items-center justify-center gap-1 text-[11px] font-semibold tracking-tight pill-active">
+        <i class="fa-solid fa-table-columns text-[16px]"></i>
+        <span class="leading-none">Command</span>
       </button>
-      <button onclick="switchWorkspaceTab('spending')" id="mob-tab-spending" class="flex-1 py-1.5 rounded-xl flex flex-col items-center gap-0.5 text-[10px] font-semibold text-slate-300">
-        <i class="fa-solid fa-credit-card text-xs text-violet-300"></i>
-        <span>Spending</span>
+      <button onclick="switchWorkspaceTab('spending')" id="mob-tab-spending" class="ios-dock-btn flex-1 py-2 px-1 rounded-[20px] flex flex-col items-center justify-center gap-1 text-[11px] font-semibold tracking-tight text-slate-300">
+        <i class="fa-solid fa-credit-card text-[16px] text-violet-300"></i>
+        <span class="leading-none">Spending</span>
       </button>
-      <button onclick="switchWorkspaceTab('loanscpf')" id="mob-tab-loanscpf" class="flex-1 py-1.5 rounded-xl flex flex-col items-center gap-0.5 text-[10px] font-semibold text-slate-300">
-        <i class="fa-solid fa-calculator text-xs text-indigo-300"></i>
-        <span>Loans/CPF</span>
+      <button onclick="switchWorkspaceTab('loanscpf')" id="mob-tab-loanscpf" class="ios-dock-btn flex-1 py-2 px-1 rounded-[20px] flex flex-col items-center justify-center gap-1 text-[11px] font-semibold tracking-tight text-slate-300">
+        <i class="fa-solid fa-calculator text-[16px] text-indigo-300"></i>
+        <span class="leading-none">Loans/CPF</span>
       </button>
-      <button onclick="switchWorkspaceTab('utilities')" id="mob-tab-utilities" class="flex-1 py-1.5 rounded-xl flex flex-col items-center gap-0.5 text-[10px] font-semibold text-slate-300">
-        <i class="fa-solid fa-bolt-lightning text-xs text-amber-300"></i>
-        <span>2-Rm HDB</span>
+      <button onclick="switchWorkspaceTab('utilities')" id="mob-tab-utilities" class="ios-dock-btn flex-1 py-2 px-1 rounded-[20px] flex flex-col items-center justify-center gap-1 text-[11px] font-semibold tracking-tight text-slate-300">
+        <i class="fa-solid fa-bolt-lightning text-[16px] text-amber-300"></i>
+        <span class="leading-none">2-Rm HDB</span>
       </button>
-      <button onclick="switchWorkspaceTab('matrix')" id="mob-tab-matrix" class="flex-1 py-1.5 rounded-xl flex flex-col items-center gap-0.5 text-[10px] font-semibold text-slate-300">
-        <i class="fa-solid fa-chart-line text-xs text-emerald-300"></i>
-        <span>14M</span>
+      <button onclick="switchWorkspaceTab('matrix')" id="mob-tab-matrix" class="ios-dock-btn flex-1 py-2 px-1 rounded-[20px] flex flex-col items-center justify-center gap-1 text-[11px] font-semibold tracking-tight text-slate-300">
+        <i class="fa-solid fa-chart-line text-[16px] text-emerald-300"></i>
+        <span class="leading-none">14M</span>
       </button>
     </div>
   </nav>
@@ -1826,14 +1894,40 @@
       editingKey: null,
       chartCollapsed: true,
       cleanMode: false,
+      collapsedModules: {
+        bills: false,
+        cash: false,
+        networth: false
+      },
       hiddenItems: {
+        tabSpending: false,
         tabLoans: false,
         tabUtilities: false,
         tabMatrix: false,
-        modKpiRibbon: false,
-        modHdbMini: false,
-        modEvents: false,
-        modCardCap: false
+        modKpiRibbon: false
+      },
+      hiddenItemsByProfile: {
+        self: {
+          tabSpending: false,
+          tabLoans: false,
+          tabUtilities: false,
+          tabMatrix: false,
+          modKpiRibbon: false
+        },
+        wife: {
+          tabSpending: false,
+          tabLoans: false,
+          tabUtilities: true,
+          tabMatrix: false,
+          modKpiRibbon: false
+        },
+        household: {
+          tabSpending: false,
+          tabLoans: false,
+          tabUtilities: false,
+          tabMatrix: false,
+          modKpiRibbon: false
+        }
       },
       hhSettings: {
         dedupePropertyEquity: true,
@@ -1844,6 +1938,32 @@
       months: JSON.parse(JSON.stringify(DEFAULT_LEDGER_TEMPLATE)),
       wifeMonths: JSON.parse(JSON.stringify(DEFAULT_WIFE_LEDGER_TEMPLATE))
     };
+
+    // Helper to get active profile's hidden tabs/cards memory
+    function getActiveProfileHiddenItems() {
+      if (!state.hiddenItemsByProfile) {
+        state.hiddenItemsByProfile = {
+          self: { ...(state.hiddenItems || {}) },
+          wife: { tabSpending: false, tabLoans: false, tabUtilities: true, tabMatrix: false, modKpiRibbon: false },
+          household: { ...(state.hiddenItems || {}) }
+        };
+      }
+      const mode = state.profileMode || 'self';
+      if (!state.hiddenItemsByProfile[mode]) {
+        state.hiddenItemsByProfile[mode] = { tabSpending: false, tabLoans: false, tabUtilities: false, tabMatrix: false, modKpiRibbon: false };
+      }
+      return state.hiddenItemsByProfile[mode];
+    }
+
+    // Helper to cascade initial investments / assets across subsequent months
+    function cascadeAssetsFromMonth(startIdx, targetMap = getTargetLedgerMap()) {
+      if (startIdx < 0 || startIdx >= MONTH_KEYS.length) return;
+      const sourceAssets = targetMap[MONTH_KEYS[startIdx].id]?.assets || [];
+      for (let i = startIdx + 1; i < MONTH_KEYS.length; i++) {
+        const mKey = MONTH_KEYS[i].id;
+        targetMap[mKey].assets = JSON.parse(JSON.stringify(sourceAssets));
+      }
+    }
 
     // Helper to retrieve the active ledger map ('self' or 'wife')
     function getTargetLedgerMap(forceMode = null) {
@@ -1950,7 +2070,16 @@
         if (parsed.profileMode) state.profileMode = parsed.profileMode;
         if (parsed.hhSettings) state.hhSettings = { ...state.hhSettings, ...parsed.hhSettings };
         if (parsed.cleanMode !== undefined) state.cleanMode = parsed.cleanMode;
+        if (parsed.collapsedModules) state.collapsedModules = { ...state.collapsedModules, ...parsed.collapsedModules };
         if (parsed.hiddenItems) state.hiddenItems = { ...state.hiddenItems, ...parsed.hiddenItems };
+        if (parsed.hiddenItemsByProfile) {
+          state.hiddenItemsByProfile = {
+            ...state.hiddenItemsByProfile,
+            ...parsed.hiddenItemsByProfile
+          };
+        } else if (parsed.hiddenItems) {
+          state.hiddenItemsByProfile.self = { ...state.hiddenItemsByProfile.self, ...parsed.hiddenItems };
+        }
         if (parsed.theme) state.theme = parsed.theme;
         if (parsed.billLayout) state.billLayout = parsed.billLayout;
       }
@@ -2038,6 +2167,12 @@
                     }
                     if (cloudData.profileMode) state.profileMode = cloudData.profileMode;
                     if (cloudData.hhSettingsJson) state.hhSettings = { ...state.hhSettings, ...JSON.parse(cloudData.hhSettingsJson) };
+                    if (cloudData.hiddenItemsByProfileJson) {
+                      state.hiddenItemsByProfile = {
+                        ...state.hiddenItemsByProfile,
+                        ...JSON.parse(cloudData.hiddenItemsByProfileJson)
+                      };
+                    }
                     if (cloudData.theme) state.theme = cloudData.theme;
                     if (cloudData.billLayout) state.billLayout = cloudData.billLayout;
                     applyThemeUI();
@@ -2073,7 +2208,9 @@
             profileMode: state.profileMode,
             hhSettings: state.hhSettings,
             cleanMode: state.cleanMode,
+            collapsedModules: state.collapsedModules,
             hiddenItems: state.hiddenItems,
+            hiddenItemsByProfile: state.hiddenItemsByProfile,
             theme: state.theme,
             billLayout: state.billLayout
           }));
@@ -2095,6 +2232,7 @@
           wifeMonthsJson: JSON.stringify(state.wifeMonths),
           profileMode: state.profileMode,
           hhSettingsJson: JSON.stringify(state.hhSettings),
+          hiddenItemsByProfileJson: JSON.stringify(state.hiddenItemsByProfile),
           theme: state.theme,
           billLayout: state.billLayout,
           updatedAt: Date.now()
@@ -2106,26 +2244,74 @@
         updateSyncStatus('Local Saved', false);
       }
     }
+    // Switch between Self, Wife Mode, and Combined Household (HH) Mode (With Separate Tab Memory)
+    window.switchProfileMode = (mode) => {
+      state.profileMode = mode;
+      state.editingKey = null;
 
+      // Check if current workspace tab is hidden in this profile's visibility memory
+      const h = getActiveProfileHiddenItems();
+      const tabHideMap = {
+        spending: h.tabSpending,
+        loanscpf: h.tabLoans,
+        utilities: h.tabUtilities,
+        matrix: h.tabMatrix
+      };
+      if (tabHideMap[state.workspaceTab]) {
+        window.switchWorkspaceTab('all', false);
+      }
+
+      renderAll();
+      scheduleSave();
+      const label = mode === 'self' ? 'My Ledger (Self)' : mode === 'wife' ? 'Wife Mode Ledger' : 'Combined Household (Self + Wife)';
+      showToast(`Switched to ${label}`);
+    };
+
+    // Tap any module header to expand or collapse its body
+    window.toggleModuleCollapse = (modKey) => {
+      if (!state.collapsedModules) state.collapsedModules = {};
+      state.collapsedModules[modKey] = !state.collapsedModules[modKey];
+      applyModuleCollapseUI();
+      scheduleSave();
+    };
+
+    function applyModuleCollapseUI() {
+      const c = state.collapsedModules || {};
+      ['bills', 'cash', 'networth'].forEach((modKey) => {
+        const bodyEl = document.getElementById(`mod-body-${modKey}`);
+        const iconEl = document.getElementById(`collapse-icon-${modKey}`);
+        const isCollapsed = Boolean(c[modKey]);
+        if (bodyEl) {
+          if (isCollapsed) bodyEl.classList.add('hidden');
+          else bodyEl.classList.remove('hidden');
+        }
+        if (iconEl) {
+          iconEl.className = isCollapsed
+            ? 'fa-solid fa-chevron-down text-[11px] text-sky-300 ml-1 transition-transform'
+            : 'fa-solid fa-chevron-up text-[11px] text-slate-400 ml-1 transition-transform';
+        }
+      });
+    }
+
+    // Currency Formatter (SGD)
     const fmtSGD = (val) => {
       const num = Number(val) || 0;
       const sign = num < 0 ? '-' : '';
       return sign + '$' + Math.abs(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
-    // Compute 2-Room HDB Utilities & Rebate metrics for a month
+    // 2-Room HDB Utilities & Rebate Calculator
     function computeUtilityMetrics(mObj) {
-      const util = mObj.utilities || { uSaveStartWallet: 0, uSaveCredited: 0, sccRebateMonths: 0, items: [] };
+      const util = mObj?.utilities || { uSaveStartWallet: 0, uSaveCredited: 0, sccRebateMonths: 0, items: [] };
       const items = util.items || [];
-
       const spGross = items.filter(i => i.category === 'SP').reduce((s, i) => s + (Number(i.amount) || 0), 0);
       const sccGross = items.filter(i => i.category === 'SCC').reduce((s, i) => s + (Number(i.amount) || 0), 0);
       const otherGross = items.filter(i => i.category !== 'SP' && i.category !== 'SCC').reduce((s, i) => s + (Number(i.amount) || 0), 0);
 
-      const uSaveAvailable = (Number(util.uSaveStartWallet) || 0) + (Number(util.uSaveCredited) || 0);
-      const uSaveOffsetUsed = Math.min(uSaveAvailable, spGross);
+      const totalAvailableUSave = (Number(util.uSaveStartWallet) || 0) + (Number(util.uSaveCredited) || 0);
+      const uSaveOffsetUsed = Math.min(spGross, totalAvailableUSave);
       const spNetPayable = Math.max(0, spGross - uSaveOffsetUsed);
-      const uSaveEndingWallet = Math.max(0, uSaveAvailable - uSaveOffsetUsed);
+      const uSaveEndingWallet = Math.max(0, totalAvailableUSave - uSaveOffsetUsed);
 
       const sccRebateMonths = Number(util.sccRebateMonths) || 0;
       const sccRebateDollar = Math.min(sccGross, sccGross * sccRebateMonths);
@@ -2137,7 +2323,7 @@
         spGross,
         sccGross,
         otherGross,
-        uSaveAvailable,
+        totalAvailableUSave,
         uSaveOffsetUsed,
         spNetPayable,
         uSaveEndingWallet,
@@ -2536,16 +2722,6 @@
       }
     });
 
-    // Switch between Self, Wife Mode, and Combined Household (HH) Mode
-    window.switchProfileMode = (mode) => {
-      state.profileMode = mode;
-      state.editingKey = null;
-      renderAll();
-      scheduleSave();
-      const label = mode === 'self' ? 'My Ledger (Self)' : mode === 'wife' ? 'Wife Mode Ledger' : 'Combined Household (Self + Wife)';
-      showToast(`Switched to ${label}`);
-    };
-
     window.toggleHhSetting = (settingKey) => {
       if (!state.hhSettings) state.hhSettings = { dedupePropertyEquity: true, excludeCustodialInHH: false, monthlyCpfOaMortgage: 0 };
       state.hhSettings[settingKey] = !state.hhSettings[settingKey];
@@ -2713,23 +2889,20 @@
         }
       });
 
-      // Profile Mode Switcher Pills
-      ['self', 'wife', 'household'].forEach(p => {
-        const btn = document.getElementById(`prof-btn-${p}`);
-        if (!btn) return;
-        if (p === state.profileMode) {
-          btn.classList.add('pill-active', 'text-white');
-          btn.classList.remove('text-slate-300');
+      ['self', 'wife', 'household'].forEach(m => {
+        const pBtn = document.getElementById(`prof-btn-${m}`);
+        if (!pBtn) return;
+        if (m === state.profileMode) {
+          pBtn.className = 'flex-1 sm:flex-initial px-2.5 py-1 rounded-lg text-[11px] font-bold pill-active flex items-center justify-center gap-1 transition';
         } else {
-          btn.classList.remove('pill-active', 'text-white');
-          btn.classList.add('text-slate-300');
+          pBtn.className = 'flex-1 sm:flex-initial px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white flex items-center justify-center gap-1 transition';
         }
       });
 
       applyCleanVisibilityUI();
     }
 
-    // Toggle Clean Focus Mode & Customize Hidden Tabs/Modules
+    // Toggle Clean Focus Mode & Customize Hidden Tabs/Modules (Per Profile Memory)
     window.toggleCleanFocusMode = () => {
       state.cleanMode = !state.cleanMode;
       applyCleanVisibilityUI();
@@ -2737,17 +2910,35 @@
     };
 
     window.toggleHiddenItem = (itemKey) => {
-      if (!state.hiddenItems) state.hiddenItems = {};
-      state.hiddenItems[itemKey] = !state.hiddenItems[itemKey];
+      const profileHidden = getActiveProfileHiddenItems();
+      profileHidden[itemKey] = !profileHidden[itemKey];
+
+      // If user just hid the currently active tab, jump back to Command ('all')
+      const activeTabMap = {
+        tabSpending: 'spending',
+        tabLoans: 'loanscpf',
+        tabUtilities: 'utilities',
+        tabMatrix: 'matrix'
+      };
+      if (profileHidden[itemKey] && state.workspaceTab === activeTabMap[itemKey]) {
+        window.switchWorkspaceTab('all', false);
+      }
+
       applyCleanVisibilityUI();
       scheduleSave();
     };
 
     function applyCleanVisibilityUI() {
-      const h = state.hiddenItems || {};
+      const h = getActiveProfileHiddenItems();
       const btn = document.getElementById('clean-mode-btn');
       const configBar = document.getElementById('clean-mode-config-bar');
       const chipsEl = document.getElementById('clean-mode-chips');
+      const profLabelEl = document.getElementById('clean-mode-profile-label');
+
+      const modeName = state.profileMode === 'wife' ? 'Wife Mode' : state.profileMode === 'household' ? 'Household' : 'My Ledger';
+      if (profLabelEl) {
+        profLabelEl.textContent = `Visible Tabs & Cards (${modeName}):`;
+      }
 
       if (btn) {
         if (state.cleanMode) {
@@ -2768,9 +2959,9 @@
             { key: 'modKpiRibbon', label: 'Top KPI Cards' }
           ];
           chipsEl.innerHTML = items.map(it => {
-            const isVisible = !state.hiddenItems?.[it.key];
+            const isVisible = !h[it.key];
             return `
-              <button onclick="toggleHiddenItem('${it.key}')" class="px-2 py-0.5 rounded-lg text-[10px] font-semibold mono border transition ${
+              <button onclick="toggleHiddenItem('${it.key}')" class="px-2.5 py-1 rounded-lg text-[10px] font-semibold mono border transition ${
                 isVisible
                   ? 'bg-emerald-400/20 text-emerald-200 border-emerald-400/40'
                   : 'bg-white/5 text-slate-400 border-white/10 line-through'
@@ -4449,30 +4640,11 @@
             closestIdx = i;
           }
         });
-        window.selectMonth(MONTH_KEYS[closestIdx].id);
+        if (minDist < 36) {
+          selectMonth(points[closestIdx].id);
+        }
       };
     }
-
-    function renderAll() {
-      applyThemeUI();
-      renderMonthTabs();
-      renderPrioritySomHero();
-      renderHouseholdSplitBanner();
-      renderBillsModule();
-      renderIncomeAndNetWorthModule();
-      renderLoansAndCpfWorkspace();
-      renderEventsModule();
-      renderUtilitiesModule();
-      renderMatrixModule();
-      updateSummariesAndKPIs();
-    }
-
-    // Event Handlers
-    window.selectMonth = (monthId) => {
-      state.activeMonth = monthId;
-      state.editingKey = null;
-      renderAll();
-    };
 
     window.toggleChartCollapse = () => {
       state.chartCollapsed = !state.chartCollapsed;
@@ -4481,13 +4653,284 @@
       const icon = document.getElementById('chart-toggle-icon');
       if (state.chartCollapsed) {
         panel.classList.add('hidden');
-        label.textContent = 'Show 14M Trajectory';
+        label.textContent = 'Trajectory';
         icon.className = 'fa-solid fa-chevron-down text-[10px]';
       } else {
         panel.classList.remove('hidden');
-        label.textContent = 'Hide 14M Trajectory';
+        label.textContent = 'Hide Chart';
         icon.className = 'fa-solid fa-chevron-up text-[10px]';
-        drawTrajectoryChart();
+        scheduleChartDraw();
+      }
+    };
+
+    window.selectMonth = (monthId) => {
+      if (!MONTH_KEYS.some(m => m.id === monthId)) return;
+      state.activeMonth = monthId;
+      state.editingKey = null;
+      renderAll();
+      scheduleSave();
+    };
+
+    window.updateDbsTracker = (field, val, shouldRenderAll = false) => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const targetMap = getTargetLedgerMap(targetOwner);
+      const mObj = targetMap[state.activeMonth];
+      if (!mObj.dbsTracker) mObj.dbsTracker = { som: 0, eom: 0, autoSyncEom: false, autoChainSom: true };
+      const numVal = parseFloat(val) || 0;
+      mObj.dbsTracker[field] = numVal;
+
+      if (field === 'som') {
+        const somAcc = mObj.bankAccounts.find(c => c.name.toLowerCase().includes('som'));
+        if (somAcc) somAcc.amount = numVal;
+      } else if (field === 'eom') {
+        const eomAcc = mObj.bankAccounts.find(c => c.name.toLowerCase().includes('eom'));
+        if (eomAcc) eomAcc.amount = numVal;
+      }
+
+      const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
+      syncDbsSomEomChain(currIdx, targetMap);
+
+      if (shouldRenderAll) {
+        renderAll();
+      } else {
+        const metrics = computeMonthMetrics(state.activeMonth);
+        const liveHeroEl = document.getElementById('live-hero-som-after-paid');
+        if (liveHeroEl) liveHeroEl.textContent = fmtSGD(metrics.somLiveAfterPaid);
+        renderIncomeAndNetWorthModule();
+        renderMatrixModule();
+        updateSummariesAndKPIs();
+      }
+      scheduleSave();
+    };
+
+    function syncInflowsFromPayroll(mObj) {
+      const pay = computePayrollBreakdown(mObj.payroll);
+      const grossRow = mObj.inflows.find(i => !i.isTakeHome && i.name.toLowerCase().includes('gross'));
+      if (grossRow) grossRow.amount = pay.totalGross;
+      const netRow = mObj.inflows.find(i => i.isTakeHome && (i.name.toLowerCase().includes('net') || i.name.toLowerCase().includes('salary')));
+      if (netRow) netRow.amount = pay.totalNetTakeHome;
+    }
+
+    window.updatePayrollField = (field, val, shouldRenderAll = false) => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const targetMap = getTargetLedgerMap(targetOwner);
+      const mObj = targetMap[state.activeMonth];
+      mObj.payroll[field] = parseFloat(val) || 0;
+      syncInflowsFromPayroll(mObj);
+
+      const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
+      autoCascadeCpfFromMonth(currIdx, targetMap);
+      syncDbsSomEomChain(currIdx, targetMap);
+
+      if (shouldRenderAll) {
+        renderAll();
+      } else {
+        const metrics = computeSingleMonthMetrics(mObj);
+        const pay = metrics.payCalc;
+        const gEl = document.getElementById('live-pay-gross');
+        const eEl = document.getElementById('live-pay-empcpf');
+        const nEl = document.getElementById('live-pay-net');
+        const cEl = document.getElementById('live-pay-cpfinflow');
+        if (gEl) gEl.textContent = fmtSGD(pay.totalGross);
+        if (eEl) eEl.textContent = '-' + fmtSGD(pay.totalEmpCpf);
+        if (nEl) nEl.textContent = fmtSGD(pay.totalNetTakeHome);
+        if (cEl) cEl.textContent = '+' + fmtSGD(pay.totalCpfInflow);
+        renderIncomeAndNetWorthModule();
+        renderMatrixModule();
+        updateSummariesAndKPIs();
+      }
+      scheduleSave();
+    };
+
+    window.syncPayrollAcrossAllMonths = () => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const targetMap = getTargetLedgerMap(targetOwner);
+      const basePayroll = targetMap[state.activeMonth].payroll;
+      MONTH_KEYS.forEach((m) => {
+        const mObj = targetMap[m.id];
+        mObj.payroll.base = basePayroll.base;
+        mObj.payroll.allowance = basePayroll.allowance;
+        if (m.bonusType === 'AWS' && mObj.payroll.awsMonths === 0) {
+          mObj.payroll.awsMonths = m.defaultAwsMonths || 1.0;
+        }
+        syncInflowsFromPayroll(mObj);
+      });
+      autoCascadeCpfFromMonth(0, targetMap);
+      syncDbsSomEomChain(0, targetMap);
+      renderAll();
+      scheduleSave();
+      showToast('Synced Salary & CPF Inflows across all 14 months!');
+    };
+
+    // Dedicated Spending Tab Handlers
+    window.addSpendingRow = () => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      if (!Array.isArray(mObj.spendingItems)) mObj.spendingItems = [];
+      const newIdx = mObj.spendingItems.length;
+      mObj.spendingItems.push({
+        id: 'sp_' + Date.now(),
+        category: 'DINING',
+        name: 'New Spend Item',
+        amount: 50,
+        settled: false
+      });
+      state.editingKey = `spending-${newIdx}`;
+      renderEventsModule();
+      updateSummariesAndKPIs();
+      scheduleSave();
+    };
+
+    window.updateSpendingField = (idx, field, val) => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      if (!mObj.spendingItems?.[idx]) return;
+      mObj.spendingItems[idx][field] = field === 'amount' ? (parseFloat(val) || 0) : val;
+      updateSummariesAndKPIs();
+      scheduleSave();
+    };
+
+    window.toggleSpendingSettled = (idx) => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      if (!mObj.spendingItems?.[idx]) return;
+      mObj.spendingItems[idx].settled = !mObj.spendingItems[idx].settled;
+      renderEventsModule();
+      updateSummariesAndKPIs();
+      scheduleSave();
+    };
+
+    window.cycleSpendingCategory = (idx) => {
+      const cats = ['DINING', 'SHOPPING', 'TRANSPORT', 'ONLINE', 'MISC'];
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      if (!mObj.spendingItems?.[idx]) return;
+      const curr = mObj.spendingItems[idx].category || 'DINING';
+      mObj.spendingItems[idx].category = cats[(cats.indexOf(curr) + 1) % cats.length];
+      renderEventsModule();
+      scheduleSave();
+    };
+
+    window.deleteSpendingRow = (idx) => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      if (!mObj.spendingItems) return;
+      mObj.spendingItems.splice(idx, 1);
+      state.editingKey = null;
+      renderEventsModule();
+      updateSummariesAndKPIs();
+      scheduleSave();
+    };
+
+    window.syncSpendingToCardCap = () => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      const metrics = computeSingleMonthMetrics(mObj);
+      if (!mObj.cardCap) mObj.cardCap = { cap: 3000, spent: 0 };
+      mObj.cardCap.spent = Number((metrics.varSpending + metrics.sgdEvents).toFixed(2));
+      renderEventsModule();
+      updateSummariesAndKPIs();
+      scheduleSave();
+      showToast(`Synced ${fmtSGD(mObj.cardCap.spent)} to Card Cap!`);
+    };
+
+    window.addEventRow = () => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      const idx = mObj.events.length;
+      mObj.events.push({ id: 'e_' + Date.now(), name: 'New Travel / Event', tag: 'ONLINE', currency: 'SGD', amount: 100 });
+      state.editingKey = `events-${idx}`;
+      renderEventsModule();
+      updateSummariesAndKPIs();
+      scheduleSave();
+    };
+
+    window.cycleEventTag = (idx) => {
+      const tags = ['ONLINE', 'PHYSICAL', 'CONF'];
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      if (!mObj.events?.[idx]) return;
+      const curr = mObj.events[idx].tag || 'ONLINE';
+      mObj.events[idx].tag = tags[(tags.indexOf(curr) + 1) % tags.length];
+      renderEventsModule();
+      scheduleSave();
+    };
+
+    window.toggleEventCurrency = (idx) => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      if (!mObj.events?.[idx]) return;
+      mObj.events[idx].currency = mObj.events[idx].currency === 'USD' ? 'SGD' : 'USD';
+      renderEventsModule();
+      updateSummariesAndKPIs();
+      scheduleSave();
+    };
+
+    window.updateCardCap = (field, val) => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      if (!mObj.cardCap) mObj.cardCap = { cap: 3000, spent: 0 };
+      mObj.cardCap[field] = parseFloat(val) || 0;
+      updateSummariesAndKPIs();
+      scheduleSave();
+    };
+
+    window.updateMonthNotes = (val) => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      mObj.notes = val;
+      scheduleSave();
+    };
+
+    window.switchWorkspaceTab = (tabName, autoJump = true) => {
+      // If tapping the already-active tab on mobile, toggle scrolling between top and workspace
+      const isSameTab = state.workspaceTab === tabName;
+      state.workspaceTab = tabName;
+
+      ['all', 'spending', 'loanscpf', 'utilities', 'matrix'].forEach(t => {
+        const sec = document.getElementById(`workspace-${t}`);
+        const btn = document.getElementById(`ws-tab-${t}`);
+        const mobBtn = document.getElementById(`mob-tab-${t}`);
+        if (sec) {
+          if (t === tabName) sec.classList.remove('hidden');
+          else sec.classList.add('hidden');
+        }
+        if (btn) {
+          if (t === tabName) {
+            btn.classList.add('pill-active', 'text-white');
+            btn.classList.remove('text-slate-300');
+          } else {
+            btn.classList.remove('pill-active', 'text-white');
+            btn.classList.add('text-slate-300');
+          }
+        }
+        if (mobBtn) {
+          if (t === tabName) {
+            mobBtn.classList.add('pill-active', 'text-white');
+            mobBtn.classList.remove('text-slate-300');
+          } else {
+            mobBtn.classList.remove('pill-active', 'text-white');
+            mobBtn.classList.add('text-slate-300');
+          }
+        }
+      });
+
+      renderAll();
+
+      // Auto-Jump to the selected tab workspace on iPhone / Mobile screens
+      if (autoJump) {
+        const targetSec = document.getElementById(`workspace-${tabName}`);
+        if (targetSec) {
+          requestAnimationFrame(() => {
+            if (tabName === 'all' && isSameTab) {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              const yOffset = -10;
+              const y = targetSec.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+            }
+          });
+        }
       }
     };
 
@@ -4536,15 +4979,14 @@
       const endMeta = MONTH_KEYS.find(m => m.id === endMonthVal);
 
       MONTH_KEYS.forEach((m) => {
-        const mObj = targetMap[m.id];
-        const matchBill = mObj.bills.find(b => b.id === targetBill.id || b.name.trim().toLowerCase() === billNameKey);
-        if (!matchBill) return;
-        matchBill.endMonth = endMonthVal;
-        if (endMonthVal && m.id > endMonthVal) {
-          matchBill.amount = 0;
-          matchBill.paid = true;
-        } else if (m.id >= state.activeMonth && matchBill.amount === 0 && targetBill.amount > 0) {
-          matchBill.amount = targetBill.amount;
+        const mBills = targetMap[m.id]?.bills || [];
+        const match = mBills.find(b => b.name.trim().toLowerCase() === billNameKey);
+        if (match) {
+          match.endMonth = endMonthVal;
+          if (endMonthVal && m.id > endMonthVal) {
+            match.amount = 0;
+            match.paid = true;
+          }
         }
       });
 
@@ -4553,6 +4995,21 @@
       scheduleSave();
       showToast(endMonthVal ? `Bill "${targetBill.name}" will cease after ${endMeta ? endMeta.label : endMonthVal}` : `Bill "${targetBill.name}" set to ongoing`);
     };
+
+    function renderAll() {
+      applyThemeUI();
+      applyModuleCollapseUI();
+      renderMonthTabs();
+      renderPrioritySomHero();
+      renderHouseholdSplitBanner();
+      renderBillsModule();
+      renderIncomeAndNetWorthModule();
+      renderLoansAndCpfWorkspace();
+      renderEventsModule();
+      renderUtilitiesModule();
+      renderMatrixModule();
+      updateSummariesAndKPIs();
+    }
 
     window.addBillRow = () => {
       const owner = state.profileMode === 'wife' ? 'wife' : 'self';
@@ -4608,9 +5065,17 @@
 
     window.updateListField = (listName, idx, field, val, owner = null) => {
       const targetOwner = owner || (state.profileMode === 'wife' ? 'wife' : 'self');
-      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      const targetMap = getTargetLedgerMap(targetOwner);
+      const mObj = targetMap[state.activeMonth];
       if (!mObj[listName]?.[idx]) return;
       mObj[listName][idx][field] = field === 'amount' ? (parseFloat(val) || 0) : val;
+
+      // Sync Initial Investments / Assets across subsequent months automatically
+      if (listName === 'assets') {
+        const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
+        cascadeAssetsFromMonth(currIdx, targetMap);
+        renderMatrixModule();
+      }
 
       // If user edited the DBS EOM bank account row, sync it back to dbsTracker.eom and chain forward
       if (listName === 'bankAccounts') {
@@ -4619,22 +5084,37 @@
           if (!mObj.dbsTracker) mObj.dbsTracker = { som: 0, eom: 0, autoSyncEom: false, autoChainSom: true };
           mObj.dbsTracker.eom = Number(acc.amount) || 0;
           const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
-          syncDbsSomEomChain(currIdx, getTargetLedgerMap(targetOwner));
+          syncDbsSomEomChain(currIdx, targetMap);
         }
       }
 
       if (listName === 'inflows') {
         const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
-        syncDbsSomEomChain(currIdx, getTargetLedgerMap(targetOwner));
+        syncDbsSomEomChain(currIdx, targetMap);
       }
 
       updateSummariesAndKPIs();
       scheduleSave();
     };
 
+    window.syncAssetsAcross14Months = () => {
+      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
+      const targetMap = getTargetLedgerMap(targetOwner);
+      const sourceAssets = targetMap[state.activeMonth]?.assets || [];
+      MONTH_KEYS.forEach((m) => {
+        if (m.id !== state.activeMonth) {
+          targetMap[m.id].assets = JSON.parse(JSON.stringify(sourceAssets));
+        }
+      });
+      renderAll();
+      scheduleSave();
+      showToast(`Synced Investments & Property across all 14 months!`);
+    };
+
     window.addInflowOrBankRow = (listName) => {
       const owner = state.profileMode === 'wife' ? 'wife' : 'self';
-      const mObj = getActiveMonthData(state.activeMonth, owner);
+      const targetMap = getTargetLedgerMap(owner);
+      const mObj = targetMap[state.activeMonth];
       const idx = mObj[listName].length;
       if (listName === 'inflows') {
         mObj.inflows.push({ id: 'i_' + Date.now(), name: 'Extra Inflow / Claim', amount: 500, isTakeHome: true });
@@ -4644,9 +5124,12 @@
         mObj.liabilities.push({ id: 'l_' + Date.now(), name: 'New Liability', note: 'Target Note', amount: 5000 });
       } else if (listName === 'assets') {
         mObj.assets.push({ id: 'a_' + Date.now(), name: 'New Investment', note: 'Portfolio', amount: 10000, isLiquid: true });
+        const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
+        cascadeAssetsFromMonth(currIdx, targetMap);
       }
       state.editingKey = `${listName}-${owner}-${idx}`;
       renderIncomeAndNetWorthModule();
+      renderMatrixModule();
       updateSummariesAndKPIs();
       scheduleSave();
       showToast('Added & unlocked new line');
@@ -4654,11 +5137,17 @@
 
     window.deleteListRow = (listName, idx, owner = null) => {
       const targetOwner = owner || (state.profileMode === 'wife' ? 'wife' : 'self');
-      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      const targetMap = getTargetLedgerMap(targetOwner);
+      const mObj = targetMap[state.activeMonth];
       mObj[listName].splice(idx, 1);
+      if (listName === 'assets') {
+        const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
+        cascadeAssetsFromMonth(currIdx, targetMap);
+      }
       state.editingKey = null;
       if (listName === 'events') renderEventsModule();
       else renderIncomeAndNetWorthModule();
+      renderMatrixModule();
       updateSummariesAndKPIs();
       scheduleSave();
     };
@@ -4675,273 +5164,12 @@
 
     window.toggleAssetLiquidity = (idx, owner = null) => {
       const targetOwner = owner || (state.profileMode === 'wife' ? 'wife' : 'self');
-      const mObj = getActiveMonthData(state.activeMonth, targetOwner);
+      const targetMap = getTargetLedgerMap(targetOwner);
+      const mObj = targetMap[state.activeMonth];
       mObj.assets[idx].isLiquid = !mObj.assets[idx].isLiquid;
+      const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
+      cascadeAssetsFromMonth(currIdx, targetMap);
       renderIncomeAndNetWorthModule();
-      updateSummariesAndKPIs();
-      scheduleSave();
-    };
-
-    window.addEventRow = () => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      const idx = mObj.events.length;
-      mObj.events.push({
-        id: 'e_' + Date.now(),
-        name: 'New Travel / Event',
-        tag: 'ONLINE',
-        currency: 'SGD',
-        amount: 200
-      });
-      state.editingKey = `events-${idx}`;
-      renderEventsModule();
-      updateSummariesAndKPIs();
-      scheduleSave();
-      showToast('Added event spend line');
-    };
-
-    window.cycleEventTag = (idx) => {
-      const tags = ['ONLINE', 'PHYSICAL', 'CONF'];
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      const current = mObj.events[idx].tag || 'ONLINE';
-      const next = tags[(tags.indexOf(current) + 1) % tags.length];
-      mObj.events[idx].tag = next;
-      renderEventsModule();
-      scheduleSave();
-    };
-
-    window.toggleEventCurrency = (idx) => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      mObj.events[idx].currency = mObj.events[idx].currency === 'USD' ? 'SGD' : 'USD';
-      renderEventsModule();
-      updateSummariesAndKPIs();
-      scheduleSave();
-    };
-
-    // Dedicated Spending Tab Handlers
-    window.addSpendingRow = () => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      if (!Array.isArray(mObj.spendingItems)) mObj.spendingItems = [];
-      const idx = mObj.spendingItems.length;
-      mObj.spendingItems.push({
-        id: 'sp_' + Date.now(),
-        category: 'DINING',
-        name: 'New Spend Item',
-        amount: 50,
-        settled: false
-      });
-      state.editingKey = `spending-${idx}`;
-      renderEventsModule();
-      updateSummariesAndKPIs();
-      scheduleSave();
-      showToast('Added & unlocked spend item');
-    };
-
-    window.toggleSpendingSettled = (idx) => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      if (!mObj.spendingItems?.[idx]) return;
-      mObj.spendingItems[idx].settled = !mObj.spendingItems[idx].settled;
-      renderEventsModule();
-      updateSummariesAndKPIs();
-      scheduleSave();
-    };
-
-    window.cycleSpendingCategory = (idx) => {
-      const cats = ['DINING', 'SHOPPING', 'TRANSPORT', 'ONLINE', 'MISC'];
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      if (!mObj.spendingItems?.[idx]) return;
-      const curr = mObj.spendingItems[idx].category || 'DINING';
-      mObj.spendingItems[idx].category = cats[(cats.indexOf(curr) + 1) % cats.length];
-      renderEventsModule();
-      scheduleSave();
-    };
-
-    window.updateSpendingField = (idx, field, val) => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      if (!mObj.spendingItems?.[idx]) return;
-      mObj.spendingItems[idx][field] = field === 'amount' ? (parseFloat(val) || 0) : val;
-      const spendSumEl = document.getElementById('spending-items-sum');
-      const varTotalEl = document.getElementById('spend-tab-var-total');
-      const metrics = computeMonthMetrics(state.activeMonth);
-      if (spendSumEl) spendSumEl.textContent = fmtSGD(metrics.varSpending);
-      if (varTotalEl) varTotalEl.textContent = fmtSGD(metrics.varSpending);
-      updateSummariesAndKPIs();
-      scheduleSave();
-    };
-
-    window.deleteSpendingRow = (idx) => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      if (!mObj.spendingItems) return;
-      mObj.spendingItems.splice(idx, 1);
-      state.editingKey = null;
-      renderEventsModule();
-      updateSummariesAndKPIs();
-      scheduleSave();
-    };
-
-    window.syncSpendingToCardCap = () => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      const metrics = computeSingleMonthMetrics(mObj);
-      if (!mObj.cardCap) mObj.cardCap = { cap: 3000, spent: 0 };
-      mObj.cardCap.spent = Number((metrics.varSpending + metrics.sgdEvents).toFixed(2));
-      renderEventsModule();
-      updateSummariesAndKPIs();
-      scheduleSave();
-      showToast(`Synced ${fmtSGD(mObj.cardCap.spent)} to Card Cap Spend`);
-    };
-
-    window.updateCardCap = (field, val) => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      if (!mObj.cardCap) mObj.cardCap = { cap: 3000, spent: 0 };
-      mObj.cardCap[field] = parseFloat(val) || 0;
-      updateSummariesAndKPIs();
-      scheduleSave();
-    };
-
-    window.updateMonthNotes = (val) => {
-      const mObj = getActiveMonthData(state.activeMonth, state.profileMode === 'wife' ? 'wife' : 'self');
-      mObj.notes = val;
-      scheduleSave();
-    };
-
-    // Helper to keep Monthly Inflows synchronized with the Payroll & Bonus Engine
-    function syncInflowsFromPayroll(mObj) {
-      if (!mObj.payroll || mObj.payroll.autoSyncInflows === false) return;
-      const pay = computePayrollBreakdown(mObj.payroll);
-
-      if (mObj.inflows.length >= 1) {
-        mObj.inflows[0].name = `Gross Ordinary Pay ($${pay.base} + $${pay.allowance})`;
-        mObj.inflows[0].amount = pay.ordinaryWage;
-        mObj.inflows[0].isTakeHome = false;
-      }
-      if (mObj.inflows.length >= 2) {
-        mObj.inflows[1].name = 'Net Ordinary Salary (25th • After 20% CPF)';
-        mObj.inflows[1].amount = pay.netOrdinaryTakeHome;
-        mObj.inflows[1].isTakeHome = true;
-      }
-
-      const bonusRowIdx = mObj.inflows.findIndex(i => i.id === 'i_bonus_aws' || i.name.includes('AWS') || i.name.includes('Bonus'));
-      if (pay.additionalWage > 0) {
-        const label = pay.awsMonths > 0
-          ? `${pay.awsMonths}M AWS Payout (Net after CPF)`
-          : `Variable Bonus (${pay.bonusMonths}M • Net after CPF)`;
-        if (bonusRowIdx >= 0) {
-          mObj.inflows[bonusRowIdx].name = label;
-          mObj.inflows[bonusRowIdx].amount = pay.netBonusAwsTakeHome;
-          mObj.inflows[bonusRowIdx].isTakeHome = true;
-        } else {
-          mObj.inflows.splice(2, 0, {
-            id: 'i_bonus_aws',
-            name: label,
-            amount: pay.netBonusAwsTakeHome,
-            isTakeHome: true
-          });
-        }
-      } else if (bonusRowIdx >= 0) {
-        mObj.inflows.splice(bonusRowIdx, 1);
-      }
-    }
-
-    window.updatePayrollField = (field, val, shouldRenderAll = false) => {
-      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
-      const targetMap = getTargetLedgerMap(targetOwner);
-      const mObj = targetMap[state.activeMonth];
-      mObj.payroll[field] = parseFloat(val) || 0;
-      syncInflowsFromPayroll(mObj);
-      const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
-      autoCascadeCpfFromMonth(currIdx, targetMap);
-      syncDbsSomEomChain(currIdx, targetMap);
-
-      if (shouldRenderAll) {
-        renderAll();
-      } else {
-        const metrics = computeSingleMonthMetrics(mObj);
-        const pay = metrics.payCalc;
-        const gEl = document.getElementById('live-pay-gross');
-        const eEl = document.getElementById('live-pay-empcpf');
-        const nEl = document.getElementById('live-pay-net');
-        const cEl = document.getElementById('live-pay-cpfinflow');
-        if (gEl) gEl.textContent = fmtSGD(pay.totalGross);
-        if (eEl) eEl.textContent = '-' + fmtSGD(pay.totalEmpCpf);
-        if (nEl) nEl.textContent = fmtSGD(pay.totalNetTakeHome);
-        if (cEl) cEl.textContent = '+' + fmtSGD(pay.totalCpfInflow);
-
-        const oaEl = document.getElementById('live-cpf-oa-eom');
-        const saEl = document.getElementById('live-cpf-sa-eom');
-        const maEl = document.getElementById('live-cpf-ma-eom');
-        const combEl = document.getElementById('live-cpf-combined-eom');
-        const splitEl = document.getElementById('live-cpf-split');
-        if (oaEl) oaEl.textContent = `EOM: ${fmtSGD(metrics.cpfOa)}`;
-        if (saEl) saEl.textContent = `EOM: ${fmtSGD(metrics.cpfSa)}`;
-        if (maEl) maEl.textContent = `EOM: ${fmtSGD(metrics.cpfMa)}`;
-        if (combEl) combEl.textContent = fmtSGD(metrics.totalCpfAndAmundi);
-        if (splitEl) splitEl.textContent = `OA +${fmtSGD(pay.oaInflow)} • SA +${fmtSGD(pay.saInflow)} • MA +${fmtSGD(pay.maInflow)}`;
-
-        renderMatrixModule();
-        updateSummariesAndKPIs();
-      }
-      scheduleSave();
-    };
-
-    window.syncPayrollAcrossAllMonths = () => {
-      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
-      const targetMap = getTargetLedgerMap(targetOwner);
-      const currPay = targetMap[state.activeMonth].payroll;
-      MONTH_KEYS.forEach(m => {
-        const target = targetMap[m.id];
-        target.payroll.base = currPay.base;
-        target.payroll.allowance = currPay.allowance;
-        if (m.bonusType === 'AWS' && target.payroll.awsMonths === 0) {
-          target.payroll.awsMonths = 1.0;
-        }
-        if (m.bonusType === 'BONUS' && target.payroll.bonusMonths === 0) {
-          target.payroll.bonusMonths = currPay.bonusMonths > 0 ? currPay.bonusMonths : 1.5;
-        }
-        syncInflowsFromPayroll(target);
-      });
-      autoCascadeCpfFromMonth(0, targetMap);
-      syncDbsSomEomChain(0, targetMap);
-      renderAll();
-      scheduleSave();
-      showToast(`Synced ${targetOwner === 'wife' ? "Wife's" : 'My'} Salary, Bonuses & CPF across 14 months`);
-    };
-
-    // Fixed DBS SOM & EOM updater: syncs SOM -> EOM and chains SOM across future months
-    window.updateDbsTracker = (field, val, shouldRenderAll = false) => {
-      const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
-      const targetMap = getTargetLedgerMap(targetOwner);
-      const mObj = targetMap[state.activeMonth];
-      const numVal = parseFloat(val) || 0;
-      if (!mObj.dbsTracker) mObj.dbsTracker = { som: 0, eom: 0, autoSyncEom: false, autoChainSom: true };
-      mObj.dbsTracker[field] = numVal;
-
-      if (field === 'eom') {
-        const dbsAcc = mObj.bankAccounts.find(b => b.name.toLowerCase().includes('eom'));
-        if (dbsAcc) dbsAcc.amount = numVal;
-      } else if (field === 'som' && mObj.dbsTracker.autoSyncEom) {
-        const mMetrics = computeSingleMonthMetrics(mObj);
-        const newEom = Number((numVal + mMetrics.freeCashflow).toFixed(2));
-        mObj.dbsTracker.eom = newEom;
-        const dbsAcc = mObj.bankAccounts.find(b => b.name.toLowerCase().includes('eom'));
-        if (dbsAcc) dbsAcc.amount = newEom;
-      }
-
-      const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
-      syncDbsSomEomChain(currIdx, targetMap);
-
-      const liveHeroPaidEl = document.getElementById('live-hero-som-after-paid');
-      if (liveHeroPaidEl) {
-        const latestMetrics = computeMonthMetrics(state.activeMonth);
-        liveHeroPaidEl.textContent = fmtSGD(latestMetrics.somLiveAfterPaid);
-      }
-
-      if (shouldRenderAll) {
-        renderPrioritySomHero();
-        renderBillsModule();
-        renderIncomeAndNetWorthModule();
-      } else {
-        const stripEl = document.getElementById('bills-live-som-strip');
-        if (stripEl) renderPrioritySomHero();
-      }
       renderMatrixModule();
       updateSummariesAndKPIs();
       scheduleSave();
