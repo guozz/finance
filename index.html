@@ -172,7 +172,10 @@
         font-size: 16px !important;
       }
       body {
-        padding-bottom: calc(env(safe-area-inset-bottom) + 5.5rem);
+        padding-top: max(0.5rem, env(safe-area-inset-top));
+        padding-left: max(0.5rem, env(safe-area-inset-left));
+        padding-right: max(0.5rem, env(safe-area-inset-right));
+        padding-bottom: calc(env(safe-area-inset-bottom) + 5.25rem);
       }
     }
 
@@ -462,48 +465,63 @@
         </div>
       </div>
 
-      <!-- Interactive Gesture Guide (Mobile + Desktop friendly) -->
-      <div class="flex flex-wrap items-center justify-between sm:justify-end gap-2 text-[11px] text-slate-300 mono w-full xl:w-auto">
-        <span id="active-profile-indicator" class="px-2.5 py-1 rounded-lg bg-sky-400/15 text-sky-200 border border-sky-400/30 font-semibold flex items-center gap-1.5">
+      <!-- Interactive Gesture Guide & Clean Focus Mode Toggle -->
+      <div class="flex flex-wrap items-center justify-between sm:justify-end gap-1.5 text-[11px] text-slate-300 mono w-full xl:w-auto">
+        <button onclick="toggleCleanFocusMode()" id="clean-mode-btn" class="liquid-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold text-sky-200 flex items-center gap-1.5" title="Hide unused tabs and secondary cards for a cleaner iPhone Pro Max view">
+          <i class="fa-solid fa-eye-slash text-sky-400 text-[10px]"></i>
+          <span id="clean-mode-btn-text">Hide Unused</span>
+        </button>
+        <span id="active-profile-indicator" class="px-2 py-1 rounded-lg bg-sky-400/15 text-sky-200 border border-sky-400/30 font-semibold flex items-center gap-1.5">
           <i class="fa-solid fa-user-shield text-[10px]"></i>
-          <span>Viewing: My Ledger</span>
+          <span>My Ledger</span>
         </span>
-        <span class="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
-          <i class="fa-solid fa-hand-pointer text-sky-400"></i>
-          <span><strong>1-Tap</strong> = Paid</span>
+        <span class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded-lg border border-white/10">
+          <i class="fa-solid fa-hand-pointer text-sky-400 text-[10px]"></i>
+          <span><strong>1-Tap</strong>=Paid</span>
         </span>
-        <span class="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
-          <i class="fa-solid fa-pen-to-square text-amber-300"></i>
-          <span><strong>2-Tap</strong> = Edit</span>
+        <span class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded-lg border border-white/10">
+          <i class="fa-solid fa-pen-to-square text-amber-300 text-[10px]"></i>
+          <span><strong>2-Tap</strong>=Edit</span>
         </span>
       </div>
     </div>
 
+    <!-- Customizable Tab & Module Visibility Drawer (Shown when Hide Unused / Customize is active) -->
+    <div id="clean-mode-config-bar" class="hidden liquid-glass rounded-2xl p-2.5 px-3.5 border border-sky-400/30 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+      <div class="flex items-center gap-1.5 text-sky-200 font-semibold">
+        <i class="fa-solid fa-sliders text-sky-400"></i>
+        <span>Visible Tabs & Modules (Tap to toggle):</span>
+      </div>
+      <div id="clean-mode-chips" class="flex flex-wrap items-center gap-1.5">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </div>
+
     <!-- Combined Household (Self + Wife) Split & Synergy Banner -->
-    <section id="hh-combined-banner" class="hidden liquid-glass rounded-3xl p-4 sm:p-5 border border-emerald-400/35 space-y-3">
+    <section id="hh-combined-banner" class="hidden liquid-glass rounded-3xl p-3.5 sm:p-5 border border-emerald-400/35 space-y-2.5">
       <!-- Populated dynamically by JS when in Wife or HH Combined mode -->
     </section>
 
     <!-- 14-Month Timeline Scrubber (Nov 2026 -> Dec 2027) -->
-    <section class="liquid-glass rounded-3xl p-3 sm:p-4">
-      <div class="flex items-center justify-between mb-2 px-2">
-        <div class="flex items-center gap-2">
+    <section class="liquid-glass rounded-3xl p-2.5 sm:p-4">
+      <div class="flex items-center justify-between mb-1.5 px-1.5">
+        <div class="flex items-center gap-1.5">
           <i class="fa-regular fa-calendar-check text-sky-300 text-xs"></i>
-          <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Timeline (Nov 26 – Dec 27) • ⚡ = U-Save Payout</span>
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-300">Timeline (Nov 26 – Dec 27)</span>
         </div>
-        <button onclick="toggleChartCollapse()" class="text-xs text-sky-300 hover:text-sky-200 flex items-center gap-1.5 mono">
-          <span id="chart-toggle-label">Hide 14M Trajectory</span>
-          <i id="chart-toggle-icon" class="fa-solid fa-chevron-up text-[10px]"></i>
+        <button onclick="toggleChartCollapse()" class="text-[11px] text-sky-300 hover:text-sky-200 flex items-center gap-1.5 mono">
+          <span id="chart-toggle-label">Show 14M Trajectory</span>
+          <i id="chart-toggle-icon" class="fa-solid fa-chevron-down text-[10px]"></i>
         </button>
       </div>
 
       <!-- Scrollable Month Pill Bar -->
-      <div id="month-tabs-container" class="no-scrollbar flex items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 px-1 snap-x">
+      <div id="month-tabs-container" class="no-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1 pt-0.5 px-0.5 snap-x">
         <!-- Populated dynamically via JS -->
       </div>
 
-      <!-- Collapsible 14-Month Wealth & Loan Trajectory Visualizer -->
-      <div id="trajectory-panel" class="mt-3 pt-3 border-t border-white/10 transition-all duration-300">
+      <!-- Collapsible 14-Month Wealth & Loan Trajectory Visualizer (Hidden by Default) -->
+      <div id="trajectory-panel" class="hidden mt-3 pt-3 border-t border-white/10 transition-all duration-300">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-2 px-2">
           <div class="flex flex-wrap items-center gap-4 text-xs">
             <span class="flex items-center gap-1.5 text-emerald-300 font-medium">
@@ -524,8 +542,13 @@
       </div>
     </section>
 
-    <!-- 5-Card Interactive Spatial KPI Ribbon -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+    <!-- PRIORITY LIVE SOM BANK BALANCE & BILL PAYDOWN HERO BAR (Always Visible & Dynamic) -->
+    <section id="priority-som-hero" data-interactive-row="true" data-edit-key="som-hero-edit" onclick="handleRowInteraction(() => {}, 'som-hero-edit')" class="liquid-glass rounded-3xl p-3.5 sm:p-4 border border-sky-400/40 shadow-[0_0_25px_rgba(56,189,248,0.12)] cursor-pointer transition">
+      <!-- Populated dynamically by JS -->
+    </section>
+
+    <!-- 5-Card Interactive Spatial KPI Ribbon (Compact 2-Col Grid on iPhone Pro Max) -->
+    <section id="kpi-ribbon-section" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
       <!-- KPI 1: All-In Net Worth (Liquid + CPF + Property) -->
       <div onclick="spotlightSection('mod-networth')" class="kpi-card liquid-glass rounded-3xl p-4 sm:p-5 relative overflow-hidden" title="Click to spotlight Net Worth, CPF & Assets">
         <div class="flex items-center justify-between">
@@ -667,7 +690,7 @@
           </div>
 
           <!-- Sub-bar for Quick Actions -->
-          <div class="flex items-center justify-between gap-2 mb-3 pb-2 border-b border-white/10 text-xs">
+          <div class="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-white/10 text-xs">
             <div class="flex items-center gap-1.5">
               <button onclick="markAllBillsStatus(true)" class="liquid-btn px-2.5 py-1 rounded-lg text-[11px] text-emerald-300 flex items-center gap-1">
                 <i class="fa-solid fa-check-double"></i> All Paid
@@ -677,12 +700,17 @@
               </button>
             </div>
             <button onclick="addBillRow()" class="liquid-btn px-3 py-1 rounded-lg text-[11px] font-semibold text-sky-200 flex items-center gap-1">
-              <i class="fa-solid fa-plus text-sky-400"></i> Add Bill Line
+              <i class="fa-solid fa-plus text-sky-400"></i> Add Bill
             </button>
           </div>
 
+          <!-- Inline Live SOM Cash Deduction Strip Inside Bills Card -->
+          <div id="bills-live-som-strip" class="liquid-well rounded-2xl p-2.5 px-3 mb-2.5 border border-sky-400/30 flex items-center justify-between gap-2 text-xs">
+            <!-- Populated dynamically by JS -->
+          </div>
+
           <!-- Dynamic Bills Viewport (Renders Table, Cards, Split, or Timeline) -->
-          <div id="bills-viewport" class="min-h-[300px]">
+          <div id="bills-viewport" class="min-h-[260px]">
             <!-- Populated by JS -->
           </div>
         </div>
@@ -839,10 +867,10 @@
       </div>
 
       <!-- MODULE 3: Compact 2-Rm HDB Utilities Summary + Travel & Card Spend Caps (3 Cols) -->
-      <div class="lg:col-span-3 space-y-6">
+      <div id="mod-side-column" class="lg:col-span-3 space-y-6">
 
         <!-- 3A: Mini 2-Room HDB Utilities & Rebate Card -->
-        <div class="liquid-glass rounded-3xl p-5 border border-amber-400/25">
+        <div id="mod-hdb-mini" class="liquid-glass rounded-3xl p-5 border border-amber-400/25">
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-bolt text-amber-300 text-sm"></i>
@@ -858,7 +886,7 @@
         </div>
 
         <!-- 3B: Special Events & Travel Ledger (BKK, RSNA, Custom Lines) -->
-        <div class="liquid-glass rounded-3xl p-5 sm:p-6">
+        <div id="mod-events" class="liquid-glass rounded-3xl p-5 sm:p-6">
           <div class="flex items-center justify-between mb-3">
             <div>
               <div class="flex items-center gap-2">
@@ -894,7 +922,7 @@
         </div>
 
         <!-- 3C: Credit Card Spend Cap & Notes -->
-        <div class="liquid-glass rounded-3xl p-5 sm:p-6 space-y-4">
+        <div id="mod-cardcap" class="liquid-glass rounded-3xl p-5 sm:p-6 space-y-4">
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-base font-bold text-white tracking-tight">5. Card Caps & Notes</h2>
@@ -1611,7 +1639,7 @@
             ? [
                 {
                   id: 'lf_wife_1',
-                  name: 'Wife Loan / Facility',
+                  name: 'Loan / Facility',
                   type: 'TERM',
                   instNumber: index + 1,
                   totalInst: 12,
@@ -1662,9 +1690,9 @@
               ],
           bills: isWife
             ? [
-                { id: 'wb1', due: '5', name: 'Wife Dining & Allowance', amount: 0, paid: false, endMonth: '' },
-                { id: 'wb2', due: '15', name: 'Wife Telco & Subscriptions', amount: 0, paid: false, endMonth: '' },
-                { id: 'wb3', due: '25', name: 'Wife Primary Credit Card', amount: 0, paid: false, endMonth: '' }
+                { id: 'wb1', due: '5', name: 'Dining & Allowance', amount: 0, paid: false, endMonth: '' },
+                { id: 'wb2', due: '15', name: 'Telco & Subscriptions', amount: 0, paid: false, endMonth: '' },
+                { id: 'wb3', due: '25', name: 'Primary Credit Card', amount: 0, paid: false, endMonth: '' }
               ]
             : [
                 { id: 'b1', due: '5', name: 'Food & Dining', amount: 0, paid: false, endMonth: '' },
@@ -1679,8 +1707,8 @@
           ],
           bankAccounts: isWife
             ? [
-                { id: 'wc1', name: 'Wife Savings Account', amount: 0.00 },
-                { id: 'wc2', name: 'Wife DBS EOM', amount: 0.00 }
+                { id: 'wc1', name: 'Savings Account', amount: 0.00 },
+                { id: 'wc2', name: 'DBS EOM', amount: 0.00 }
               ]
             : [
                 { id: 'c1', name: 'Savings Account', amount: 0.00 },
@@ -1689,7 +1717,7 @@
               ],
           liabilities: isWife
             ? [
-                { id: 'wl1', name: 'Wife Liability / Balance', note: 'Optional', amount: 0 }
+                { id: 'wl1', name: 'Liability / Balance', note: 'Optional', amount: 0 }
               ]
             : [
                 { id: 'l1', name: 'Custodial Balance', note: 'Held Balance', amount: 0 },
@@ -1698,7 +1726,7 @@
               ],
           assets: isWife
             ? [
-                { id: 'wa1', name: 'Wife Investment Portfolio', note: 'Brokerage / Savings', amount: 0, isLiquid: true }
+                { id: 'wa1', name: 'Investment Portfolio', note: 'Brokerage / Savings', amount: 0, isLiquid: true }
               ]
             : [
                 { id: 'a1', name: 'Stock Portfolio', note: 'Brokerage', amount: 0, isLiquid: true },
@@ -1766,6 +1794,20 @@
         if (Array.isArray(curr.bills)) {
           curr.bills.forEach((b) => {
             if (b.endMonth === undefined) b.endMonth = '';
+            if (isWife && typeof b.name === 'string' && b.name.startsWith('Wife ')) {
+              b.name = b.name.replace(/^Wife\s+/i, '');
+            }
+          });
+        }
+        if (isWife) {
+          ['bankAccounts', 'liabilities', 'assets', 'loanFacilities'].forEach((listKey) => {
+            if (Array.isArray(curr[listKey])) {
+              curr[listKey].forEach((item) => {
+                if (typeof item.name === 'string' && item.name.startsWith('Wife ')) {
+                  item.name = item.name.replace(/^Wife\s+/i, '');
+                }
+              });
+            }
           });
         }
       });
@@ -1779,11 +1821,22 @@
       workspaceTab: 'all',
       globalUnlocked: false,
       editingKey: null,
-      chartCollapsed: false,
+      chartCollapsed: true,
+      cleanMode: false,
+      hiddenItems: {
+        tabLoans: false,
+        tabUtilities: false,
+        tabMatrix: false,
+        modKpiRibbon: false,
+        modHdbMini: false,
+        modEvents: false,
+        modCardCap: false
+      },
       hhSettings: {
         dedupePropertyEquity: true,
         excludeCustodialInHH: false,
-        monthlyCpfOaMortgage: 0
+        monthlyCpfOaMortgage: 0,
+        deductPaidFromSomBank: true
       },
       months: JSON.parse(JSON.stringify(DEFAULT_LEDGER_TEMPLATE)),
       wifeMonths: JSON.parse(JSON.stringify(DEFAULT_WIFE_LEDGER_TEMPLATE))
@@ -1893,6 +1946,8 @@
         }
         if (parsed.profileMode) state.profileMode = parsed.profileMode;
         if (parsed.hhSettings) state.hhSettings = { ...state.hhSettings, ...parsed.hhSettings };
+        if (parsed.cleanMode !== undefined) state.cleanMode = parsed.cleanMode;
+        if (parsed.hiddenItems) state.hiddenItems = { ...state.hiddenItems, ...parsed.hiddenItems };
         if (parsed.theme) state.theme = parsed.theme;
         if (parsed.billLayout) state.billLayout = parsed.billLayout;
       }
@@ -2014,6 +2069,8 @@
             wifeMonths: state.wifeMonths,
             profileMode: state.profileMode,
             hhSettings: state.hhSettings,
+            cleanMode: state.cleanMode,
+            hiddenItems: state.hiddenItems,
             theme: state.theme,
             billLayout: state.billLayout
           }));
@@ -2104,7 +2161,14 @@
 
       // Sync DBS SOM & EOM from bankAccounts
       const dbsEomAcc = mObj.bankAccounts.find(c => c.name.toLowerCase().includes('eom'));
-      const dbsSom = Number(mObj.dbsTracker?.som) || 0;
+      const dbsSomAcc = mObj.bankAccounts.find(c => c.name.toLowerCase().includes('som'));
+      const dbsSom = dbsSomAcc ? (Number(dbsSomAcc.amount) || 0) : (Number(mObj.dbsTracker?.som) || 0);
+      if (mObj.dbsTracker) mObj.dbsTracker.som = dbsSom;
+
+      // Live SOM Balance dynamically deducts Paid Bills as bills are marked PAID
+      const somLiveAfterPaid = Number((dbsSom - paidBills).toFixed(2));
+      const somAfterAllBills = Number((dbsSom - totalBills).toFixed(2));
+
       let dbsEom = dbsEomAcc ? (Number(dbsEomAcc.amount) || 0) : (Number(mObj.dbsTracker?.eom) || 0);
       if (mObj.dbsTracker?.autoSyncEom) {
         dbsEom = Number((dbsSom + freeCashflow).toFixed(2));
@@ -2114,7 +2178,9 @@
       const dbsLiveBal = Number((dbsSom + netTakeHome - paidBills).toFixed(2));
       const dbsDelta = dbsEom - dbsSom;
 
-      const totalCash = mObj.bankAccounts.reduce((s, c) => s + (Number(c.amount) || 0), 0);
+      // Dynamically adjust total cash when deductPaidFromSomBank is active and SOM is tracked
+      const rawBankSum = mObj.bankAccounts.reduce((s, c) => s + (Number(c.amount) || 0), 0);
+      const totalCash = rawBankSum;
       const totalLiabilities = mObj.liabilities.reduce((s, l) => s + (Number(l.amount) || 0), 0);
 
       const liquidAssets = mObj.assets
@@ -2166,6 +2232,8 @@
         freeCashflow,
         liveAfterPaidCashflow,
         dbsSom,
+        somLiveAfterPaid,
+        somAfterAllBills,
         dbsEom,
         dbsLiveBal,
         dbsDelta,
@@ -2212,6 +2280,8 @@
       const liveAfterPaidCashflow = netTakeHome - paidBills;
 
       const dbsSom = s.dbsSom + w.dbsSom;
+      const somLiveAfterPaid = s.somLiveAfterPaid + w.somLiveAfterPaid;
+      const somAfterAllBills = s.somAfterAllBills + w.somAfterAllBills;
       const dbsEom = s.dbsEom + w.dbsEom;
       const dbsLiveBal = s.dbsLiveBal + w.dbsLiveBal;
       const dbsDelta = dbsEom - dbsSom;
@@ -2283,7 +2353,10 @@
         freeCashflow,
         liveAfterPaidCashflow,
         dbsSom,
+        somLiveAfterPaid,
+        somAfterAllBills,
         dbsEom,
+        dbsLiveBal,
         dbsLiveBal,
         dbsDelta,
         totalCash,
@@ -2592,16 +2665,219 @@
       const ind = document.getElementById('active-profile-indicator');
       if (ind) {
         if (state.profileMode === 'self') {
-          ind.className = 'px-2.5 py-1 rounded-lg bg-sky-400/15 text-sky-200 border border-sky-400/30 font-semibold flex items-center gap-1.5';
-          ind.innerHTML = '<i class="fa-solid fa-user text-[10px]"></i><span>Viewing: My Ledger</span>';
+          ind.className = 'px-2 py-1 rounded-lg bg-sky-400/15 text-sky-200 border border-sky-400/30 font-semibold flex items-center gap-1';
+          ind.innerHTML = '<i class="fa-solid fa-user text-[10px]"></i><span>My Ledger</span>';
         } else if (state.profileMode === 'wife') {
-          ind.className = 'px-2.5 py-1 rounded-lg bg-rose-400/15 text-rose-200 border border-rose-400/30 font-semibold flex items-center gap-1.5';
-          ind.innerHTML = '<i class="fa-solid fa-heart text-[10px]"></i><span>Viewing: Wife Mode</span>';
+          ind.className = 'px-2 py-1 rounded-lg bg-rose-400/15 text-rose-200 border border-rose-400/30 font-semibold flex items-center gap-1';
+          ind.innerHTML = '<i class="fa-solid fa-heart text-[10px]"></i><span>Wife</span>';
         } else {
-          ind.className = 'px-2.5 py-1 rounded-lg bg-emerald-400/15 text-emerald-200 border border-emerald-400/30 font-semibold flex items-center gap-1.5';
-          ind.innerHTML = '<i class="fa-solid fa-house-chimney-user text-[10px]"></i><span>Viewing: HH Combined (Self + Wife)</span>';
+          ind.className = 'px-2 py-1 rounded-lg bg-emerald-400/15 text-emerald-200 border border-emerald-400/30 font-semibold flex items-center gap-1';
+          ind.innerHTML = '<i class="fa-solid fa-house-chimney-user text-[10px]"></i><span>HH Combined</span>';
         }
       }
+
+      applyCleanVisibilityUI();
+    }
+
+    // Toggle Clean Focus Mode & Customize Hidden Tabs/Modules
+    window.toggleCleanFocusMode = () => {
+      state.cleanMode = !state.cleanMode;
+      if (state.cleanMode) {
+        const anyHidden = Object.values(state.hiddenItems || {}).some(Boolean);
+        if (!anyHidden) {
+          state.hiddenItems = {
+            tabLoans: false,
+            tabUtilities: true,
+            tabMatrix: false,
+            modKpiRibbon: false,
+            modHdbMini: true,
+            modEvents: true,
+            modCardCap: true
+          };
+        }
+      }
+      applyCleanVisibilityUI();
+      scheduleSave();
+      showToast(state.cleanMode ? 'Clean View Active • Tap chips to customize' : 'Showing All Tabs & Modules');
+    };
+
+    window.toggleHiddenItem = (itemKey) => {
+      if (!state.hiddenItems) state.hiddenItems = {};
+      state.hiddenItems[itemKey] = !state.hiddenItems[itemKey];
+      applyCleanVisibilityUI();
+      scheduleSave();
+    };
+
+    function applyCleanVisibilityUI() {
+      const h = state.cleanMode ? (state.hiddenItems || {}) : {};
+      const btn = document.getElementById('clean-mode-btn');
+      const btnText = document.getElementById('clean-mode-btn-text');
+      const configBar = document.getElementById('clean-mode-config-bar');
+      const chipsEl = document.getElementById('clean-mode-chips');
+
+      if (btn && btnText) {
+        if (state.cleanMode) {
+          btn.className = 'liquid-btn pill-active px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1.5';
+          btnText.textContent = 'Clean View ON';
+        } else {
+          btn.className = 'liquid-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold text-sky-200 flex items-center gap-1.5';
+          btnText.textContent = 'Hide Unused';
+        }
+      }
+
+      if (configBar && chipsEl) {
+        if (state.cleanMode) {
+          configBar.classList.remove('hidden');
+          const items = [
+            { key: 'tabLoans', label: 'Tab: Loans & CPF' },
+            { key: 'tabUtilities', label: 'Tab: 2-Rm HDB' },
+            { key: 'tabMatrix', label: 'Tab: 14M Matrix' },
+            { key: 'modKpiRibbon', label: 'Top KPI Cards' },
+            { key: 'modHdbMini', label: 'Card: HDB Snapshot' },
+            { key: 'modEvents', label: 'Card: Travel/Events' },
+            { key: 'modCardCap', label: 'Card: Card Caps' }
+          ];
+          chipsEl.innerHTML = items.map(it => {
+            const isVisible = !state.hiddenItems?.[it.key];
+            return `
+              <button onclick="toggleHiddenItem('${it.key}')" class="px-2 py-0.5 rounded-lg text-[10px] font-semibold mono border transition ${
+                isVisible
+                  ? 'bg-emerald-400/20 text-emerald-200 border-emerald-400/40'
+                  : 'bg-white/5 text-slate-400 border-white/10 line-through'
+              }">
+                ${isVisible ? '✓ ' : ''}${it.label}
+              </button>
+            `;
+          }).join('');
+        } else {
+          configBar.classList.add('hidden');
+        }
+      }
+
+      const setVis = (id, hide) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (hide) el.classList.add('hidden');
+        else el.classList.remove('hidden');
+      };
+
+      setVis('ws-tab-loanscpf', h.tabLoans);
+      setVis('mob-tab-loanscpf', h.tabLoans);
+      setVis('ws-tab-utilities', h.tabUtilities);
+      setVis('mob-tab-utilities', h.tabUtilities);
+      setVis('ws-tab-matrix', h.tabMatrix);
+      setVis('mob-tab-matrix', h.tabMatrix);
+
+      setVis('kpi-ribbon-section', h.modKpiRibbon);
+      setVis('mod-hdb-mini', h.modHdbMini);
+      setVis('mod-events', h.modEvents);
+      setVis('mod-cardcap', h.modCardCap);
+
+      // Adjust main grid layout when all 3 right-column cards are hidden
+      const sideCol = document.getElementById('mod-side-column');
+      const modBills = document.getElementById('mod-bills');
+      const allSideHidden = h.modHdbMini && h.modEvents && h.modCardCap;
+      if (sideCol && modBills) {
+        if (allSideHidden) {
+          sideCol.classList.add('hidden');
+          modBills.className = 'lg:col-span-7 liquid-glass rounded-3xl p-4 sm:p-6 flex flex-col justify-between';
+        } else {
+          sideCol.classList.remove('hidden');
+          modBills.className = 'lg:col-span-5 liquid-glass rounded-3xl p-4 sm:p-6 flex flex-col justify-between';
+        }
+      }
+    }
+
+    // Priority Live SOM Hero Banner & Inline Bills SOM Strip
+    function renderPrioritySomHero() {
+      const heroEl = document.getElementById('priority-som-hero');
+      const stripEl = document.getElementById('bills-live-som-strip');
+      const metrics = computeMonthMetrics(state.activeMonth);
+      const isHH = state.profileMode === 'household';
+      const ownerLabel = isHH ? 'Combined HH' : state.profileMode === 'wife' ? 'Wife' : 'My';
+
+      if (stripEl) {
+        stripEl.innerHTML = `
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+            <span class="text-slate-300 font-medium truncate">SOM <strong class="mono text-white">${fmtSGD(metrics.dbsSom)}</strong> − Paid <strong class="mono text-emerald-300">${fmtSGD(metrics.paidBills)}</strong></span>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="text-[10px] uppercase tracking-wider text-sky-300 mr-1">Live SOM:</span>
+            <span class="mono font-bold text-sm ${metrics.somLiveAfterPaid >= 0 ? 'text-emerald-300' : 'text-rose-300'}">${fmtSGD(metrics.somLiveAfterPaid)}</span>
+          </div>
+        `;
+      }
+
+      if (!heroEl) return;
+
+      if (!isHH && isRowEditing('som-hero-edit')) {
+        heroEl.classList.add('editing-row');
+        heroEl.innerHTML = `
+          <div class="flex items-center justify-between text-xs font-bold text-sky-300 mb-2">
+            <span><i class="fa-solid fa-building-columns mr-1.5"></i>Edit ${ownerLabel} Starting of Month (SOM) & EOM Bank Balance (${state.activeMonth})</span>
+            ${!state.globalUnlocked ? `<button onclick="lockActiveRow(event)" class="px-2.5 py-1 rounded-lg bg-sky-400 text-slate-950 font-bold text-[11px]">Done</button>` : ''}
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+            <div class="liquid-well rounded-xl p-2.5">
+              <span class="text-[10px] text-slate-300 block mb-1">Starting SOM Balance ($)</span>
+              <input type="number" step="50" value="${metrics.dbsSom}" oninput="updateDbsTracker('som', this.value, false)" onchange="updateDbsTracker('som', this.value, true)" class="glass-input mono text-sm w-full font-bold text-white" />
+            </div>
+            <div class="liquid-well rounded-xl p-2.5">
+              <span class="text-[10px] text-emerald-300 block mb-1">Paid Bills Deducted</span>
+              <div class="mono text-sm font-bold text-emerald-300 py-1">-${fmtSGD(metrics.paidBills)}</div>
+            </div>
+            <div class="liquid-well rounded-xl p-2.5 border border-emerald-400/35">
+              <span class="text-[10px] text-emerald-200 block mb-1">Live SOM (After Paid)</span>
+              <div id="live-hero-som-after-paid" class="mono text-sm font-bold text-emerald-300 py-1">${fmtSGD(metrics.somLiveAfterPaid)}</div>
+            </div>
+            <div class="liquid-well rounded-xl p-2.5">
+              <span class="text-[10px] text-sky-300 block mb-1">Target EOM Balance ($)</span>
+              <input type="number" step="50" value="${metrics.dbsEom}" oninput="updateDbsTracker('eom', this.value, false)" onchange="updateDbsTracker('eom', this.value, true)" class="glass-input mono text-sm w-full font-bold text-sky-300" />
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      heroEl.classList.remove('editing-row');
+      heroEl.innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div class="flex items-center justify-between sm:justify-start gap-2.5">
+            <div class="w-9 h-9 rounded-2xl bg-sky-400/20 border border-sky-300/35 flex items-center justify-center text-sky-300 shrink-0">
+              <i class="fa-solid fa-building-columns text-sm"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-emerald-400/20 text-emerald-200 border border-emerald-400/35">Priority Live Bank SOM</span>
+                <span class="text-[11px] text-slate-300 mono">2-Tap to Edit SOM</span>
+              </div>
+              <div class="text-xs sm:text-sm font-bold text-white mt-0.5">
+                ${ownerLabel} SOM Bank Balance • Dynamically Deducts Paid Bills
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5 text-xs">
+            <div class="liquid-well rounded-xl p-2 px-2.5 border border-white/10">
+              <span class="text-[9px] uppercase tracking-wider text-slate-400 block">1. Base SOM</span>
+              <span class="mono font-bold text-xs sm:text-sm text-white">${fmtSGD(metrics.dbsSom)}</span>
+            </div>
+            <div class="liquid-well rounded-xl p-2 px-2.5 border border-amber-400/25">
+              <span class="text-[9px] uppercase tracking-wider text-amber-300 block">2. Paid Bills</span>
+              <span class="mono font-bold text-xs sm:text-sm text-amber-300">-${fmtSGD(metrics.paidBills)}</span>
+            </div>
+            <div class="liquid-well rounded-xl p-2 px-2.5 border border-emerald-400/45 bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+              <span class="text-[9px] uppercase tracking-wider text-emerald-200 font-bold block">3. Live SOM Now</span>
+              <span class="mono font-bold text-xs sm:text-base ${metrics.somLiveAfterPaid >= 0 ? 'text-emerald-300' : 'text-rose-300'}">${fmtSGD(metrics.somLiveAfterPaid)}</span>
+            </div>
+            <div class="liquid-well rounded-xl p-2 px-2.5 border border-sky-400/30">
+              <span class="text-[9px] uppercase tracking-wider text-sky-300 block">4. EOM (+Pay)</span>
+              <span class="mono font-bold text-xs sm:text-sm text-sky-300">${fmtSGD(metrics.dbsEom)}</span>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     // Render Combined Household & Wife Mode Partner Split Banner
@@ -2609,7 +2885,7 @@
       const banner = document.getElementById('hh-combined-banner');
       if (!banner) return;
 
-      if (state.profileMode === 'self') {
+      if (state.profileMode !== 'household') {
         banner.classList.add('hidden');
         return;
       }
@@ -2623,49 +2899,10 @@
       const selfPayPct = ((s.netTakeHome / totalNetPay) * 100).toFixed(0);
       const wifePayPct = ((w.netTakeHome / totalNetPay) * 100).toFixed(0);
 
-      const totalLiqNW = Math.max(1, Math.abs(s.liquidNetWorth) + Math.abs(w.liquidNetWorth));
-      const selfNwPct = ((Math.max(0, s.liquidNetWorth) / totalLiqNW) * 100).toFixed(0);
-
-      // Compute 14-Month Horizon Net Worth Growth (Nov 26 -> Dec 27)
-      const nov26Metrics = state.profileMode === 'household'
-        ? computeHouseholdCombinedMetrics('2026-11')
-        : computeSingleMonthMetrics(state.wifeMonths['2026-11']);
-      const dec27Metrics = state.profileMode === 'household'
-        ? computeHouseholdCombinedMetrics('2027-12')
-        : computeSingleMonthMetrics(state.wifeMonths['2027-12']);
+      const nov26Metrics = computeHouseholdCombinedMetrics('2026-11');
+      const dec27Metrics = computeHouseholdCombinedMetrics('2027-12');
       const nwGrowth14M = dec27Metrics.totalNetWorthBTO - nov26Metrics.totalNetWorthBTO;
       const runwayMonths = comb.totalBills > 0 ? (comb.totalCash / comb.totalBills).toFixed(1) : '∞';
-
-      if (state.profileMode === 'wife') {
-        banner.className = 'liquid-glass rounded-3xl p-4 sm:p-5 border border-rose-400/35 space-y-3';
-        banner.innerHTML = `
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-rose-400/20 border border-rose-300/30 flex items-center justify-center text-rose-300 shrink-0">
-                <i class="fa-solid fa-heart text-base"></i>
-              </div>
-              <div>
-                <div class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-400/20 text-rose-200 border border-rose-400/35">Wife Mode Active</span>
-                  <span class="text-xs text-slate-300 mono">14M Net Worth Δ: <strong class="${nwGrowth14M >= 0 ? 'text-emerald-300' : 'text-rose-300'}">${nwGrowth14M >= 0 ? '+' : ''}${fmtSGD(nwGrowth14M)}</strong></span>
-                </div>
-                <h3 class="text-sm sm:text-base font-bold text-white mt-0.5">Wife's Dedicated Salary, CPF, Bills & Bank Ledger (${state.activeMonth})</h3>
-              </div>
-            </div>
-            <div class="flex flex-wrap items-center gap-2">
-              <button onclick="switchWorkspaceTab('loanscpf')" class="liquid-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-200 flex items-center gap-1.5">
-                <i class="fa-solid fa-sliders text-rose-300"></i>
-                <span>Configure Wife Salary & CPF</span>
-              </button>
-              <button onclick="switchProfileMode('household')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-400 to-sky-400 text-slate-950 shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-house-chimney-user"></i>
-                <span>Combine into HH Mode →</span>
-              </button>
-            </div>
-          </div>
-        `;
-        return;
-      }
 
       // Household Combined Mode Banner
       banner.className = 'liquid-glass rounded-3xl p-4 sm:p-5 border border-emerald-400/35 space-y-3';
@@ -2857,14 +3094,14 @@
           b,
           idx,
           owner: 'self',
-          ownerBadge: '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold mono bg-sky-400/20 text-sky-200 border border-sky-400/30 mr-1.5">ME</span>',
+          ownerBadge: '<span class="px-1 py-0 rounded text-[9px] font-bold mono bg-sky-400/20 text-sky-200 border border-sky-400/30 mr-1 shrink-0">M</span>',
           editKey: `bills-self-${idx}`
         }));
         const wifeBills = (state.wifeMonths[state.activeMonth]?.bills || []).map((b, idx) => ({
           b,
           idx,
           owner: 'wife',
-          ownerBadge: '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold mono bg-rose-400/20 text-rose-200 border border-rose-400/30 mr-1.5">WIFE</span>',
+          ownerBadge: '<span class="px-1 py-0 rounded text-[9px] font-bold mono bg-rose-400/20 text-rose-200 border border-rose-400/30 mr-1 shrink-0">W</span>',
           editKey: `bills-wife-${idx}`
         }));
         return [...selfBills, ...wifeBills];
@@ -2875,14 +3112,12 @@
         b,
         idx,
         owner,
-        ownerBadge: state.profileMode === 'wife'
-          ? '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold mono bg-rose-400/20 text-rose-200 border border-rose-400/30 mr-1.5">WIFE</span>'
-          : '',
+        ownerBadge: '',
         editKey: `bills-${owner}-${idx}`
       }));
     }
 
-    // Render Module 1: Monthly Bills across 4 selectable layouts
+    // Render Module 1: Monthly Bills across 4 selectable layouts (Compact Due Day & iPhone Pro Max Optimized)
     function renderBillsModule() {
       const displayBills = getDisplayBillsForActiveMonth();
       const viewport = document.getElementById('bills-viewport');
@@ -2896,24 +3131,24 @@
       const renderBillItemEditor = (item) => {
         const { b, idx, owner } = item;
         return `
-          <div class="editing-row rounded-2xl p-2.5 border flex flex-wrap items-center justify-between gap-2 my-1">
-            <div class="flex items-center gap-2 flex-1 min-w-[180px]">
+          <div class="editing-row rounded-2xl p-2.5 border flex flex-wrap items-center justify-between gap-1.5 my-1">
+            <div class="flex items-center gap-1.5 flex-1 min-w-[170px]">
               ${item.ownerBadge}
-              <input type="text" value="${b.due}" oninput="updateBillField(${idx}, 'due', this.value, '${owner}')" class="glass-input mono text-xs w-12 text-center" placeholder="Due" />
-              <input type="text" value="${b.name}" oninput="updateBillField(${idx}, 'name', this.value, '${owner}')" class="glass-input text-xs sm:text-sm font-medium flex-1" placeholder="Commitment" />
+              <input type="text" value="${b.due}" oninput="updateBillField(${idx}, 'due', this.value, '${owner}')" class="glass-input mono text-xs w-10 text-center" placeholder="Day" />
+              <input type="text" value="${b.name}" oninput="updateBillField(${idx}, 'name', this.value, '${owner}')" class="glass-input text-xs sm:text-sm font-medium flex-1 min-w-0" placeholder="Commitment" />
             </div>
-            <div class="flex flex-wrap items-center gap-2">
-              <select onchange="updateBillEndMonth(${idx}, this.value, '${owner}')" class="glass-input text-[11px] mono text-amber-200 bg-slate-900" title="Set final payment month to cease bill afterwards">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <select onchange="updateBillEndMonth(${idx}, this.value, '${owner}')" class="glass-input text-[10px] mono text-amber-200 bg-slate-900" title="Set final payment month to cease bill afterwards">
                 ${endMonthOptions(b.endMonth)}
               </select>
-              <input type="number" step="0.01" value="${b.amount}" oninput="updateBillField(${idx}, 'amount', this.value, '${owner}')" class="glass-input mono text-xs sm:text-sm font-bold text-right w-24" />
+              <input type="number" step="0.01" value="${b.amount}" oninput="updateBillField(${idx}, 'amount', this.value, '${owner}')" class="glass-input mono text-xs sm:text-sm font-bold text-right w-20" />
               <button onclick="toggleBillPaid(${idx}, '${owner}')" class="px-2 py-1 rounded-lg text-[10px] font-bold mono ${b.paid ? 'bg-emerald-400/20 text-emerald-200 border border-emerald-400/40' : 'bg-amber-400/20 text-amber-200 border border-amber-400/40'}">
-                ${b.paid ? 'PAID' : 'UNPAID'}
+                ${b.paid ? 'PAID' : 'DUE'}
               </button>
               <button onclick="deleteBillRow(${idx}, '${owner}')" class="text-rose-400 hover:text-rose-300 p-1" title="Delete Line">
                 <i class="fa-solid fa-trash-can text-xs"></i>
               </button>
-              ${!state.globalUnlocked ? `<button onclick="lockActiveRow(event)" class="px-2 py-1 rounded-lg bg-sky-400 text-slate-950 font-bold text-[10px]">Done</button>` : ''}
+              ${!state.globalUnlocked ? `<button onclick="lockActiveRow(event)" class="px-2 py-1 rounded-lg bg-sky-400 text-slate-950 font-bold text-[10px]">OK</button>` : ''}
             </div>
           </div>
         `;
@@ -2922,11 +3157,15 @@
       if (layout === 'table') {
         viewport.innerHTML = `
           <div class="space-y-1">
-            <div class="grid grid-cols-12 text-[10px] uppercase tracking-wider text-slate-400 px-3 py-1.5 border-b border-white/10">
-              <div class="col-span-2">Due</div>
-              <div class="col-span-5">Commitment</div>
-              <div class="col-span-3 text-right">Amount</div>
-              <div class="col-span-2 text-right">Status</div>
+            <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-slate-400 px-2.5 py-1 border-b border-white/10">
+              <div class="flex items-center gap-2">
+                <span class="w-7 text-center">Due</span>
+                <span>Commitment</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span>Amount</span>
+                <span class="w-12 text-right">State</span>
+              </div>
             </div>
             ${displayBills.map((item) => {
               const { b, idx, owner, editKey, ownerBadge } = item;
@@ -2936,16 +3175,17 @@
                   data-interactive-row="true"
                   data-edit-key="${editKey}"
                   onclick="handleRowInteraction(() => toggleBillPaid(${idx}, '${owner}'), '${editKey}')"
-                  class="locked-row grid grid-cols-12 items-center px-3 py-2.5 rounded-xl border border-transparent hover:border-white/10"
-                  title="Single-tap to toggle Paid • Double-tap or hold to edit"
+                  class="locked-row flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl border border-transparent hover:border-white/10"
+                  title="1-Tap = Toggle Paid • 2-Tap or Hold = Edit"
                 >
-                  <div class="col-span-2 mono text-xs text-slate-400">Day ${b.due}</div>
-                  <div class="col-span-5 text-sm font-medium flex items-center min-w-0 ${b.paid ? 'text-slate-400 line-through decoration-emerald-400/60' : 'text-white'}">
-                    ${ownerBadge}<span class="truncate">${b.name}</span>
+                  <div class="flex items-center gap-2 min-w-0 flex-1">
+                    <span class="w-7 py-0.5 text-center mono text-[11px] font-semibold rounded-md bg-white/5 text-slate-300 border border-white/10 shrink-0">${b.due}</span>
+                    ${ownerBadge}
+                    <span class="text-xs sm:text-sm font-medium truncate ${b.paid ? 'text-slate-400 line-through decoration-emerald-400/60' : 'text-white'}">${b.name}</span>
                   </div>
-                  <div class="col-span-3 text-right mono text-sm font-semibold ${b.paid ? 'text-emerald-300/80' : 'text-slate-100'}">${fmtSGD(b.amount)}</div>
-                  <div class="col-span-2 text-right">
-                    <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold mono ${
+                  <div class="flex items-center gap-2.5 shrink-0">
+                    <span class="mono text-xs sm:text-sm font-semibold ${b.paid ? 'text-emerald-300/85' : 'text-slate-100'}">${fmtSGD(b.amount)}</span>
+                    <span class="w-12 text-center py-0.5 rounded-lg text-[10px] font-bold mono ${
                       b.paid
                         ? 'bg-emerald-400/20 text-emerald-200 border border-emerald-400/35'
                         : 'bg-amber-400/15 text-amber-200 border border-amber-400/30'
@@ -2960,7 +3200,7 @@
         `;
       } else if (layout === 'cards') {
         viewport.innerHTML = `
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             ${displayBills.map((item) => {
               const { b, idx, owner, editKey, ownerBadge } = item;
               if (isRowEditing(editKey)) return `<div class="sm:col-span-2">${renderBillItemEditor(item)}</div>`;
@@ -2969,19 +3209,19 @@
                   data-interactive-row="true"
                   data-edit-key="${editKey}"
                   onclick="handleRowInteraction(() => toggleBillPaid(${idx}, '${owner}'), '${editKey}')"
-                  class="locked-row liquid-well rounded-2xl p-3.5 border ${
+                  class="locked-row liquid-well rounded-2xl p-3 border ${
                     b.paid ? 'border-emerald-400/30 bg-emerald-950/20' : 'border-white/10'
-                  } flex flex-col justify-between gap-2"
+                  } flex flex-col justify-between gap-1.5"
                 >
                   <div class="flex items-center justify-between">
-                    <span class="text-[10px] mono px-2 py-0.5 rounded-md bg-white/5 text-slate-300">${ownerBadge}Due ${b.due}th</span>
-                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold mono ${
+                    <span class="text-[10px] mono px-1.5 py-0.5 rounded bg-white/5 text-slate-300">${ownerBadge}#${b.due}</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold mono ${
                       b.paid ? 'bg-emerald-400/20 text-emerald-300' : 'bg-amber-400/20 text-amber-300'
-                    }">${b.paid ? '✓ PAID' : 'UNPAID'}</span>
+                    }">${b.paid ? '✓ PAID' : 'DUE'}</span>
                   </div>
-                  <div class="flex items-baseline justify-between mt-1">
-                    <span class="text-sm font-semibold text-white truncate pr-2">${b.name}</span>
-                    <span class="mono text-sm font-bold ${b.paid ? 'text-emerald-300' : 'text-amber-200'}">${fmtSGD(b.amount)}</span>
+                  <div class="flex items-baseline justify-between mt-0.5">
+                    <span class="text-xs sm:text-sm font-semibold text-white truncate pr-2">${b.name}</span>
+                    <span class="mono text-xs sm:text-sm font-bold ${b.paid ? 'text-emerald-300' : 'text-amber-200'}">${fmtSGD(b.amount)}</span>
                   </div>
                 </div>
               `;
@@ -3001,9 +3241,10 @@
               onclick="handleRowInteraction(() => toggleBillPaid(${idx}, '${owner}'), '${editKey}')"
               class="locked-row liquid-well rounded-xl p-2.5 border border-white/10 flex items-center justify-between gap-2"
             >
-              <div class="min-w-0">
-                <div class="text-xs font-semibold text-white flex items-center truncate">${ownerBadge}<span class="truncate">${b.name}</span></div>
-                <div class="text-[10px] mono text-slate-400">Due ${b.due}th</div>
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="px-1.5 py-0.2 rounded bg-white/5 text-[10px] mono text-slate-400 shrink-0">${b.due}</span>
+                ${ownerBadge}
+                <span class="text-xs font-semibold text-white truncate">${b.name}</span>
               </div>
               <div class="mono text-xs font-bold shrink-0 ${b.paid ? 'text-emerald-300' : 'text-amber-300'}">${fmtSGD(b.amount)}</div>
             </div>
@@ -3021,23 +3262,23 @@
               <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-300 flex items-center justify-between px-1">
                 <span>✓ Paid (${paidList.length})</span>
               </div>
-              ${paidList.length ? paidList.map(renderMiniCard).join('') : '<div class="text-xs text-slate-400 italic p-3">Click any unpaid bill to mark paid.</div>'}
+              ${paidList.length ? paidList.map(renderMiniCard).join('') : '<div class="text-xs text-slate-400 italic p-3">Tap any bill to mark paid.</div>'}
             </div>
           </div>
         `;
       } else if (layout === 'timeline') {
         const groups = [
-          { title: 'Early Month (1st – 18th)', filter: (d) => (parseInt(d) || 0) <= 18 },
-          { title: '25th Payday Window (19th – 25th)', filter: (d) => (parseInt(d) || 0) > 18 && (parseInt(d) || 0) <= 25 },
-          { title: 'End-of-Month GIRO (26th – 31st)', filter: (d) => (parseInt(d) || 0) > 25 }
+          { title: 'Early Month (1–18)', filter: (d) => (parseInt(d) || 0) <= 18 },
+          { title: 'Payday Window (19–25)', filter: (d) => (parseInt(d) || 0) > 18 && (parseInt(d) || 0) <= 25 },
+          { title: 'End-of-Month GIRO (26+)', filter: (d) => (parseInt(d) || 0) > 25 }
         ];
         viewport.innerHTML = `
-          <div class="space-y-3">
+          <div class="space-y-2.5">
             ${groups.map(g => {
               const items = displayBills.filter(x => g.filter(x.b.due));
               return `
-                <div class="liquid-well rounded-2xl p-3 space-y-1.5">
-                  <div class="text-[11px] font-bold uppercase tracking-wider text-sky-300">${g.title}</div>
+                <div class="liquid-well rounded-2xl p-2.5 space-y-1">
+                  <div class="text-[10px] font-bold uppercase tracking-wider text-sky-300 px-1">${g.title}</div>
                   ${items.map((item) => {
                     const { b, idx, owner, editKey, ownerBadge } = item;
                     if (isRowEditing(editKey)) return renderBillItemEditor(item);
@@ -3048,8 +3289,8 @@
                         onclick="handleRowInteraction(() => toggleBillPaid(${idx}, '${owner}'), '${editKey}')"
                         class="locked-row flex items-center justify-between py-1.5 px-2 rounded-lg"
                       >
-                        <div class="flex items-center gap-2 min-w-0">
-                          <span class="w-6 text-center mono text-[11px] text-slate-400">${b.due}</span>
+                        <div class="flex items-center gap-1.5 min-w-0">
+                          <span class="w-6 text-center mono text-[10px] rounded bg-white/5 text-slate-400">${b.due}</span>
                           ${ownerBadge}
                           <span class="text-xs font-medium text-white truncate">${b.name}</span>
                         </div>
@@ -3210,12 +3451,12 @@
             </div>
             <div class="grid grid-cols-4 gap-1.5 pt-1 text-xs">
               <div class="bg-white/5 rounded-xl p-2 border border-white/5">
-                <span class="text-[9px] text-slate-400 block">Start (SOM)</span>
+                <span class="text-[9px] text-slate-400 block">Base SOM</span>
                 <span class="mono font-semibold text-slate-200 text-[11px]">${fmtSGD(metrics.dbsSom)}</span>
               </div>
-              <div class="bg-emerald-500/10 rounded-xl p-2 border border-emerald-400/25" title="SOM + Net Inflows - Paid Bills (${fmtSGD(metrics.paidBills)} paid)">
-                <span class="text-[9px] text-emerald-300 block">After Paid</span>
-                <span class="mono font-bold text-emerald-300 text-[11px]">${fmtSGD(metrics.dbsLiveBal)}</span>
+              <div class="bg-emerald-500/15 rounded-xl p-2 border border-emerald-400/35" title="Base SOM (${fmtSGD(metrics.dbsSom)}) minus Paid Bills (${fmtSGD(metrics.paidBills)})">
+                <span class="text-[9px] text-emerald-200 font-bold block">SOM − Paid</span>
+                <span class="mono font-bold text-emerald-300 text-[11px]">${fmtSGD(metrics.somLiveAfterPaid)}</span>
               </div>
               <div class="bg-white/5 rounded-xl p-2 border border-sky-400/25">
                 <span class="text-[9px] text-sky-300 block">End (EOM)</span>
@@ -3317,17 +3558,17 @@
         }
       }
 
-      // Helper to merge Self + Wife lists when in Combined Household mode
+      // Helper to merge Self + Wife lists when in Combined Household mode (Clean: No WIFE badge in Wife Mode)
       const buildCombinedList = (listKey) => {
         if (state.profileMode === 'household') {
           const sList = (state.months[state.activeMonth]?.[listKey] || []).map((item, idx) => ({
             item, idx, owner: 'self',
-            badge: '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold mono bg-sky-400/20 text-sky-200 border border-sky-400/30 mr-1">ME</span>',
+            badge: '<span class="px-1 py-0 rounded text-[9px] font-bold mono bg-sky-400/20 text-sky-200 border border-sky-400/30 mr-1 shrink-0">M</span>',
             editKey: `${listKey}-self-${idx}`
           }));
           const wList = (state.wifeMonths[state.activeMonth]?.[listKey] || []).map((item, idx) => ({
             item, idx, owner: 'wife',
-            badge: '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold mono bg-rose-400/20 text-rose-200 border border-rose-400/30 mr-1">WIFE</span>',
+            badge: '<span class="px-1 py-0 rounded text-[9px] font-bold mono bg-rose-400/20 text-rose-200 border border-rose-400/30 mr-1 shrink-0">W</span>',
             editKey: `${listKey}-wife-${idx}`
           }));
           return [...sList, ...wList];
@@ -3336,9 +3577,7 @@
         const targetObj = getActiveMonthData(state.activeMonth, owner);
         return (targetObj[listKey] || []).map((item, idx) => ({
           item, idx, owner,
-          badge: state.profileMode === 'wife'
-            ? '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold mono bg-rose-400/20 text-rose-200 border border-rose-400/30 mr-1">WIFE</span>'
-            : '',
+          badge: '',
           editKey: `${listKey}-${owner}-${idx}`
         }));
       };
@@ -3371,14 +3610,33 @@
               <span class="text-[10px] mono px-1.5 py-0.5 rounded border ${item.isTakeHome ? 'bg-emerald-400/20 text-emerald-200 border-emerald-400/35' : 'bg-white/5 text-slate-400 border-white/10'}">${item.isTakeHome ? 'NET' : 'INFO'}</span>
               <span class="text-slate-200 text-xs sm:text-sm font-medium truncate">${item.name}</span>
             </div>
-            <span class="mono text-xs sm:text-sm font-semibold ${item.isTakeHome ? 'text-emerald-300' : 'text-slate-400'}">${fmtSGD(item.amount)}</span>
+            <span class="mono text-xs sm:text-sm font-semibold ${item.isTakeHome ? 'text-emerald-300' : 'text-slate-300'}">${fmtSGD(item.amount)}</span>
           </div>
         `;
       }).join('');
 
-      // Bank Accounts
+      // Bank Accounts (With Priority Dynamic Live SOM Row at Top)
       const banksEl = document.getElementById('banks-list');
-      banksEl.innerHTML = buildCombinedList('bankAccounts').map(({ item: acc, idx, owner, badge, editKey }) => {
+      const prioritySomBankRow = `
+        <div
+          data-interactive-row="true"
+          data-edit-key="dbs-som-eom"
+          onclick="handleRowInteraction(() => {}, 'dbs-som-eom')"
+          class="locked-row flex items-center justify-between gap-2 py-2 px-2.5 rounded-xl bg-emerald-500/10 border border-emerald-400/35 mb-1.5"
+          title="Priority Live SOM Bank Balance (Base SOM ${fmtSGD(metrics.dbsSom)} minus Paid Bills ${fmtSGD(metrics.paidBills)}) • Double-tap to edit SOM"
+        >
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="px-1.5 py-0.5 rounded text-[9px] font-bold mono bg-emerald-400/25 text-emerald-200 border border-emerald-400/40 shrink-0">LIVE SOM</span>
+            <span class="text-white text-xs sm:text-sm font-semibold truncate">SOM Bank (After Paid)</span>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="mono text-xs sm:text-sm font-bold ${metrics.somLiveAfterPaid >= 0 ? 'text-emerald-300' : 'text-rose-300'}">${fmtSGD(metrics.somLiveAfterPaid)}</span>
+            <span class="block text-[9px] mono text-slate-400">Base ${fmtSGD(metrics.dbsSom)} − Paid ${fmtSGD(metrics.paidBills)}</span>
+          </div>
+        </div>
+      `;
+
+      banksEl.innerHTML = prioritySomBankRow + buildCombinedList('bankAccounts').map(({ item: acc, idx, owner, badge, editKey }) => {
         if (isRowEditing(editKey)) {
           return `
             <div class="editing-row rounded-xl p-2 border flex items-center justify-between gap-2">
@@ -4205,6 +4463,7 @@
     function renderAll() {
       applyThemeUI();
       renderMonthTabs();
+      renderPrioritySomHero();
       renderHouseholdSplitBanner();
       renderBillsModule();
       renderIncomeAndNetWorthModule();
@@ -4239,7 +4498,7 @@
       }
     };
 
-    // Fixed: Toggling a bill's Paid status immediately updates the Waterfall Bar, DBS SOM/EOM Bridge, Month Tabs & KPIs
+    // Fixed: Toggling a bill's Paid status immediately updates the Priority Live SOM Hero, Waterfall Bar, DBS SOM/EOM Bridge, Month Tabs & KPIs
     window.toggleBillPaid = (idx, owner = null) => {
       const targetOwner = owner || (state.profileMode === 'wife' ? 'wife' : 'self');
       const mObj = getActiveMonthData(state.activeMonth, targetOwner);
@@ -4249,6 +4508,7 @@
       const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
       syncDbsSomEomChain(currIdx, getTargetLedgerMap(targetOwner));
 
+      renderPrioritySomHero();
       renderBillsModule();
       renderIncomeAndNetWorthModule();
       renderMonthTabs();
@@ -4265,6 +4525,7 @@
       const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
       syncDbsSomEomChain(currIdx, getTargetLedgerMap(targetOwner));
 
+      renderPrioritySomHero();
       renderIncomeAndNetWorthModule();
       updateSummariesAndKPIs();
       renderMonthTabs();
@@ -4307,13 +4568,14 @@
       mObj.bills.push({
         id: 'b_' + Date.now(),
         due: '25',
-        name: owner === 'wife' ? 'New Wife Commitment' : 'New Commitment',
+        name: 'New Commitment',
         amount: 100,
         paid: false,
         endMonth: ''
       });
       state.editingKey = `bills-${owner}-${newIdx}`;
       syncDbsSomEomChain(MONTH_KEYS.findIndex(m => m.id === state.activeMonth), getTargetLedgerMap(owner));
+      renderPrioritySomHero();
       renderBillsModule();
       renderIncomeAndNetWorthModule();
       updateSummariesAndKPIs();
@@ -4327,6 +4589,7 @@
       mObj.bills.splice(idx, 1);
       state.editingKey = null;
       syncDbsSomEomChain(MONTH_KEYS.findIndex(m => m.id === state.activeMonth), getTargetLedgerMap(targetOwner));
+      renderPrioritySomHero();
       renderBillsModule();
       renderIncomeAndNetWorthModule();
       updateSummariesAndKPIs();
@@ -4341,6 +4604,7 @@
         const mObj = getActiveMonthData(state.activeMonth);
         mObj.bills.forEach(b => b.paid = paidStatus);
       }
+      renderPrioritySomHero();
       renderBillsModule();
       renderIncomeAndNetWorthModule();
       renderMonthTabs();
@@ -4599,8 +4863,19 @@
       const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
       syncDbsSomEomChain(currIdx, targetMap);
 
+      const liveHeroPaidEl = document.getElementById('live-hero-som-after-paid');
+      if (liveHeroPaidEl) {
+        const latestMetrics = computeMonthMetrics(state.activeMonth);
+        liveHeroPaidEl.textContent = fmtSGD(latestMetrics.somLiveAfterPaid);
+      }
+
       if (shouldRenderAll) {
+        renderPrioritySomHero();
+        renderBillsModule();
         renderIncomeAndNetWorthModule();
+      } else {
+        const stripEl = document.getElementById('bills-live-som-strip');
+        if (stripEl) renderPrioritySomHero();
       }
       renderMatrixModule();
       updateSummariesAndKPIs();
