@@ -444,129 +444,127 @@
   <!-- Main Container -->
   <div class="max-w-[1440px] mx-auto space-y-3 sm:space-y-4">
 
-    <!-- Compact iPhone-First Spatial Header -->
-    <header class="liquid-glass rounded-3xl p-3.5 sm:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-      <!-- Top Row: Icon, Title & Live Status Badges -->
-      <div class="flex items-center justify-between gap-2.5">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-sky-400/30 to-indigo-500/30 border border-white/25 flex items-center justify-center shadow-inner shrink-0">
-            <i class="fa-solid fa-layer-group text-sky-300 text-sm sm:text-lg"></i>
-          </div>
-          <div class="min-w-0">
-            <div class="flex flex-wrap items-center gap-1.5">
-              <span id="active-month-badge" class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-sky-400/20 text-sky-200 border border-sky-300/30">
-                NOV 2026
-              </span>
-              <span id="bonus-month-badge" class="hidden px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-400/20 text-emerald-200 border border-emerald-300/40 items-center gap-1">
-                <span id="bonus-month-badge-text">Bonus / AWS</span>
-              </span>
-              <span id="rebate-month-badge" class="hidden px-2 py-0.5 text-[10px] font-semibold rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/40 items-center gap-1">
-                <i class="fa-solid fa-bolt text-amber-300 text-[9px]"></i>
-                <span>U-Save</span>
-              </span>
-              <button onclick="openAutosaveModal()" id="sync-status-pill" title="Auto-Save Status" class="px-2 py-0.5 text-[10px] mono rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-400/25 flex items-center gap-1 hover:brightness-125 transition cursor-pointer">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]"></span>
-                <span id="sync-status-text" class="truncate max-w-[95px] sm:max-w-none">Saved</span>
-              </button>
+    <!-- Redesigned iPhone-First Spatial Header (Proper z-40 Stacking & Symmetrical Control Grid) -->
+    <header class="relative z-40 liquid-glass rounded-3xl p-3.5 sm:p-5 space-y-3">
+      <!-- Top Row: Brand Identity, Status Pills & 3-Way Profile Switcher -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-sky-400/30 to-indigo-500/30 border border-white/25 flex items-center justify-center shadow-inner shrink-0">
+              <i class="fa-solid fa-layer-group text-sky-300 text-base sm:text-lg"></i>
             </div>
-            <h1 class="text-base sm:text-xl font-bold tracking-tight text-white truncate mt-0.5">
-              Finance Command Center
-            </h1>
-          </div>
-        </div>
-      </div>
-
-      <!-- Compact Single-Row Action Bar (Fits Cleanly on iPhone Screen) -->
-      <div class="flex flex-wrap items-center justify-between sm:justify-end gap-1.5 relative">
-        <!-- Collapsible Theme Trigger + Hidden Palette Drawer -->
-        <div id="theme-picker-wrapper" class="relative flex items-center">
-          <button onclick="toggleThemePalette(event)" id="theme-trigger-btn" class="liquid-btn px-2.5 py-1.5 rounded-xl text-xs font-medium text-slate-200 flex items-center gap-1.5" title="Tap to choose color theme & glass finish">
-            <span id="active-theme-dot" class="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 border border-white"></span>
-            <i class="fa-solid fa-wand-magic-sparkles text-[11px] text-sky-200"></i>
-            <span id="active-theme-label" class="text-[11px] font-semibold hidden sm:inline">Aurora</span>
-          </button>
-
-          <!-- Hidden Full Theme & Glass Finish Selection (Shown Only Upon Click) -->
-          <div id="theme-palette-drawer" class="hidden absolute left-0 sm:left-auto sm:right-0 top-full mt-2 z-50 liquid-glass p-3.5 rounded-3xl flex-col gap-3 border border-white/30 shadow-2xl min-w-[270px]">
-            <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-200">
-              <span>Liquid Glass Theme</span>
-              <span id="drawer-theme-name" class="text-sky-300 mono">Cyber Aurora</span>
-            </div>
-
-            <div class="grid grid-cols-7 gap-2 items-center justify-items-center py-1">
-              <button onclick="setTheme('aurora')" id="theme-btn-aurora" title="Cyber Aurora" class="w-6 h-6 rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 border-2 border-white scale-110 transition"></button>
-              <button onclick="setTheme('emerald')" id="theme-btn-emerald" title="Emerald Forest" class="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-500 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
-              <button onclick="setTheme('amethyst')" id="theme-btn-amethyst" title="Amethyst Nebula" class="w-6 h-6 rounded-full bg-gradient-to-tr from-purple-400 to-rose-500 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
-              <button onclick="setTheme('gold')" id="theme-btn-gold" title="Sovereign Gold" class="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
-              <button onclick="setTheme('frost')" id="theme-btn-frost" title="Arctic Frost" class="w-6 h-6 rounded-full bg-gradient-to-tr from-slate-200 to-sky-300 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
-              <button onclick="setTheme('graphite')" id="theme-btn-graphite" title="Stealth Graphite" class="w-6 h-6 rounded-full bg-gradient-to-tr from-zinc-800 via-zinc-500 to-zinc-300 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
-              <button onclick="setTheme('crystal')" id="theme-btn-crystal" title="Pure Transparent Crystal Glass" class="w-6 h-6 rounded-full bg-gradient-to-tr from-white/40 via-sky-200/70 to-white border border-white shadow-[0_0_10px_rgba(255,255,255,0.8)] opacity-75 hover:opacity-100 transition"></button>
-            </div>
-
-            <div class="pt-2 border-t border-white/15 space-y-1.5">
-              <div class="text-[10px] font-bold uppercase tracking-wider text-slate-300 flex items-center justify-between">
-                <span>iPhone & Desktop Glass Refraction</span>
-              </div>
-              <div class="grid grid-cols-3 gap-1.5 liquid-well p-1 rounded-xl">
-                <button onclick="setGlassFinish('clear')" id="finish-btn-clear" class="py-1 px-2 rounded-lg text-[10px] font-semibold text-slate-300 transition">
-                  Crystal Clear
-                </button>
-                <button onclick="setGlassFinish('frosted')" id="finish-btn-frosted" class="py-1 px-2 rounded-lg text-[10px] font-semibold pill-active transition">
-                  Liquid Frost
-                </button>
-                <button onclick="setGlassFinish('vivid')" id="finish-btn-vivid" class="py-1 px-2 rounded-lg text-[10px] font-semibold text-slate-300 transition">
-                  Deep Vivid
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span id="active-month-badge" class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-sky-400/20 text-sky-200 border border-sky-300/30">
+                  NOV 26
+                </span>
+                <span id="bonus-month-badge" class="hidden px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-400/20 text-emerald-200 border border-emerald-300/40 items-center gap-1">
+                  <span id="bonus-month-badge-text">Bonus / AWS</span>
+                </span>
+                <span id="rebate-month-badge" class="hidden px-2 py-0.5 text-[10px] font-semibold rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/40 items-center gap-1">
+                  <i class="fa-solid fa-bolt text-amber-300 text-[9px]"></i>
+                  <span>U-Save</span>
+                </span>
+                <button onclick="openAutosaveModal()" id="sync-status-pill" title="Auto-Save Status" class="px-2 py-0.5 text-[10px] mono rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-400/25 flex items-center gap-1 hover:brightness-125 transition cursor-pointer">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]"></span>
+                  <span id="sync-status-text" class="truncate max-w-[90px] sm:max-w-none">Saved</span>
                 </button>
               </div>
+              <h1 class="text-base sm:text-xl font-bold tracking-tight text-white truncate mt-0.5">
+                Finance Command Center
+              </h1>
             </div>
           </div>
         </div>
 
-        <!-- 3-Way Profile Switcher: Self | Wife | Household -->
-        <div class="liquid-well p-1 rounded-xl flex items-center gap-1">
-          <button onclick="switchProfileMode('self')" id="prof-btn-self" class="px-2.5 py-1 rounded-lg text-[11px] font-bold pill-active flex items-center gap-1 transition">
+        <!-- 3-Way Segmented Profile Switcher: Me | Wife | HH -->
+        <div class="liquid-well p-1 rounded-2xl grid grid-cols-3 sm:flex items-center gap-1 shrink-0">
+          <button onclick="switchProfileMode('self')" id="prof-btn-self" class="px-3 py-1.5 rounded-xl text-[11px] font-bold pill-active flex items-center justify-center gap-1.5 transition">
             <i class="fa-solid fa-user text-[10px]"></i>
             <span>Me</span>
           </button>
-          <button onclick="switchProfileMode('wife')" id="prof-btn-wife" class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white flex items-center gap-1 transition">
+          <button onclick="switchProfileMode('wife')" id="prof-btn-wife" class="px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition">
             <i class="fa-solid fa-heart text-[10px] text-rose-300"></i>
             <span>Wife</span>
           </button>
-          <button onclick="switchProfileMode('household')" id="prof-btn-household" class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white flex items-center gap-1 transition">
+          <button onclick="switchProfileMode('household')" id="prof-btn-household" class="px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition">
             <i class="fa-solid fa-house-chimney-user text-[10px] text-emerald-300"></i>
             <span>HH</span>
           </button>
         </div>
+      </div>
 
-        <!-- Clean View / Customize Tabs Button -->
-        <button onclick="toggleCleanFocusMode()" id="clean-mode-btn" class="liquid-btn px-2.5 py-1.5 rounded-xl text-[11px] font-semibold text-sky-200 flex items-center gap-1 shrink-0" title="Show/Hide Tabs & Cards per Profile">
-          <i class="fa-solid fa-sliders text-[10px]"></i>
-          <span>Customize</span>
-        </button>
+      <!-- Unified Symmetrical 4-Action Toolbar (Clean & Spacious on iPhone) -->
+      <div class="relative pt-2 border-t border-white/10">
+        <div class="grid grid-cols-4 sm:flex sm:items-center sm:justify-end gap-2">
+          <!-- 1. Theme Trigger -->
+          <div id="theme-picker-wrapper" class="col-span-1">
+            <button onclick="toggleThemePalette(event)" id="theme-trigger-btn" class="w-full h-9 liquid-btn px-2.5 sm:px-3.5 rounded-xl text-[11px] font-semibold text-slate-200 flex items-center justify-center gap-1.5" title="Choose Color Theme & Glass Finish">
+              <span id="active-theme-dot" class="w-3 h-3 rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 border border-white shrink-0"></span>
+              <span id="active-theme-label" class="truncate">Theme</span>
+            </button>
+          </div>
 
-        <!-- Global Lock / Unlock Toggle -->
-        <button onclick="toggleGlobalLock()" id="global-lock-btn" class="liquid-btn px-2.5 py-1.5 rounded-xl text-[11px] font-medium text-emerald-200 flex items-center gap-1.5">
-          <i id="global-lock-icon" class="fa-solid fa-lock text-emerald-400 text-[10px]"></i>
-          <span id="global-lock-text">Locked</span>
-        </button>
+          <!-- 2. Lock / Unlock Toggle -->
+          <button onclick="toggleGlobalLock()" id="global-lock-btn" class="col-span-1 h-9 liquid-btn px-2.5 sm:px-3.5 rounded-xl text-[11px] font-semibold text-emerald-200 flex items-center justify-center gap-1.5" title="Lock or Unlock Inline Editing">
+            <i id="global-lock-icon" class="fa-solid fa-lock text-emerald-400 text-[10px]"></i>
+            <span id="global-lock-text" class="truncate">Locked</span>
+          </button>
 
-        <!-- Clone Month Forward -->
-        <button onclick="openCopyForwardModal()" class="liquid-btn px-2.5 py-1.5 rounded-xl text-[11px] font-medium text-slate-200 flex items-center gap-1.5" title="Clone current month forward">
-          <i class="fa-solid fa-clone text-sky-300 text-[10px]"></i>
-          <span class="hidden sm:inline">Clone</span>
-        </button>
+          <!-- 3. Customize Visible Tabs -->
+          <button onclick="toggleCleanFocusMode()" id="clean-mode-btn" class="col-span-1 h-9 liquid-btn px-2.5 sm:px-3.5 rounded-xl text-[11px] font-semibold text-sky-200 flex items-center justify-center gap-1.5" title="Show/Hide Tabs & Cards per Profile">
+            <i class="fa-solid fa-sliders text-[10px] text-sky-300"></i>
+            <span class="truncate">Views</span>
+          </button>
 
-        <!-- iPhone Direct & Sync Code Modal -->
-        <button onclick="openIosGuideModal()" class="liquid-btn px-2.5 py-1.5 rounded-xl text-[11px] font-medium text-slate-200 flex items-center gap-1.5" title="Sync Code & iPhone Setup">
-          <i class="fa-brands fa-apple text-sky-300 text-xs"></i>
-          <span>Sync</span>
-        </button>
+          <!-- 4. iPhone Sync & Tools Modal -->
+          <button onclick="openIosGuideModal()" class="col-span-1 h-9 liquid-btn px-2.5 sm:px-3.5 rounded-xl text-[11px] font-semibold text-slate-200 flex items-center justify-center gap-1.5" title="Sync Code, Clone Month & Export">
+            <i class="fa-brands fa-apple text-sky-300 text-xs"></i>
+            <span class="truncate">Sync</span>
+          </button>
+        </div>
 
-        <!-- Export CSV -->
-        <button onclick="exportCurrentMonthCSV()" class="px-2.5 py-1.5 rounded-xl text-[11px] font-semibold bg-gradient-to-r from-sky-400 to-indigo-400 text-slate-950 shadow flex items-center gap-1">
-          <i class="fa-solid fa-file-csv text-xs"></i>
-          <span class="hidden sm:inline">CSV</span>
-        </button>
+        <!-- Floating High-Contrast Theme & Glass Finish Popover (Never Clipped or Bleeds Through) -->
+        <div
+          id="theme-palette-drawer"
+          style="background: rgba(8, 13, 28, 0.96); backdrop-filter: blur(32px) saturate(200%); -webkit-backdrop-filter: blur(32px) saturate(200%);"
+          class="hidden absolute left-0 right-0 sm:right-auto sm:w-80 top-full mt-2.5 z-[100] p-4 rounded-3xl flex-col gap-3.5 border border-white/25 shadow-[0_24px_60px_rgba(0,0,0,0.85)]"
+        >
+          <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-200">
+            <span class="flex items-center gap-1.5">
+              <i class="fa-solid fa-palette text-sky-300"></i>
+              <span>Liquid Glass Theme</span>
+            </span>
+            <span id="drawer-theme-name" class="text-sky-300 mono">Cyber Aurora</span>
+          </div>
+
+          <div class="grid grid-cols-7 gap-2 items-center justify-items-center py-1.5 px-2 rounded-2xl bg-white/5 border border-white/10">
+            <button onclick="setTheme('aurora')" id="theme-btn-aurora" title="Cyber Aurora" class="w-7 h-7 rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 border-2 border-white scale-110 transition"></button>
+            <button onclick="setTheme('emerald')" id="theme-btn-emerald" title="Emerald Forest" class="w-7 h-7 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-500 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
+            <button onclick="setTheme('amethyst')" id="theme-btn-amethyst" title="Amethyst Nebula" class="w-7 h-7 rounded-full bg-gradient-to-tr from-purple-400 to-rose-500 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
+            <button onclick="setTheme('gold')" id="theme-btn-gold" title="Sovereign Gold" class="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
+            <button onclick="setTheme('frost')" id="theme-btn-frost" title="Arctic Frost" class="w-7 h-7 rounded-full bg-gradient-to-tr from-slate-200 to-sky-300 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
+            <button onclick="setTheme('graphite')" id="theme-btn-graphite" title="Stealth Graphite" class="w-7 h-7 rounded-full bg-gradient-to-tr from-zinc-800 via-zinc-500 to-zinc-300 border border-white/30 opacity-75 hover:opacity-100 transition"></button>
+            <button onclick="setTheme('crystal')" id="theme-btn-crystal" title="Pure Transparent Crystal Glass" class="w-7 h-7 rounded-full bg-gradient-to-tr from-white/40 via-sky-200/70 to-white border border-white shadow-[0_0_10px_rgba(255,255,255,0.8)] opacity-75 hover:opacity-100 transition"></button>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+              <span>Glass Refraction Finish</span>
+            </div>
+            <div class="grid grid-cols-3 gap-1.5 bg-white/5 p-1 rounded-xl border border-white/10">
+              <button onclick="setGlassFinish('clear')" id="finish-btn-clear" class="py-1.5 px-2 rounded-lg text-[10px] font-semibold text-slate-300 transition">
+                Crystal Clear
+              </button>
+              <button onclick="setGlassFinish('frosted')" id="finish-btn-frosted" class="py-1.5 px-2 rounded-lg text-[10px] font-semibold pill-active transition">
+                Liquid Frost
+              </button>
+              <button onclick="setGlassFinish('vivid')" id="finish-btn-vivid" class="py-1.5 px-2 rounded-lg text-[10px] font-semibold text-slate-300 transition">
+                Deep Vivid
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -576,15 +574,16 @@
       <div id="clean-mode-chips" class="flex flex-wrap items-center gap-1.5"></div>
     </div>
 
-    <!-- 14-Month Horizon Scrubber & Desktop Workspace Switcher -->
-    <div class="liquid-glass rounded-3xl p-2.5 sm:p-3.5 space-y-2.5">
+    <!-- 14-Month Horizon Scrubber & Responsive Trajectory Drawer -->
+    <div class="relative z-10 liquid-glass rounded-3xl p-3 sm:p-4 space-y-2.5">
       <!-- Horizontal Scrollable 14-Month Pills -->
       <div id="month-tabs-container" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
         <!-- Populated by JS -->
       </div>
 
-      <!-- Desktop / Tablet Workspace Switcher + Trajectory Toggle -->
-      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/10">
+      <!-- Desktop Workspace Switcher + Unified Trajectory Legend & Toggle Bar -->
+      <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
+        <!-- Desktop Tabs -->
         <div class="hidden sm:flex flex-wrap items-center gap-1.5">
           <button onclick="switchWorkspaceTab('all')" id="ws-tab-all" class="liquid-btn px-3 py-1.5 rounded-xl text-xs font-semibold pill-active text-white flex items-center gap-1.5">
             <i class="fa-solid fa-table-columns text-[11px]"></i>
@@ -610,17 +609,32 @@
           </button>
         </div>
 
-        <button onclick="toggleChartCollapse()" class="liquid-btn px-2.5 py-1 rounded-xl text-[11px] font-medium text-slate-300 hover:text-white flex items-center gap-1.5 ml-auto">
+        <!-- Mobile Legend / Horizon Label (Fills the left side cleanly on iPhone) -->
+        <div class="flex sm:hidden items-center gap-2 text-[10px] font-medium text-slate-300 pl-1">
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>Liquid NW</span>
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-indigo-400"></span>CPF</span>
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-400"></span>Debt</span>
+        </div>
+
+        <button onclick="toggleChartCollapse()" class="liquid-btn px-3 py-1.5 rounded-xl text-[11px] font-semibold text-slate-200 hover:text-white flex items-center gap-1.5 ml-auto shrink-0">
           <i class="fa-solid fa-wave-square text-emerald-300 text-[10px]"></i>
           <span id="chart-toggle-label">Trajectory</span>
           <i id="chart-toggle-icon" class="fa-solid fa-chevron-down text-[10px]"></i>
         </button>
       </div>
 
-      <!-- Collapsible 14-Month Wealth Trajectory Chart (Hidden by Default) -->
+      <!-- Collapsible 14-Month Wealth Trajectory Chart (Retina-Fitted & Contained) -->
       <div id="trajectory-panel" class="hidden pt-2 border-t border-white/10">
-        <div class="h-44 sm:h-52 w-full relative">
-          <canvas id="trajectoryChart"></canvas>
+        <div class="hidden sm:flex items-center justify-between text-[11px] text-slate-300 px-1 mb-1.5">
+          <span class="font-semibold text-slate-200">14-Month Wealth & Liability Trajectory (Tap any node to jump)</span>
+          <div class="flex items-center gap-3 text-[10px] mono">
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>Liquid Net Worth</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-indigo-400 inline-block"></span>CPF + CPFIS</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span>Liabilities</span>
+          </div>
+        </div>
+        <div class="h-44 sm:h-52 w-full relative overflow-hidden rounded-2xl liquid-well p-1.5">
+          <canvas id="trajectoryChart" class="w-full h-full block"></canvas>
         </div>
       </div>
     </div>
@@ -1254,10 +1268,20 @@
     <!-- WORKSPACE VIEW 3: 14-MONTH WEALTH & REBATE MATRIX                   -->
     <!-- =================================================================== -->
     <section id="workspace-matrix" class="hidden liquid-glass rounded-3xl p-5 sm:p-6">
-      <div class="flex items-center justify-between mb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div>
           <h2 class="text-lg font-bold text-white">14-Month Horizon Matrix (Nov 2026 – Dec 2027)</h2>
           <p class="text-xs text-slate-300">Click any month row to jump directly to that month's Command Center</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
+          <button onclick="openCopyForwardModal()" class="liquid-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-sky-200 flex items-center gap-1.5" title="Clone active month into next month">
+            <i class="fa-solid fa-clone text-sky-300 text-[11px]"></i>
+            <span>Clone Month Forward</span>
+          </button>
+          <button onclick="exportCurrentMonthCSV()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-400 to-indigo-400 text-slate-950 shadow flex items-center gap-1.5" title="Export active month to CSV">
+            <i class="fa-solid fa-file-csv text-xs"></i>
+            <span>Export Month CSV</span>
+          </button>
         </div>
       </div>
       <div class="overflow-x-auto">
@@ -1281,6 +1305,24 @@
         </table>
       </div>
     </section>
+
+    <!-- Bottom Month Rollover & Export Utilities Bar (Shifted Away from Top Header) -->
+    <footer class="liquid-glass rounded-3xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
+      <div class="flex items-center gap-2 text-slate-300">
+        <i class="fa-solid fa-wand-magic-sparkles text-sky-300"></i>
+        <span>Month-End Rollover & Spreadsheet Export</span>
+      </div>
+      <div class="grid grid-cols-2 sm:flex items-center gap-2">
+        <button onclick="openCopyForwardModal()" class="liquid-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-sky-200 flex items-center justify-center gap-1.5" title="Clone current month into next month">
+          <i class="fa-solid fa-clone text-sky-300 text-[11px]"></i>
+          <span>Clone Month Forward</span>
+        </button>
+        <button onclick="exportCurrentMonthCSV()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-400 to-indigo-400 text-slate-950 shadow flex items-center justify-center gap-1.5" title="Export current month to CSV">
+          <i class="fa-solid fa-file-csv text-xs"></i>
+          <span>Export CSV</span>
+        </button>
+      </div>
+    </footer>
 
   </div>
 
@@ -1392,12 +1434,20 @@
         <div class="liquid-well rounded-2xl p-3.5 border border-white/15 space-y-2">
           <div class="font-bold text-indigo-300 flex items-center gap-1.5">
             <i class="fa-solid fa-file-shield"></i>
-            <span>3. Download Self-Contained App or JSON Backup</span>
+            <span>3. Month Actions, CSV Export & Full JSON Backup</span>
           </div>
           <div class="flex flex-wrap items-center gap-2 pt-0.5">
+            <button onclick="closeIosGuideModal(); openCopyForwardModal();" class="liquid-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-sky-200 flex items-center gap-1.5">
+              <i class="fa-solid fa-clone text-sky-300"></i>
+              <span>Clone Month Forward</span>
+            </button>
+            <button onclick="exportCurrentMonthCSV()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-sky-400 to-indigo-400 text-slate-950 shadow flex items-center gap-1.5">
+              <i class="fa-solid fa-file-csv"></i>
+              <span>Export Month (.CSV)</span>
+            </button>
             <button onclick="downloadStandaloneHtmlWithData()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-400 text-slate-950 shadow flex items-center gap-1.5" title="Downloads a single index.html file with your current 14-month data baked right in!">
               <i class="fa-solid fa-code"></i>
-              <span>Download index.html (With Current Data Baked In)</span>
+              <span>Download index.html (With Data)</span>
             </button>
             <button onclick="downloadFullBackupJSON()" class="liquid-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-emerald-200 flex items-center gap-1.5">
               <i class="fa-solid fa-download text-emerald-400"></i>
@@ -2856,9 +2906,9 @@
         const fBtn = document.getElementById(`finish-btn-${f}`);
         if (!fBtn) return;
         if (f === (state.glassFinish || 'frosted')) {
-          fBtn.className = 'py-1 px-2 rounded-lg text-[10px] font-semibold pill-active transition';
+          fBtn.className = 'py-1.5 px-2 rounded-lg text-[10px] font-semibold pill-active transition';
         } else {
-          fBtn.className = 'py-1 px-2 rounded-lg text-[10px] font-semibold text-slate-300 hover:text-white transition';
+          fBtn.className = 'py-1.5 px-2 rounded-lg text-[10px] font-semibold text-slate-300 hover:text-white transition';
         }
       });
 
@@ -2876,9 +2926,9 @@
         const pBtn = document.getElementById(`prof-btn-${m}`);
         if (!pBtn) return;
         if (m === state.profileMode) {
-          pBtn.className = 'flex-1 sm:flex-initial px-2.5 py-1 rounded-lg text-[11px] font-bold pill-active flex items-center justify-center gap-1 transition';
+          pBtn.className = 'px-3 py-1.5 rounded-xl text-[11px] font-bold pill-active flex items-center justify-center gap-1.5 transition';
         } else {
-          pBtn.className = 'flex-1 sm:flex-initial px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white flex items-center justify-center gap-1 transition';
+          pBtn.className = 'px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition';
         }
       });
 
@@ -2925,9 +2975,9 @@
 
       if (btn) {
         if (state.cleanMode) {
-          btn.className = 'liquid-btn pill-active px-2.5 py-1.5 rounded-xl text-[11px] font-semibold flex items-center gap-1 shrink-0';
+          btn.className = 'col-span-1 h-9 liquid-btn pill-active px-2 sm:px-3 rounded-xl text-[11px] font-semibold flex items-center justify-center gap-1.5';
         } else {
-          btn.className = 'liquid-btn px-2.5 py-1.5 rounded-xl text-[11px] font-semibold text-sky-200 flex items-center gap-1 shrink-0';
+          btn.className = 'col-span-1 h-9 liquid-btn px-2 sm:px-3 rounded-xl text-[11px] font-semibold text-sky-200 flex items-center justify-center gap-1.5';
         }
       }
 
@@ -4476,28 +4526,34 @@
       scheduleChartDraw();
     }
 
-    // Interactive 14-Month Canvas Trajectory Chart
+    // Interactive 14-Month Canvas Trajectory Chart (Fixed Retina DPR Sizing & Mobile Fit)
     function drawTrajectoryChart() {
       const canvas = document.getElementById('trajectoryChart');
       if (!canvas || state.chartCollapsed) return;
-      const rect = canvas.parentElement.getBoundingClientRect();
-      if (rect.width === 0) return;
+      const container = canvas.parentElement;
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      const w = Math.max(0, rect.width - 12);
+      const h = Math.max(0, rect.height - 12);
+      if (w === 0 || h === 0) return;
+
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
 
       const ctx = canvas.getContext('2d');
-      ctx.scale(dpr, dpr);
-
-      const w = rect.width;
-      const h = rect.height;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
+      const isMobile = w < 520;
       const points = MONTH_KEYS.map((m) => {
         const metrics = computeMonthMetrics(m.id);
         return {
           id: m.id,
           label: m.label,
+          shortLabel: m.label.split(' ')[0],
           isRebate: m.isRebateMonth,
           hasBonus: metrics.payCalc.additionalWage > 0,
           liquidNW: metrics.liquidNetWorth,
@@ -4509,21 +4565,21 @@
 
       const allVals = points.flatMap(p => [p.liquidNW, p.cpfWealth, p.liabilities]);
       const minVal = Math.min(0, ...allVals) * 0.9;
-      const maxVal = Math.max(...allVals, 100000) * 1.08;
+      const maxVal = Math.max(...allVals, 10000) * 1.1;
 
-      const padLeft = 58;
-      const padRight = 24;
-      const padTop = 18;
-      const padBottom = 26;
-      const plotW = w - padLeft - padRight;
-      const plotH = h - padTop - padBottom;
+      const padLeft = isMobile ? 42 : 54;
+      const padRight = isMobile ? 12 : 20;
+      const padTop = 14;
+      const padBottom = 22;
+      const plotW = Math.max(10, w - padLeft - padRight);
+      const plotH = Math.max(10, h - padTop - padBottom);
 
       const getX = (i) => padLeft + (i / (points.length - 1)) * plotW;
-      const getY = (v) => padTop + plotH - ((v - minVal) / (maxVal - minVal)) * plotH;
+      const getY = (v) => padTop + plotH - ((v - minVal) / Math.max(1, maxVal - minVal)) * plotH;
 
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
       ctx.lineWidth = 1;
-      [0.2, 0.5, 0.8].forEach((ratio) => {
+      [0.18, 0.5, 0.82].forEach((ratio) => {
         const y = padTop + plotH * ratio;
         ctx.beginPath();
         ctx.moveTo(padLeft, y);
@@ -4531,14 +4587,14 @@
         ctx.stroke();
 
         const valAtY = maxVal - ratio * (maxVal - minVal);
-        ctx.fillStyle = 'rgba(148, 163, 184, 0.7)';
-        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.8)';
+        ctx.font = `${isMobile ? 9 : 10}px "JetBrains Mono", monospace`;
         ctx.textAlign = 'right';
-        ctx.fillText('$' + Math.round(valAtY / 1000) + 'k', padLeft - 8, y + 3);
+        ctx.fillText('$' + Math.round(valAtY / 1000) + 'k', padLeft - 6, y + 3);
       });
 
       const grad = ctx.createLinearGradient(0, padTop, 0, padTop + plotH);
-      grad.addColorStop(0, 'rgba(52, 211, 153, 0.32)');
+      grad.addColorStop(0, 'rgba(52, 211, 153, 0.30)');
       grad.addColorStop(1, 'rgba(52, 211, 153, 0.0)');
 
       ctx.beginPath();
@@ -4554,6 +4610,7 @@
       ctx.fillStyle = grad;
       ctx.fill();
 
+      // Liabilities Line (Rose Dashed)
       ctx.beginPath();
       points.forEach((p, i) => {
         const x = getX(i);
@@ -4562,11 +4619,12 @@
         else ctx.lineTo(x, y);
       });
       ctx.strokeStyle = '#fb7185';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.75;
       ctx.setLineDash([4, 4]);
       ctx.stroke();
       ctx.setLineDash([]);
 
+      // CPF + CPFIS Line (Indigo)
       ctx.beginPath();
       points.forEach((p, i) => {
         const x = getX(i);
@@ -4575,9 +4633,10 @@
         else ctx.lineTo(x, y);
       });
       ctx.strokeStyle = '#818cf8';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.75;
       ctx.stroke();
 
+      // Liquid Net Worth Line (Emerald)
       ctx.beginPath();
       points.forEach((p, i) => {
         const x = getX(i);
@@ -4586,7 +4645,7 @@
         else ctx.lineTo(x, y);
       });
       ctx.strokeStyle = '#34d399';
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2.25;
       ctx.stroke();
 
       points.forEach((p, i) => {
@@ -4599,22 +4658,26 @@
           ctx.moveTo(x, padTop);
           ctx.lineTo(x, padTop + plotH);
           ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 1.25;
           ctx.stroke();
         }
 
         ctx.beginPath();
-        ctx.arc(x, yNW, isCurrent ? 5.5 : 3.5, 0, Math.PI * 2);
+        ctx.arc(x, yNW, isCurrent ? (isMobile ? 4.5 : 5.5) : (isMobile ? 2.8 : 3.5), 0, Math.PI * 2);
         ctx.fillStyle = isCurrent ? '#38bdf8' : p.isRebate ? '#fbbf24' : '#10b981';
         ctx.fill();
         ctx.strokeStyle = '#040711';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.25;
         ctx.stroke();
 
-        ctx.fillStyle = isCurrent ? '#38bdf8' : 'rgba(203, 213, 225, 0.75)';
-        ctx.font = isCurrent ? 'bold 10px "Inter", sans-serif' : '10px "Inter", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(p.label, x, h - 6);
+        if (!isMobile || i % 2 === 0 || isCurrent) {
+          ctx.fillStyle = isCurrent ? '#38bdf8' : 'rgba(203, 213, 225, 0.8)';
+          ctx.font = isCurrent
+            ? `bold ${isMobile ? 9 : 10}px "Inter", sans-serif`
+            : `${isMobile ? 8.5 : 10}px "Inter", sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText(isMobile ? p.shortLabel : p.label, x, h - 5);
+        }
       });
 
       canvas.onclick = (evt) => {
@@ -4630,36 +4693,41 @@
           }
         });
         if (minDist < 36) {
-          selectMonth(points[closestIdx].id);
+          window.selectMonth(points[closestIdx].id);
         }
       };
     }
+
+    // Month Selector & Trajectory Collapse Handlers
+    window.selectMonth = (monthKey) => {
+      if (!MONTH_KEYS.some(m => m.id === monthKey)) return;
+      state.activeMonth = monthKey;
+      state.editingKey = null;
+      renderAll();
+      scheduleSave();
+    };
 
     window.toggleChartCollapse = () => {
       state.chartCollapsed = !state.chartCollapsed;
       const panel = document.getElementById('trajectory-panel');
       const label = document.getElementById('chart-toggle-label');
       const icon = document.getElementById('chart-toggle-icon');
-      if (state.chartCollapsed) {
-        panel.classList.add('hidden');
-        label.textContent = 'Trajectory';
-        icon.className = 'fa-solid fa-chevron-down text-[10px]';
-      } else {
-        panel.classList.remove('hidden');
-        label.textContent = 'Hide Chart';
-        icon.className = 'fa-solid fa-chevron-up text-[10px]';
-        scheduleChartDraw();
+      if (panel) {
+        if (state.chartCollapsed) {
+          panel.classList.add('hidden');
+          if (label) label.textContent = 'Trajectory';
+          if (icon) icon.className = 'fa-solid fa-chevron-down text-[10px]';
+        } else {
+          panel.classList.remove('hidden');
+          if (label) label.textContent = 'Hide Chart';
+          if (icon) icon.className = 'fa-solid fa-chevron-up text-[10px]';
+          scheduleChartDraw();
+        }
       }
-    };
-
-    window.selectMonth = (monthId) => {
-      if (!MONTH_KEYS.some(m => m.id === monthId)) return;
-      state.activeMonth = monthId;
-      state.editingKey = null;
-      renderAll();
       scheduleSave();
     };
 
+    // Update DBS SOM / EOM Balance & Sync Bank Account Row
     window.updateDbsTracker = (field, val, shouldRenderAll = false) => {
       const targetOwner = state.profileMode === 'wife' ? 'wife' : 'self';
       const targetMap = getTargetLedgerMap(targetOwner);
@@ -4668,12 +4736,12 @@
       const numVal = parseFloat(val) || 0;
       mObj.dbsTracker[field] = numVal;
 
-      if (field === 'som') {
-        const somAcc = mObj.bankAccounts.find(c => c.name.toLowerCase().includes('som'));
-        if (somAcc) somAcc.amount = numVal;
-      } else if (field === 'eom') {
-        const eomAcc = mObj.bankAccounts.find(c => c.name.toLowerCase().includes('eom'));
-        if (eomAcc) eomAcc.amount = numVal;
+      if (field === 'eom') {
+        const dbsEomAcc = mObj.bankAccounts.find(c => c.name.toLowerCase().includes('eom'));
+        if (dbsEomAcc) dbsEomAcc.amount = numVal;
+      } else if (field === 'som') {
+        const dbsSomAcc = mObj.bankAccounts.find(c => c.name.toLowerCase().includes('som'));
+        if (dbsSomAcc) dbsSomAcc.amount = numVal;
       }
 
       const currIdx = MONTH_KEYS.findIndex(m => m.id === state.activeMonth);
