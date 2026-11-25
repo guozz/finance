@@ -1991,7 +1991,7 @@
           📷 <span class="lbl-txt">Receipts</span> (<span id="receipt-vault-count">0</span>)
         </button>
         <button type="button" id="cloud-sync-btn" class="btn btn-sm cloud-btn desktop-only" onclick="openCloudModal()">
-          ☁️ <span id="cloud-sync-btn-text">Cloud Sync</span>
+          📦 <span id="cloud-sync-btn-text">Backup / Merge</span>
         </button>
         <button type="button" class="btn btn-sm desktop-only" onclick="openPrintModal()">🖨️ Print</button>
         <button type="button" id="theme-btn" class="btn btn-icon btn-sm desktop-only" onclick="toggleTheme()" title="Toggle Light / Dark Theme"></button>
@@ -2086,7 +2086,7 @@
       </div>
       <div class="sheet-grid">
         <button type="button" class="sheet-action good" onclick="closeQuickMenu(); manualSaveNow();">💾 Save Now</button>
-        <button type="button" class="sheet-action" onclick="closeQuickMenu(); openCloudModal();">☁️ Cloud Sync</button>
+        <button type="button" class="sheet-action" onclick="closeQuickMenu(); openCloudModal();">📦 Backup / Merge</button>
         <button type="button" class="sheet-action" onclick="closeQuickMenu(); createNewBlankTrip();">＋ New Blank Trip</button>
         <button type="button" class="sheet-action" onclick="closeQuickMenu(); duplicateCurrentTrip();">📑 Save As Copy</button>
         <button type="button" class="sheet-action" onclick="closeQuickMenu(); printAllMealDaysPDF();">🍽️ All Meal Days PDF</button>
@@ -2110,135 +2110,48 @@
     </div>
   </div>
 
-  <!-- CLOUD FOLDER & MULTI-DEVICE SYNC MODAL -->
+  <!-- BACKUP, SMART-MERGE & LOCAL FOLDER SYNC MODAL -->
   <div id="cloud-modal-backdrop" class="modal-backdrop no-print" onclick="if(event.target===this) closeCloudModal()">
     <div class="cloud-modal-box">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
         <div>
-          <strong style="font-size:15px;">☁️ Automatic Cloud &amp; Multi-Device Sync</strong>
-          <div style="font-size:11.5px;color:var(--text-subtle);">Direct OneDrive API auto-sync (iPhone &amp; Laptop), Private GitHub Gist, or local backups</div>
+          <strong style="font-size:15px;">📦 Backup &amp; Smart-Merge (iPhone ↔ Desktop)</strong>
+          <div style="font-size:11.5px;color:var(--text-subtle);">Merge JSON backups with embedded receipt photos — 100% offline, zero cloud errors</div>
         </div>
         <button type="button" class="btn btn-icon-sm btn-ghost" onclick="closeCloudModal()">✕</button>
       </div>
 
-      <div class="cloud-section" style="border-color:var(--sky-border);background:color-mix(in srgb, var(--sky-soft) 38%, var(--surface-2));">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-          <strong style="font-size:13px;">1. ☁️ OneDrive Direct Auto-Sync (iPhone &amp; Laptop — Microsoft Graph API)</strong>
-          <span id="od-mode-pill" class="pill pill-neutral">Not Connected</span>
-        </div>
-        <div id="od-status-box" class="cloud-status-box"></div>
-        <div id="od-connected-actions" style="display:none;flex-wrap:wrap;gap:7px;"></div>
-        <div id="od-setup-panel" style="display:flex;flex-direction:column;gap:8px;">
-          <div class="gist-setup-steps">
-            <strong>One-time Microsoft App Registration (Free, Private, Zero Backend):</strong><br/>
-            1. Open <strong>portal.azure.com</strong> → <em>App registrations</em> → <strong>New registration</strong> (Name: <code>ClaimFlow</code>, Accounts: <em>Personal Microsoft accounts</em> or <em>Any + Personal</em>).<br/>
-            2. Under <strong>Redirect URI</strong>, choose <strong>Single-page application (SPA)</strong> and paste this exact URL:<br/>
-            <div style="display:flex;align-items:center;gap:6px;margin:4px 0;">
-              <input id="od-redirect-uri-display" class="input mono" type="text" readonly style="font-size:11px;padding:4px 7px;min-height:28px;" />
-              <button type="button" class="btn btn-sm btn-soft" onclick="copyOneDriveRedirectUri()">Copy URI</button>
-            </div>
-            <div id="od-https-warning" style="display:none;margin:4px 0;padding:6px 8px;border-radius:7px;background:var(--amber-soft);border:1px solid var(--amber-border);color:var(--amber-text);font-size:11px;"></div>
-            3. Copy the <strong>Application (client) ID</strong> below and tap <strong>Sign in with Microsoft</strong>. Files auto-save to <code>OneDrive / &lt;Folder&gt; / claimflow-db.json</code>.
-          </div>
-          <div class="grid-3">
-            <div style="grid-column:span 2;">
-              <label class="field-label">Azure Application (Client) ID</label>
-              <input id="od-client-id-input" class="input mono" type="text" autocomplete="off" placeholder="e.g. 12345678-abcd-4ef0-9123-456789abcdef" />
-            </div>
-            <div>
-              <label class="field-label">Account Type</label>
-              <select id="od-tenant-select" class="select">
-                <option value="consumers">Personal (Outlook/Hotmail)</option>
-                <option value="common">Personal + Work/School</option>
-                <option value="organizations">Work / School Only</option>
-              </select>
-            </div>
-          </div>
-          <div class="grid-2">
-            <div>
-              <label class="field-label">OneDrive Folder Path</label>
-              <input id="od-folder-input" class="input mono" type="text" value="ClaimFlow" placeholder="ClaimFlow (or approot)" />
-            </div>
-            <div style="display:flex;align-items:flex-end;">
-              <button type="button" class="btn btn-primary" style="width:100%;" onclick="startOneDriveLogin()">☁️ Sign in with Microsoft OneDrive</button>
-            </div>
-          </div>
-          <div style="display:flex;gap:7px;padding-top:6px;border-top:1px solid var(--border);">
-            <input id="od-pair-code-input" class="input mono" type="text" autocomplete="off" placeholder="Or paste CLAIMFLOW_OD1:... setup code from your other device" />
-            <button type="button" class="btn btn-sky-soft" onclick="applyOneDriveSetupCode()">📲 Apply Code</button>
-          </div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:12px;">
-          <label class="check-opt"><input id="chk-od-autopush" type="checkbox" checked onchange="setOneDrivePref('autoPush',this.checked)" /><span>Auto-push edits (2.5s debounce)</span></label>
-          <label class="check-opt"><input id="chk-od-autopull" type="checkbox" checked onchange="setOneDrivePref('autoPull',this.checked)" /><span>Auto-pull on open / return</span></label>
-          <label class="check-opt"><input id="chk-od-receipts" type="checkbox" checked onchange="setOneDrivePref('syncReceipts',this.checked)" /><span>Sync receipt photos (differential + chunked)</span></label>
-        </div>
-      </div>
-
       <div class="cloud-section" style="border-color:var(--accent-border);background:color-mix(in srgb, var(--accent-soft) 28%, var(--surface-2));">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-          <strong style="font-size:13px;">2. ⚡ Zero-File-Picker Auto-Sync (Alternative — Private GitHub Gist)</strong>
-          <span id="gist-mode-pill" class="pill pill-neutral">Not Connected</span>
+          <strong style="font-size:13px;">1. 📲 iPhone ↔ Desktop JSON Backup &amp; Smart-Merge</strong>
+          <span id="merge-status-pill" class="pill pill-green">Smart-Merge Ready</span>
         </div>
-        <div id="gist-status-box" class="cloud-status-box"></div>
-        <div id="gist-connected-actions" style="display:none;flex-wrap:wrap;gap:7px;"></div>
-        <div id="gist-setup-panel" style="display:flex;flex-direction:column;gap:8px;">
-          <div class="gist-setup-steps">
-            <strong>One-time 30-second setup (100% free &amp; private):</strong><br/>
-            1. Open <strong>github.com/settings/tokens</strong> → <em>Generate new token (classic)</em> → tick <strong>only <code>gist</code></strong> → copy token.<br/>
-            2. Paste token below &amp; tap <strong>Connect &amp; Auto-Create Private Gist</strong> (leave Gist ID blank).<br/>
-            3. On your iPhone, tap <strong>Copy 1-Tap Device Pair Code</strong> on laptop and paste it below!
-          </div>
-          <div class="grid-2">
-            <div>
-              <label class="field-label">GitHub Token (gist scope)</label>
-              <input id="gist-token-input" class="input mono" type="password" autocomplete="off" placeholder="ghp_... or github_pat_..." />
-            </div>
-            <div>
-              <label class="field-label">Private Gist ID (optional)</label>
-              <input id="gist-id-input" class="input mono" type="text" autocomplete="off" placeholder="Leave blank to auto-create" />
-            </div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:7px;">
-            <button type="button" class="btn btn-primary" onclick="connectGitHubGist()">⚡ Connect &amp; Auto-Sync</button>
-          </div>
-          <div style="display:flex;gap:7px;padding-top:6px;border-top:1px solid var(--border);">
-            <input id="gist-pair-code-input" class="input mono" type="text" autocomplete="off" placeholder="Or paste CLAIMFLOW_GIST1:... device pairing code here" />
-            <button type="button" class="btn btn-green-soft" onclick="pairGistFromCode()">📲 Pair Device</button>
-          </div>
+        <div id="last-merge-status-box" class="cloud-status-box"></div>
+        <div style="font-size:11.5px;color:var(--text-subtle);">Export <code>claimflow-db.json</code> from your iPhone (via AirDrop / iCloud / OneDrive Files) and tap <strong>Open &amp; Smart-Merge File</strong> on Desktop — new phone meals, transport rides &amp; receipts merge directly into matching trips without duplicates.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;">
+          <button type="button" class="btn btn-primary" onclick="exportFullWorkspaceJSON()">📲 Save / Share All Trips (claimflow-db.json)</button>
+          <button type="button" class="btn btn-green-soft" onclick="document.getElementById('import-workspace-input').click()">📥 Open &amp; Smart-Merge File</button>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:12px;">
-          <label class="check-opt"><input id="chk-gist-autopush" type="checkbox" checked onchange="setGistPref('autoPush',this.checked)" /><span>Auto-push edits (2.5s debounce)</span></label>
-          <label class="check-opt"><input id="chk-gist-autopull" type="checkbox" checked onchange="setGistPref('autoPull',this.checked)" /><span>Auto-pull on open / return (zero polling)</span></label>
-          <label class="check-opt"><input id="chk-gist-receipts" type="checkbox" checked onchange="setGistPref('syncReceipts',this.checked)" /><span>Sync receipt photos (differential)</span></label>
-        </div>
-      </div>
-
-      <div class="cloud-section">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-          <strong style="font-size:13px;">3. Direct Local Cloud Folder Sync (Desktop Chrome / Edge)</strong>
-          <span id="cloud-mode-pill" class="pill pill-neutral">Not Linked</span>
-        </div>
-        <div id="cloud-fs-status" class="cloud-status-box"></div>
-        <div id="cloud-fs-actions" style="display:flex;flex-wrap:wrap;gap:7px;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:12px;">
-          <label class="check-opt"><input id="chk-cloud-autowrite" type="checkbox" checked onchange="setCloudPref('autoWrite',this.checked)" /><span>Auto-write edits to cloud file</span></label>
-          <label class="check-opt"><input id="chk-cloud-autopull" type="checkbox" checked onchange="setCloudPref('autoPull',this.checked)" /><span>Auto-pull newer edits on tab focus</span></label>
           <label class="check-opt"><input id="chk-cloud-embed-receipts" type="checkbox" checked onchange="setCloudPref('embedReceipts',this.checked)" /><span>Embed receipt photos inside JSON backups</span></label>
         </div>
       </div>
 
       <div class="cloud-section">
-        <strong style="font-size:13px;">4. Manual Backup File (iCloud / OneDrive / Google Drive)</strong>
-        <div style="font-size:11.5px;color:var(--text-subtle);">Save all trips (with embedded receipt photos when enabled) to a single <code>claimflow-db.json</code> via iOS Share Sheet or download, and Smart-Merge newer edits on any device.</div>
-        <div style="display:flex;flex-wrap:wrap;gap:7px;">
-          <button type="button" class="btn btn-soft" onclick="exportFullWorkspaceJSON()">📲 Save / Share All Trips (claimflow-db.json)</button>
-          <button type="button" class="btn" onclick="document.getElementById('import-workspace-input').click()">📥 Open &amp; Smart-Merge File</button>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+          <strong style="font-size:13px;">2. 📂 Direct Local Folder Sync (Desktop Chrome / Edge)</strong>
+          <span id="cloud-mode-pill" class="pill pill-neutral">Not Linked</span>
+        </div>
+        <div id="cloud-fs-status" class="cloud-status-box"></div>
+        <div id="cloud-fs-actions" style="display:flex;flex-wrap:wrap;gap:7px;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <label class="check-opt"><input id="chk-cloud-autowrite" type="checkbox" checked onchange="setCloudPref('autoWrite',this.checked)" /><span>Auto-write edits to local JSON file</span></label>
+          <label class="check-opt"><input id="chk-cloud-autopull" type="checkbox" checked onchange="setCloudPref('autoPull',this.checked)" /><span>Auto-merge newer file changes on tab focus</span></label>
         </div>
       </div>
 
       <div class="cloud-section">
-        <strong style="font-size:13px;">5. One-Time Cross-Device Sync Code (No Account Needed)</strong>
+        <strong style="font-size:13px;">3. 🔗 Quick Text Sync Code (Numbers Only · No File Needed)</strong>
         <div style="display:flex;flex-wrap:wrap;gap:7px;">
           <button type="button" class="btn btn-sm btn-soft" onclick="copySyncCode(false)">Copy Current Trip Code</button>
           <button type="button" class="btn btn-sm" onclick="copySyncCode(true)">Copy All Trips Code</button>
@@ -2247,6 +2160,12 @@
           <input id="sync-code-input" class="input mono" type="text" placeholder="Paste CLAIMFLOW1:... code here" />
           <button type="button" class="btn btn-green-soft" onclick="importFromSyncCode()">Merge Code</button>
         </div>
+      </div>
+
+      <!-- Cloud API panels hidden while CLOUD_APIS_ENABLED = false -->
+      <div id="hidden-cloud-api-panels" style="display:none;" aria-hidden="true">
+        <span id="od-mode-pill"></span><div id="od-status-box"></div><div id="od-connected-actions"></div><div id="od-setup-panel"></div>
+        <span id="gist-mode-pill"></span><div id="gist-status-box"></div><div id="gist-connected-actions"></div><div id="gist-setup-panel"></div>
       </div>
     </div>
   </div>
@@ -2268,8 +2187,8 @@
           <button type="button" class="btn btn-sm btn-soft" onclick="triggerVaultUpload('receipt', false)">🖼️ +Photos / PDF</button>
           <button type="button" id="vault-bank-upload-btn" class="btn btn-sm btn-sky-soft" onclick="triggerVaultUpload('bank', false)">💳 +Bank / PDF</button>
           <button type="button" class="btn btn-sm btn-green-soft" onclick="pasteReceiptInVault()" title="Paste copied bank screenshot or receipt straight from clipboard">📋 Paste</button>
-          <button type="button" id="vault-bw-toggle-btn" class="btn btn-sm btn-green-soft" onclick="toggleReceiptBWMode()" title="Crisp Black &amp; White document scan mode (auto-compressed under 300 KB)">🖤 B&amp;W (&lt;300 KB): ON</button>
-          <button type="button" id="vault-optimize-btn" class="btn btn-sm btn-soft" onclick="optimizeExistingReceipts()" title="Compress existing receipts larger than 300 KB to save storage and speed up cloud sync">🗜️ Optimize (&lt;300 KB)</button>
+          <button type="button" id="vault-bw-toggle-btn" class="btn btn-sm" onclick="toggleReceiptBWMode()" title="Default Full Color (<300 KB). Tap to toggle optional crisp B&amp;W Scan mode">🎨 Full Color (&lt;300 KB)</button>
+          <button type="button" id="vault-optimize-btn" class="btn btn-sm btn-soft" onclick="optimizeExistingReceipts()" title="Compress existing receipts larger than 300 KB to save storage and speed up JSON backups">🗜️ Optimize (&lt;300 KB)</button>
           <button type="button" id="vault-slidebg-btn" class="btn btn-sm" onclick="cyclePrintSlideBg()" title="Cycle PDF &amp; Share Sheet background: Light Paper / Dark Box / Dark Slides">☀️ Light Paper</button>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -2561,9 +2480,11 @@
     const LEGACY_KEY = 'claimflow_v2_trips_store';
     const THEME_KEY = 'claimflow_v3_theme';
     const LAYOUT_PREF_KEY = 'claimflow_v3_layout_mode';
-    const BW_MODE_KEY = 'claimflow_v3_bw_mode';
+    const BW_MODE_KEY = 'claimflow_v5_bw_mode';
     const PRINT_PREFS_KEY = 'claimflow_v4_print_prefs';
     const CUSTOM_PRESETS_KEY = 'claimflow_v4_custom_presets';
+    const LAST_MERGE_KEY = 'claimflow_v5_last_merge';
+    const CLOUD_APIS_ENABLED = false;
     const FIXED_OVERNIGHT_RATE = 50;
 
     const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -3695,12 +3616,19 @@
       }, 1200);
     }
 
+    /** Saves UI-only state (collapse/expand tabs, filters) without bumping trip.updatedAt so Desktop clicks never outdate phone captures */
+    function persistUiOnly() {
+      try {
+        localStorage.setItem(STORE_KEY, JSON.stringify(store));
+      } catch (e) {}
+    }
+
     function manualSaveNow() {
       persistStore(true, true);
-      if (oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken)) {
+      if (CLOUD_APIS_ENABLED && oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken)) {
         syncOneDriveTwoWay(false, true);
         showToast('Saved locally & auto-syncing to OneDrive…', 'green');
-      } else if (gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId) {
+      } else if (CLOUD_APIS_ENABLED && gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId) {
         syncGistTwoWay(false, true);
         showToast('Saved locally & auto-syncing to Private Gist…', 'green');
       } else if (cloudSync.handle && !cloudSync.needsReconnect) {
@@ -3970,7 +3898,7 @@
 
     function toggleCollapse(key) {
       state.ui.collapsed[key] = !state.ui.collapsed[key];
-      persistStore(true);
+      persistUiOnly();
       renderWorkspace();
     }
 
@@ -3978,7 +3906,7 @@
       WORKSPACE_SECTION_KEYS.forEach(function (k) {
         state.ui.collapsed[k] = !!collapsed;
       });
-      persistStore(true);
+      persistUiOnly();
       renderWorkspace();
       showToast(collapsed ? 'Closed all sections (marked Done).' : 'Expanded all sections.', 'indigo');
     }
@@ -3987,7 +3915,7 @@
       SETUP_SECTION_KEYS.forEach(function (k) {
         state.ui.collapsed[k] = !!collapsed;
       });
-      persistStore(true);
+      persistUiOnly();
       renderWorkspace();
       showToast(collapsed ? 'Closed all Setup sections.' : 'Expanded all Setup sections.', 'indigo');
     }
@@ -5193,7 +5121,7 @@
           setMobileView('today');
         } else if (state.ui.collapsed.meals) {
           state.ui.collapsed.meals = false;
-          persistStore(false);
+          persistUiOnly();
           renderWorkspace();
         }
         setTimeout(function () {
@@ -5213,14 +5141,14 @@
           } else {
             const collapseKey = target.scope === 'overnight' ? 'flights' : target.scope;
             state.ui.collapsed[collapseKey] = false;
-            persistStore(false);
+            persistUiOnly();
             setMobileView('setup');
           }
         } else {
           const collapseKey = target.scope === 'overnight' ? 'flights' : target.scope;
           if (state.ui.collapsed[collapseKey]) {
             state.ui.collapsed[collapseKey] = false;
-            persistStore(false);
+            persistUiOnly();
             renderWorkspace();
           }
         }
@@ -6677,7 +6605,7 @@
 
     function setFilterTab(tab) {
       state.console.filterTab = tab;
-      persistStore(false);
+      persistUiOnly();
       renderConsole();
     }
 
@@ -7435,7 +7363,7 @@
         try {
           const parsed = JSON.parse(String(reader.result || '{}'));
           if (parsed && Array.isArray(parsed.trips)) {
-            await mergeWorkspacePayload(parsed, false);
+            await mergeWorkspacePayload(parsed, false, file.name);
             return;
           }
           if (!parsed || !parsed.trip) throw new Error('Unrecognized ClaimFlow JSON format');
@@ -7444,19 +7372,27 @@
           delete parsed._receipts;
           delete parsed._customPresets;
           const imported = normalizeTrip(parsed);
-          const idx = store.trips.findIndex(function (t) { return t.id === imported.id; });
+          const idx = findMatchingLocalTripIndex(imported);
+          let targetTripId = imported.id;
           let dayIdRemap = {};
+          let addedLines = 0;
+          let addedDays = 0;
+          let updatedLines = 0;
           if (idx >= 0) {
+            targetTripId = store.trips[idx].id;
             const mergedRes = smartMergeTrips(store.trips[idx], imported);
             store.trips[idx] = mergedRes.trip;
             dayIdRemap = mergedRes.dayIdRemap || {};
+            addedLines = mergedRes.addedLines || 0;
+            addedDays = mergedRes.addedDays || 0;
+            updatedLines = mergedRes.updatedLines || 0;
           } else {
             store.trips.unshift(imported);
           }
-          store.activeTripId = imported.id;
+          store.activeTripId = targetTripId;
           state = getActiveTrip();
           persistStore(true, true);
-          let restoredCount = 0;
+          let recStats = { added: 0, updated: 0, skipped: 0 };
           if (embeddedReceipts.length > 0) {
             const deletedSet = {};
             getDeletedReceiptIds().forEach(function (id) { deletedSet[id] = true; });
@@ -7464,16 +7400,26 @@
               .filter(function (r) { return r && r.id && !deletedSet[r.id]; })
               .map(function (r) {
                 const remappedDay = (r.dayId && dayIdRemap[r.dayId]) ? dayIdRemap[r.dayId] : (r.dayId || '');
-                return Object.assign({}, r, { tripId: r.tripId || imported.id, dayId: remappedDay });
+                return Object.assign({}, r, { tripId: targetTripId, dayId: remappedDay });
               });
-            restoredCount = await restoreEmbeddedReceipts(mapped);
+            recStats = await restoreEmbeddedReceiptsDetailed(mapped);
           }
           if (Object.keys(dayIdRemap).length > 0) {
-            await remapStoredReceiptsDayIds(imported.id, dayIdRemap);
+            await remapStoredReceiptsDayIds(targetTripId, dayIdRemap);
           }
+          const summaryTxt = buildMergeSummaryText({
+            addedTrips: idx < 0 ? 1 : 0,
+            updatedTrips: idx >= 0 ? 1 : 0,
+            addedLines: addedLines,
+            updatedLines: updatedLines,
+            addedDays: addedDays,
+            addedReceipts: recStats.added,
+            updatedReceipts: recStats.updated
+          });
+          recordLastMergeSummary(summaryTxt, file.name || 'trip.json');
           renderAll();
           await loadTripReceipts();
-          showToast((idx >= 0 ? 'Smart-Merged "' : 'Imported "') + formatTripOptionLabel(state) + '"' + (restoredCount > 0 ? (' + ' + restoredCount + ' receipt photo' + (restoredCount === 1 ? '' : 's')) : '') + ' ✓', 'green');
+          showToast((idx >= 0 ? 'Smart-Merged "' : 'Imported "') + formatTripOptionLabel(state) + '" · ' + summaryTxt, 'green');
         } catch (err) {
           showToast('Import failed: ' + err.message, 'red');
         }
@@ -7597,6 +7543,8 @@
       const lMap = {};
       const rMap = {};
       const order = [];
+      let addedCount = 0;
+      let updatedCount = 0;
 
       lList.forEach(function (it) {
         if (!it || !it.id || deletedSet[it.id]) return;
@@ -7617,32 +7565,115 @@
           merged.push(li);
         } else if (!li && ri) {
           merged.push(ri);
+          if (kind !== 'receipt' || !isBlankReceiptRow(ri)) addedCount++;
         } else if (li && ri) {
+          let chosen = null;
           if (kind === 'receipt') {
             const lBlank = isBlankReceiptRow(li);
             const rBlank = isBlankReceiptRow(ri);
-            if (lBlank && !rBlank) { merged.push(ri); return; }
-            if (!lBlank && rBlank) { merged.push(li); return; }
+            if (lBlank && !rBlank) chosen = ri;
+            else if (!lBlank && rBlank) chosen = li;
           } else if (kind === 'fx') {
             const lHas = String(li.sgdAmount || '').trim() !== '';
             const rHas = String(ri.sgdAmount || '').trim() !== '';
-            if (!lHas && rHas) { merged.push(ri); return; }
-            if (lHas && !rHas) { merged.push(li); return; }
+            if (!lHas && rHas) chosen = ri;
+            else if (lHas && !rHas) chosen = li;
           }
-          const lt = Number(li.updatedAt) || 0;
-          const rt = Number(ri.updatedAt) || 0;
-          if (rt > lt) merged.push(ri);
-          else if (lt > rt) merged.push(li);
-          else merged.push(localNewer ? li : ri);
+          if (!chosen) {
+            const lt = Number(li.updatedAt) || 0;
+            const rt = Number(ri.updatedAt) || 0;
+            if (rt > lt) chosen = ri;
+            else if (lt > rt) chosen = li;
+            else chosen = localNewer ? li : ri;
+          }
+          if (chosen === ri && JSON.stringify(li) !== JSON.stringify(ri)) updatedCount++;
+          merged.push(chosen);
         }
       });
 
       // Drop untouched blank placeholder rows if real captured rows are present
       if (kind === 'receipt' && merged.length > 1) {
         const nonBlank = merged.filter(function (it) { return !isBlankReceiptRow(it); });
-        if (nonBlank.length > 0) return nonBlank;
+        if (nonBlank.length > 0) {
+          nonBlank._mergeMeta = { added: addedCount, updated: updatedCount };
+          return nonBlank;
+        }
       }
+      merged._mergeMeta = { added: addedCount, updated: updatedCount };
       return merged;
+    }
+
+    function normalizeMatchToken(str) {
+      return String(str || '').trim().toUpperCase().replace(/[\s–—↔-]+/g, '-');
+    }
+
+    /**
+     * Smart Trip Matcher:
+     * 1. Exact Trip ID match
+     * 2. Fallback: Matching Ref # + Route
+     * 3. Fallback: Matching Route + Start/End Dates
+     * Ensures phone captures unify cleanly into the matching Desktop trip instead of creating duplicates.
+     */
+    function findMatchingLocalTripIndex(inc) {
+      if (!inc) return -1;
+      const byId = store.trips.findIndex(function (t) { return t.id === inc.id; });
+      if (byId >= 0) return byId;
+
+      const incRef = normalizeMatchToken(inc.trip && inc.trip.ref);
+      const incRoute = normalizeMatchToken(inc.trip && inc.trip.route);
+      const incStart = String((inc.trip && inc.trip.startDate) || '').trim();
+      const incEnd = String((inc.trip && inc.trip.endDate) || '').trim();
+
+      if (incRef && incRoute) {
+        const byRefRoute = store.trips.findIndex(function (t) {
+          return normalizeMatchToken(t.trip && t.trip.ref) === incRef
+            && normalizeMatchToken(t.trip && t.trip.route) === incRoute;
+        });
+        if (byRefRoute >= 0) return byRefRoute;
+      }
+
+      if (incRoute && incStart && incEnd) {
+        const byRouteDates = store.trips.findIndex(function (t) {
+          return normalizeMatchToken(t.trip && t.trip.route) === incRoute
+            && String((t.trip && t.trip.startDate) || '').trim() === incStart
+            && String((t.trip && t.trip.endDate) || '').trim() === incEnd;
+        });
+        if (byRouteDates >= 0) return byRouteDates;
+      }
+      return -1;
+    }
+
+    function buildMergeSummaryText(stats) {
+      const s = stats || {};
+      const parts = [];
+      if (s.addedTrips > 0) parts.push('+' + s.addedTrips + ' trip' + (s.addedTrips === 1 ? '' : 's'));
+      if (s.addedDays > 0) parts.push('+' + s.addedDays + ' day' + (s.addedDays === 1 ? '' : 's'));
+      if (s.addedLines > 0) parts.push('+' + s.addedLines + ' line' + (s.addedLines === 1 ? '' : 's'));
+      if (s.updatedLines > 0) parts.push(s.updatedLines + ' updated');
+      const recChg = (s.addedReceipts || 0) + (s.updatedReceipts || 0);
+      if (recChg > 0) parts.push('+' + recChg + ' receipt' + (recChg === 1 ? '' : 's'));
+      if (parts.length === 0) {
+        if (s.updatedTrips > 0) return 'Synced trip metadata ✓';
+        return 'Already up to date ✓';
+      }
+      return parts.join(', ') + ' ✓';
+    }
+
+    function loadLastMergeSummary() {
+      try {
+        const raw = localStorage.getItem(LAST_MERGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) { return null; }
+    }
+
+    function recordLastMergeSummary(summaryText, sourceName) {
+      try {
+        localStorage.setItem(LAST_MERGE_KEY, JSON.stringify({
+          summary: summaryText || 'Merged ✓',
+          source: sourceName || 'claimflow-db.json',
+          at: Date.now()
+        }));
+      } catch (e) {}
     }
 
     function smartMergeTrips(localRaw, remoteRaw) {
@@ -7663,8 +7694,10 @@
       });
       if (deletedIds.length > 400) deletedIds.splice(0, deletedIds.length - 400);
 
-      // Start from the newer trip's metadata while preserving non-empty fields
+      // Keep canonical local ID and UI collapse state; start from newer trip's content metadata while preserving non-empty fields
       const base = localNewer ? JSON.parse(JSON.stringify(local)) : JSON.parse(JSON.stringify(remote));
+      base.id = local.id;
+      base.ui = local.ui;
       const other = localNewer ? remote : local;
       ['ref', 'route', 'startDate', 'endDate', 'foreignCurrency'].forEach(function (f) {
         if (!String(base.trip[f] || '').trim() && String(other.trip[f] || '').trim()) {
@@ -7672,17 +7705,29 @@
         }
       });
 
+      let addedLines = 0;
+      let updatedLines = 0;
+      let addedDays = 0;
+      const tally = function (arr) {
+        if (arr && arr._mergeMeta) {
+          addedLines += arr._mergeMeta.added || 0;
+          updatedLines += arr._mergeMeta.updated || 0;
+          delete arr._mergeMeta;
+        }
+        return arr;
+      };
+
       // Union-merge all item categories & anchors
-      base.fxAnchors = mergeItemArraysById(local.fxAnchors, remote.fxAnchors, deletedSet, localNewer, 'fx');
+      base.fxAnchors = tally(mergeItemArraysById(local.fxAnchors, remote.fxAnchors, deletedSet, localNewer, 'fx'));
       if (base.fxAnchors.length === 0) base.fxAnchors = local.fxAnchors.length ? local.fxAnchors : remote.fxAnchors;
-      base.airFare.items = mergeItemArraysById(local.airFare && local.airFare.items, remote.airFare && remote.airFare.items, deletedSet, localNewer, 'receipt');
-      base.hotel.items = mergeItemArraysById(local.hotel && local.hotel.items, remote.hotel && remote.hotel.items, deletedSet, localNewer, 'receipt');
-      base.sgTransport.items = mergeItemArraysById(local.sgTransport && local.sgTransport.items, remote.sgTransport && remote.sgTransport.items, deletedSet, localNewer, 'receipt');
-      base.overseasTransport.items = mergeItemArraysById(local.overseasTransport && local.overseasTransport.items, remote.overseasTransport && remote.overseasTransport.items, deletedSet, localNewer, 'receipt');
-      base.data.items = mergeItemArraysById(local.data && local.data.items, remote.data && remote.data.items, deletedSet, localNewer, 'receipt');
-      base.otherMisc.items = mergeItemArraysById(local.otherMisc && local.otherMisc.items, remote.otherMisc && remote.otherMisc.items, deletedSet, localNewer, 'receipt');
-      base.flights.legs = mergeItemArraysById(local.flights && local.flights.legs, remote.flights && remote.flights.legs, deletedSet, localNewer, 'flight');
-      base.timeOff.entries = mergeItemArraysById(local.timeOff && local.timeOff.entries, remote.timeOff && remote.timeOff.entries, deletedSet, localNewer, 'toil');
+      base.airFare.items = tally(mergeItemArraysById(local.airFare && local.airFare.items, remote.airFare && remote.airFare.items, deletedSet, localNewer, 'receipt'));
+      base.hotel.items = tally(mergeItemArraysById(local.hotel && local.hotel.items, remote.hotel && remote.hotel.items, deletedSet, localNewer, 'receipt'));
+      base.sgTransport.items = tally(mergeItemArraysById(local.sgTransport && local.sgTransport.items, remote.sgTransport && remote.sgTransport.items, deletedSet, localNewer, 'receipt'));
+      base.overseasTransport.items = tally(mergeItemArraysById(local.overseasTransport && local.overseasTransport.items, remote.overseasTransport && remote.overseasTransport.items, deletedSet, localNewer, 'receipt'));
+      base.data.items = tally(mergeItemArraysById(local.data && local.data.items, remote.data && remote.data.items, deletedSet, localNewer, 'receipt'));
+      base.otherMisc.items = tally(mergeItemArraysById(local.otherMisc && local.otherMisc.items, remote.otherMisc && remote.otherMisc.items, deletedSet, localNewer, 'receipt'));
+      base.flights.legs = tally(mergeItemArraysById(local.flights && local.flights.legs, remote.flights && remote.flights.legs, deletedSet, localNewer, 'flight'));
+      base.timeOff.entries = tally(mergeItemArraysById(local.timeOff && local.timeOff.entries, remote.timeOff && remote.timeOff.entries, deletedSet, localNewer, 'toil'));
 
       // Union-merge Daily Meals: unify by ID OR calendar date, remapping retired dayIds for receipts
       const dayIdRemap = {};
@@ -7695,14 +7740,19 @@
         const dateKey = String(d.date || '').trim();
         let target = dayById[d.id] || (dateKey ? dayByDate[dateKey] : null);
         if (!target) {
+          const cleanItems = (d.items || []).filter(function (it) { return it && it.id && !deletedSet[it.id]; });
           const cloned = {
             id: d.id,
             date: dateKey,
-            items: (d.items || []).filter(function (it) { return it && it.id && !deletedSet[it.id]; })
+            items: cleanItems
           };
           mergedDays.push(cloned);
           dayById[cloned.id] = cloned;
           if (dateKey) dayByDate[dateKey] = cloned;
+          if (!isFromLocal) {
+            addedDays++;
+            addedLines += cleanItems.filter(function (it) { return !isBlankReceiptRow(it); }).length;
+          }
         } else {
           if (d.id !== target.id) {
             dayIdRemap[d.id] = target.id;
@@ -7710,7 +7760,7 @@
           }
           const lItems = isFromLocal ? d.items : target.items;
           const rItems = isFromLocal ? target.items : d.items;
-          target.items = mergeItemArraysById(lItems, rItems, deletedSet, localNewer, 'receipt');
+          target.items = tally(mergeItemArraysById(lItems, rItems, deletedSet, localNewer, 'receipt'));
         }
       };
 
@@ -7742,7 +7792,10 @@
         trip: normalizeTrip(base),
         changedLocal: changedLocal,
         changedRemote: changedRemote,
-        dayIdRemap: dayIdRemap
+        dayIdRemap: dayIdRemap,
+        addedLines: addedLines,
+        updatedLines: updatedLines,
+        addedDays: addedDays
       };
     }
 
@@ -7928,33 +7981,9 @@
     }
 
     function renderMobileGistSyncChipHtml() {
-      if (oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken)) {
-        if (oneDriveSync.busy) {
-          return '<button type="button" class="aware-sync-chip syncing" onclick="openCloudModal()">↻ OneDrive…</button>';
-        }
-        if (oneDriveSync.lastError) {
-          return '<button type="button" class="aware-sync-chip error" onclick="syncOneDriveTwoWay(false,false)" title="' + esc(oneDriveSync.lastError) + '">⚠️ Retry OneDrive</button>';
-        }
-        if (oneDriveSync.pendingPush) {
-          return '<button type="button" class="aware-sync-chip pending" onclick="syncOneDriveTwoWay(false,true)">☁️ Queued</button>';
-        }
-        const tOd = oneDriveSync.cfg.lastSyncedAt ? (' · ' + fmtTimeHHMM(oneDriveSync.cfg.lastSyncedAt)) : '';
-        return '<button type="button" class="aware-sync-chip synced" onclick="syncOneDriveTwoWay(false,false)" title="Tap to sync with OneDrive now">☁️ OneDrive' + esc(tOd) + '</button>';
-      }
-      if (gistSync.cfg.enabled && gistSync.cfg.gistId) {
-        if (gistSync.busy) {
-          return '<button type="button" class="aware-sync-chip syncing" onclick="openCloudModal()">↻ Syncing…</button>';
-        }
-        if (gistSync.lastError) {
-          return '<button type="button" class="aware-sync-chip error" onclick="syncGistTwoWay(false)" title="' + esc(gistSync.lastError) + '">⚠️ Retry Sync</button>';
-        }
-        if (gistSync.pendingPush) {
-          return '<button type="button" class="aware-sync-chip pending" onclick="syncGistTwoWay(false)">☁️ Queued</button>';
-        }
-        const t = gistSync.cfg.lastSyncedAt ? (' · ' + fmtTimeHHMM(gistSync.cfg.lastSyncedAt)) : '';
-        return '<button type="button" class="aware-sync-chip synced" onclick="syncGistTwoWay(false)" title="Tap to sync now">☁️ Auto' + esc(t) + '</button>';
-      }
-      return '<button type="button" class="aware-sync-chip" onclick="openCloudModal()">☁️ Auto-Sync</button>';
+      const lastM = loadLastMergeSummary();
+      const tip = lastM ? ('Last merge ' + fmtTimeHHMM(lastM.at) + ': ' + lastM.summary) : 'Backup or Smart-Merge JSON across iPhone & Desktop';
+      return '<button type="button" class="aware-sync-chip' + (lastM ? ' synced' : '') + '" onclick="openCloudModal()" title="' + esc(tip) + '">📦 Backup / Merge</button>';
     }
 
     /* --- Direct OneDrive API (Microsoft Graph + OAuth2 PKCE SPA Flow) --- */
@@ -8292,6 +8321,7 @@
     }
 
     async function syncOneDriveTwoWay(silent, pushPreferred) {
+      if (!CLOUD_APIS_ENABLED) return;
       if (!oneDriveSync.cfg.enabled || !oneDriveSync.cfg.clientId || (!oneDriveSync.cfg.accessToken && !oneDriveSync.cfg.refreshToken)) return;
       if (oneDriveSync.busy) {
         if (pushPreferred) oneDriveSync.pendingPush = true;
@@ -8544,6 +8574,7 @@
     }
 
     async function syncGistTwoWay(silent, pushPreferred) {
+      if (!CLOUD_APIS_ENABLED) return;
       const token = sanitizeGistCredential(gistSync.cfg.token);
       const gistId = sanitizeGistId(gistSync.cfg.gistId);
       if (!gistSync.cfg.enabled || !token || !gistId) return;
@@ -9034,8 +9065,6 @@
 
     async function initCloudSync() {
       loadCloudPrefs();
-      loadOneDriveConfig();
-      loadGistConfig();
       const chkW = document.getElementById('chk-cloud-autowrite');
       const chkP = document.getElementById('chk-cloud-autopull');
       const chkE = document.getElementById('chk-cloud-embed-receipts');
@@ -9043,27 +9072,16 @@
       if (chkP) chkP.checked = !!cloudSync.prefs.autoPull;
       if (chkE) chkE.checked = cloudSync.prefs.embedReceipts !== false;
 
-      const chkOdPush = document.getElementById('chk-od-autopush');
-      const chkOdPull = document.getElementById('chk-od-autopull');
-      const chkOdRec = document.getElementById('chk-od-receipts');
-      if (chkOdPush) chkOdPush.checked = oneDriveSync.cfg.autoPush !== false;
-      if (chkOdPull) chkOdPull.checked = oneDriveSync.cfg.autoPull !== false;
-      if (chkOdRec) chkOdRec.checked = oneDriveSync.cfg.syncReceipts !== false;
-
-      const chkGPush = document.getElementById('chk-gist-autopush');
-      const chkGPull = document.getElementById('chk-gist-autopull');
-      const chkGRec = document.getElementById('chk-gist-receipts');
-      if (chkGPush) chkGPush.checked = gistSync.cfg.autoPush !== false;
-      if (chkGPull) chkGPull.checked = gistSync.cfg.autoPull !== false;
-      if (chkGRec) chkGRec.checked = gistSync.cfg.syncReceipts !== false;
-
-      const handledOdCallback = await handleOneDriveOAuthCallback();
-      if (!handledOdCallback && oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken) && oneDriveSync.cfg.autoPull !== false) {
-        syncOneDriveTwoWay(true, false);
-      }
-
-      if (gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId && gistSync.cfg.autoPull !== false) {
-        syncGistTwoWay(true, false);
+      if (CLOUD_APIS_ENABLED) {
+        loadOneDriveConfig();
+        loadGistConfig();
+        const handledOdCallback = await handleOneDriveOAuthCallback();
+        if (!handledOdCallback && oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken) && oneDriveSync.cfg.autoPull !== false) {
+          syncOneDriveTwoWay(true, false);
+        }
+        if (gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId && gistSync.cfg.autoPull !== false) {
+          syncGistTwoWay(true, false);
+        }
       }
 
       if (window.showOpenFilePicker && window.showSaveFilePicker) {
@@ -9100,153 +9118,42 @@
       const modePill = document.getElementById('cloud-mode-pill');
       const statusEl = document.getElementById('cloud-fs-status');
       const actionsEl = document.getElementById('cloud-fs-actions');
+      const mergeBox = document.getElementById('last-merge-status-box');
+      const mergePill = document.getElementById('merge-status-pill');
       const fsSupported = !!(window.showOpenFilePicker && window.showSaveFilePicker);
 
-      const odConnected = !!(oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken));
-      const odPill = document.getElementById('od-mode-pill');
-      const odBox = document.getElementById('od-status-box');
-      const odActs = document.getElementById('od-connected-actions');
-      const odSetup = document.getElementById('od-setup-panel');
-      const odUriEl = document.getElementById('od-redirect-uri-display');
-      const odWarnEl = document.getElementById('od-https-warning');
-      const odCidInp = document.getElementById('od-client-id-input');
-      const odTenSel = document.getElementById('od-tenant-select');
-      const odFldInp = document.getElementById('od-folder-input');
-
-      if (odUriEl) odUriEl.value = getOneDriveRedirectUri();
-      if (odWarnEl) {
-        const isHttp = window.location.protocol === 'https:' || window.location.protocol === 'http:';
-        odWarnEl.style.display = isHttp ? 'none' : 'block';
-        if (!isHttp) {
-          odWarnEl.innerHTML = '<strong>Note:</strong> This page is currently open from <code>' + esc(window.location.protocol) + '</code>. Microsoft OAuth requires hosting this single HTML file on free HTTPS (e.g. GitHub Pages, Cloudflare Pages, or Netlify Drop) so Microsoft can redirect back on iPhone.';
-        }
-      }
-      if (odCidInp && !odCidInp.value && oneDriveSync.cfg.clientId) odCidInp.value = oneDriveSync.cfg.clientId;
-      if (odTenSel && oneDriveSync.cfg.tenant) odTenSel.value = oneDriveSync.cfg.tenant;
-      if (odFldInp && oneDriveSync.cfg.folder) odFldInp.value = oneDriveSync.cfg.folder;
-
-      if (odPill) {
-        if (oneDriveSync.busy) {
-          odPill.className = 'pill pill-sky';
-          odPill.textContent = 'Syncing…';
-        } else if (odConnected && oneDriveSync.lastError) {
-          odPill.className = 'pill pill-red';
-          odPill.textContent = 'Needs Attention';
-        } else if (odConnected && oneDriveSync.pendingPush) {
-          odPill.className = 'pill pill-amber';
-          odPill.textContent = 'Offline Queued';
-        } else if (odConnected) {
-          odPill.className = 'pill pill-green';
-          odPill.textContent = 'OneDrive Auto-Sync ✓';
+      if (mergeBox) {
+        const lastM = loadLastMergeSummary();
+        if (lastM) {
+          mergeBox.innerHTML = '<div style="font-size:12px;">'
+            + '<strong>Last Merge:</strong> <span style="color:var(--green-text);font-weight:800;">' + esc(lastM.summary) + '</span>'
+            + '<div style="font-size:11px;color:var(--text-subtle);">' + esc(lastM.source || 'claimflow-db.json') + ' · ' + fmtTimeHHMM(lastM.at) + ' · ' + store.trips.length + ' trip(s) · ' + receiptVault.photos.length + ' photo(s) in active trip</div>'
+            + '</div>'
+            + '<span class="pill pill-green">Merged ✓</span>';
+          if (mergePill) {
+            mergePill.className = 'pill pill-green';
+            mergePill.textContent = 'Last Merge · ' + fmtTimeHHMM(lastM.at);
+          }
         } else {
-          odPill.className = 'pill pill-neutral';
-          odPill.textContent = 'Not Connected';
+          mergeBox.innerHTML = '<div style="font-size:12px;color:var(--text-muted);"><strong>' + store.trips.length + ' trip(s)</strong> &amp; <strong>' + receiptVault.photos.length + ' photo(s)</strong> in active trip ready for JSON Backup &amp; Smart-Merge.</div>';
+          if (mergePill) {
+            mergePill.className = 'pill pill-accent';
+            mergePill.textContent = 'Smart-Merge Ready';
+          }
         }
       }
-
-      if (odBox) {
-        if (odConnected) {
-          const acct = oneDriveSync.cfg.accountEmail || oneDriveSync.cfg.accountName || 'Microsoft Account';
-          const folderLbl = sanitizeOneDriveFolder(oneDriveSync.cfg.folder);
-          const lastOdStr = oneDriveSync.cfg.lastSyncedAt ? fmtTimeHHMM(oneDriveSync.cfg.lastSyncedAt) : 'Just connected';
-          const odRecLbl = oneDriveSync.lastSyncedReceiptsCount != null
-            ? (oneDriveSync.lastSyncedReceiptsCount + ' synced receipt(s)')
-            : (receiptVault.photos.length + ' photo(s) in trip');
-          odBox.innerHTML = '<div style="font-size:12px;">'
-            + '<strong>' + esc(acct) + '</strong> · <span class="mono" style="font-size:11px;color:var(--sky-text);">OneDrive/' + esc(folderLbl) + '</span>'
-            + '<div style="font-size:11px;color:' + (oneDriveSync.lastError ? 'var(--red-text)' : 'var(--text-subtle)') + ';">'
-            + (oneDriveSync.lastError ? ('Error: ' + esc(oneDriveSync.lastError)) : ('Last synced: ' + lastOdStr + ' · ' + store.trips.length + ' trip(s) · ' + odRecLbl))
-            + '</div></div>'
-            + '<span class="pill ' + (oneDriveSync.lastError ? 'pill-red' : 'pill-green') + '">' + (oneDriveSync.busy ? '↻ Syncing' : (oneDriveSync.pendingPush ? 'Queued' : 'Auto ✓')) + '</span>';
-        } else {
-          odBox.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">Auto-save trips &amp; receipt photos directly to <code>OneDrive/' + esc(sanitizeOneDriveFolder(oneDriveSync.cfg.folder)) + '/</code> from iPhone Safari and Laptop with <strong>zero file pickers</strong> and silent token refresh.</div>';
-        }
-      }
-
-      if (odActs) {
-        odActs.style.display = odConnected ? 'flex' : 'none';
-        if (odConnected) {
-          odActs.innerHTML =
-            '<button type="button" class="btn btn-sm btn-primary" onclick="syncOneDriveTwoWay(false,false)"' + (oneDriveSync.busy ? ' disabled' : '') + '>↻ Sync OneDrive Now</button>'
-            + '<button type="button" class="btn btn-sm btn-sky-soft" onclick="copyOneDriveSetupCode()">📲 Copy Setup Code</button>'
-            + (oneDriveSync.lastError ? '<button type="button" class="btn btn-sm btn-soft" onclick="startOneDriveLogin()">🔓 Re-Sign In</button>' : '')
-            + '<button type="button" class="btn btn-sm btn-red-soft" onclick="disconnectOneDrive()">Disconnect</button>';
-        }
-      }
-
-      if (odSetup) odSetup.style.display = odConnected ? 'none' : 'flex';
-
-      const gistConnected = !!(gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId);
-      const gistPill = document.getElementById('gist-mode-pill');
-      const gistBox = document.getElementById('gist-status-box');
-      const gistActs = document.getElementById('gist-connected-actions');
-      const gistSetup = document.getElementById('gist-setup-panel');
-
-      if (gistPill) {
-        if (gistSync.busy) {
-          gistPill.className = 'pill pill-sky';
-          gistPill.textContent = 'Syncing…';
-        } else if (gistConnected && gistSync.lastError) {
-          gistPill.className = 'pill pill-red';
-          gistPill.textContent = 'Sync Error';
-        } else if (gistConnected && gistSync.pendingPush) {
-          gistPill.className = 'pill pill-amber';
-          gistPill.textContent = 'Offline Queued';
-        } else if (gistConnected) {
-          gistPill.className = 'pill pill-green';
-          gistPill.textContent = 'Auto-Sync Active';
-        } else {
-          gistPill.className = 'pill pill-neutral';
-          gistPill.textContent = 'Not Connected';
-        }
-      }
-
-      if (gistBox) {
-        if (gistConnected) {
-          const shortId = gistSync.cfg.gistId.slice(0, 10) + '…';
-          const lastStr = gistSync.cfg.lastSyncedAt ? fmtTimeHHMM(gistSync.cfg.lastSyncedAt) : 'Just connected';
-          const gistRecLbl = gistSync.lastSyncedReceiptsCount != null
-            ? (gistSync.lastSyncedReceiptsCount + ' synced receipt(s) in Gist')
-            : (receiptVault.photos.length + ' photo(s) in trip');
-          gistBox.innerHTML = '<div style="font-size:12px;">'
-            + '<strong>Private Gist <span class="mono">' + esc(shortId) + '</span></strong>'
-            + '<div style="font-size:11px;color:' + (gistSync.lastError ? 'var(--red-text)' : 'var(--text-subtle)') + ';">'
-            + (gistSync.lastError ? ('Error: ' + esc(gistSync.lastError)) : ('Last synced: ' + lastStr + ' · ' + store.trips.length + ' trip(s) · ' + gistRecLbl))
-            + '</div></div>'
-            + '<span class="pill ' + (gistSync.lastError ? 'pill-red' : 'pill-green') + '">' + (gistSync.busy ? '↻ Syncing' : (gistSync.pendingPush ? 'Queued' : 'Zero-Picker ✓')) + '</span>';
-        } else {
-          gistBox.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">Sync trips &amp; receipts silently between iPhone Safari and Laptop with <strong>zero file pickers</strong> and <strong>zero background battery drain</strong>.</div>';
-        }
-      }
-
-      if (gistActs) {
-        gistActs.style.display = gistConnected ? 'flex' : 'none';
-        if (gistConnected) {
-          gistActs.innerHTML =
-            '<button type="button" class="btn btn-sm btn-primary" onclick="syncGistTwoWay(false)"' + (gistSync.busy ? ' disabled' : '') + '>↻ Sync Now</button>'
-            + '<button type="button" class="btn btn-sm btn-soft" onclick="testGitHubGistConnection()"' + (gistSync.busy ? ' disabled' : '') + '>🩺 Test</button>'
-            + '<button type="button" class="btn btn-sm btn-green-soft" onclick="copyGistPairingCode()">📲 Copy 1-Tap Device Pair Code</button>'
-            + '<button type="button" class="btn btn-sm btn-red-soft" onclick="disconnectGitHubGist()">Disconnect</button>';
-        }
-      }
-
-      if (gistSetup) gistSetup.style.display = gistConnected ? 'none' : 'flex';
 
       if (btn) {
-        const isLinked = odConnected || gistConnected || !!(cloudSync.handle && !cloudSync.needsReconnect);
-        const isWarn = (odConnected && !!oneDriveSync.lastError) || (gistConnected && !!gistSync.lastError) || !!(cloudSync.handle && cloudSync.needsReconnect);
-        btn.classList.toggle('linked', isLinked && !isWarn);
+        const isLinked = !!(cloudSync.handle && !cloudSync.needsReconnect);
+        const isWarn = !!(cloudSync.handle && cloudSync.needsReconnect);
+        btn.classList.toggle('linked', isLinked);
         btn.classList.toggle('reconnect', isWarn);
       }
       if (btnTxt) {
-        if (odConnected) {
-          btnTxt.textContent = oneDriveSync.busy ? 'Syncing…' : (oneDriveSync.lastError ? 'Retry OneDrive' : 'OneDrive ✓');
-        } else if (gistConnected) {
-          btnTxt.textContent = gistSync.busy ? 'Syncing…' : (gistSync.lastError ? 'Retry Sync' : 'Auto-Synced');
-        } else if (cloudSync.handle) {
-          btnTxt.textContent = cloudSync.needsReconnect ? 'Reconnect Cloud' : 'Synced';
+        if (cloudSync.handle) {
+          btnTxt.textContent = cloudSync.needsReconnect ? 'Reconnect JSON' : 'Backup / Merge ✓';
         } else {
-          btnTxt.textContent = 'Cloud Sync';
+          btnTxt.textContent = 'Backup / Merge';
         }
       }
 
@@ -9267,13 +9174,13 @@
       }
       if (statusEl) {
         if (!fsSupported) {
-          statusEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">Direct folder linking is available on Desktop Chrome/Edge. On iPhone Safari, use <strong>OneDrive</strong> or <strong>Private GitHub Gist Auto-Sync</strong> above!</div>';
+          statusEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">Direct folder linking is available on Desktop Chrome/Edge. On iPhone Safari, use <strong>Save / Share All Trips</strong> &amp; <strong>Open &amp; Smart-Merge File</strong> above.</div>';
         } else if (cloudSync.handle && !cloudSync.needsReconnect) {
           statusEl.innerHTML = '<div style="font-size:12px;"><strong>' + esc(cloudSync.fileName) + '</strong><div style="font-size:11px;color:var(--text-subtle);">Last synced: ' + (cloudSync.lastSyncedAt ? fmtTimeHHMM(cloudSync.lastSyncedAt) : 'Ready') + '</div></div><span class="pill pill-green">Auto-Sync Active</span>';
         } else if (cloudSync.handle) {
           statusEl.innerHTML = '<div style="font-size:12px;"><strong>' + esc(cloudSync.fileName) + '</strong><div style="font-size:11px;color:var(--amber-text);">Click Reconnect to grant write permission for this session.</div></div>';
         } else {
-          statusEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">Link a <code>claimflow-db.json</code> inside your OneDrive, iCloud, or Google Drive folder for desktop auto-syncing.</div>';
+          statusEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">Link a <code>claimflow-db.json</code> inside your OneDrive, iCloud, or Google Drive folder on Desktop so it auto-updates when you drop your iPhone backup in.</div>';
         }
       }
       if (actionsEl) {
@@ -9281,10 +9188,10 @@
           actionsEl.innerHTML = '';
         } else if (cloudSync.handle) {
           actionsEl.innerHTML = (cloudSync.needsReconnect ? '<button type="button" class="btn btn-sm btn-primary" onclick="reconnectSavedCloudFile()">🔓 Reconnect File</button>' : '')
-            + '<button type="button" class="btn btn-sm btn-soft" onclick="syncCloudNow()">↻ Sync Now</button>'
+            + '<button type="button" class="btn btn-sm btn-soft" onclick="syncCloudNow()">↻ Merge &amp; Sync Now</button>'
             + '<button type="button" class="btn btn-sm btn-red-soft" onclick="unlinkCloudFile()">Unlink</button>';
         } else {
-          actionsEl.innerHTML = '<button type="button" class="btn btn-sm btn-primary" onclick="createCloudFile()">＋ Create New Cloud DB File</button>'
+          actionsEl.innerHTML = '<button type="button" class="btn btn-sm btn-primary" onclick="createCloudFile()">＋ Create Local DB File</button>'
             + '<button type="button" class="btn btn-sm btn-soft" onclick="linkCloudFile()">📂 Link Existing DB File</button>';
         }
       }
@@ -9383,14 +9290,14 @@
 
     function scheduleCloudWrite(immediate) {
       bumpSyncEpochs();
-      if (oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken) && oneDriveSync.cfg.autoPush !== false) {
+      if (CLOUD_APIS_ENABLED && oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken) && oneDriveSync.cfg.autoPush !== false) {
         oneDriveSync.pendingPush = true;
         clearTimeout(oneDriveSync.pushTimer);
         oneDriveSync.pushTimer = setTimeout(function () {
           syncOneDriveTwoWay(true, true);
         }, immediate ? 350 : 2500);
       }
-      if (gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId && gistSync.cfg.autoPush !== false) {
+      if (CLOUD_APIS_ENABLED && gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId && gistSync.cfg.autoPush !== false) {
         gistSync.pendingPush = true;
         clearTimeout(gistSync.pushTimer);
         gistSync.pushTimer = setTimeout(function () {
@@ -9412,17 +9319,17 @@
       }
       await checkCloudFileUpdates(true);
       await writeCloudFile();
-      showToast('Cloud file synced ✓', 'green');
+      showToast('Local JSON DB merged & saved ✓', 'green');
     }
 
     async function checkCloudFileUpdates(force) {
-      if (oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken) && (force || oneDriveSync.cfg.autoPull !== false)) {
+      if (CLOUD_APIS_ENABLED && oneDriveSync.cfg.enabled && oneDriveSync.cfg.clientId && (oneDriveSync.cfg.accessToken || oneDriveSync.cfg.refreshToken) && (force || oneDriveSync.cfg.autoPull !== false)) {
         const nowOd = Date.now();
         if (force || oneDriveSync.pendingPush || (nowOd - oneDriveSync.lastPullCheckAt > 15000)) {
           syncOneDriveTwoWay(true, !!oneDriveSync.pendingPush);
         }
       }
-      if (gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId && (force || gistSync.cfg.autoPull !== false)) {
+      if (CLOUD_APIS_ENABLED && gistSync.cfg.enabled && gistSync.cfg.token && gistSync.cfg.gistId && (force || gistSync.cfg.autoPull !== false)) {
         const now = Date.now();
         if (force || gistSync.pendingPush || (now - gistSync.lastPullCheckAt > 15000)) {
           syncGistTwoWay(true, !!gistSync.pendingPush);
@@ -9437,7 +9344,7 @@
         if (text && text.trim()) {
           const parsed = JSON.parse(text);
           if (parsed && Array.isArray(parsed.trips)) {
-            await mergeWorkspacePayload(parsed, true);
+            await mergeWorkspacePayload(parsed, true, cloudSync.fileName || 'claimflow-db.json');
           }
         }
         cloudSync.lastModifiedSeen = file.lastModified || Date.now();
@@ -9446,7 +9353,7 @@
       } catch (e) {}
     }
 
-    async function mergeWorkspacePayload(payload, silent) {
+    async function mergeWorkspacePayload(payload, silent, sourceName) {
       if (payload && Array.isArray(payload._customPresets)) {
         mergeCustomRoutePresets(payload._customPresets);
       }
@@ -9468,27 +9375,38 @@
       });
       if (incomingTrips.length === 0 && collectedReceipts.length === 0) return;
 
-      let added = 0;
-      let updated = 0;
+      let addedTrips = 0;
+      let updatedTrips = 0;
+      let totalAddedLines = 0;
+      let totalUpdatedLines = 0;
+      let totalAddedDays = 0;
       let needsWriteBack = false;
+      const tripIdRemap = {};
       const allDayIdRemaps = {};
 
       incomingTrips.forEach(function (inc) {
-        const idx = store.trips.findIndex(function (t) { return t.id === inc.id; });
+        const idx = findMatchingLocalTripIndex(inc);
         if (idx < 0) {
           store.trips.unshift(inc);
-          added++;
+          addedTrips++;
           needsWriteBack = true;
         } else {
+          const canonicalId = store.trips[idx].id;
+          if (inc.id !== canonicalId) {
+            tripIdRemap[inc.id] = canonicalId;
+          }
           const resM = smartMergeTrips(store.trips[idx], inc);
           store.trips[idx] = resM.trip;
+          totalAddedLines += resM.addedLines || 0;
+          totalUpdatedLines += resM.updatedLines || 0;
+          totalAddedDays += resM.addedDays || 0;
           if (resM.changedLocal) {
-            updated++;
+            updatedTrips++;
             needsWriteBack = true;
           }
           if (resM.changedRemote) needsWriteBack = true;
           if (resM.dayIdRemap && Object.keys(resM.dayIdRemap).length > 0) {
-            allDayIdRemaps[inc.id] = Object.assign(allDayIdRemaps[inc.id] || {}, resM.dayIdRemap);
+            allDayIdRemaps[canonicalId] = Object.assign(allDayIdRemaps[canonicalId] || {}, resM.dayIdRemap);
           }
         }
       });
@@ -9509,32 +9427,44 @@
       state = getActiveTrip();
       try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {}
 
-      let restoredPhotos = 0;
+      let recStats = { added: 0, updated: 0, skipped: 0 };
       if (collectedReceipts.length > 0) {
         const filteredRecs = collectedReceipts
           .filter(function (r) { return r && r.id && !deletedSet[r.id]; })
           .map(function (r) {
-            const rm = allDayIdRemaps[r.tripId];
-            if (rm && r.dayId && rm[r.dayId]) {
-              return Object.assign({}, r, { dayId: rm[r.dayId] });
-            }
-            return r;
+            const mappedTripId = (r.tripId && tripIdRemap[r.tripId]) ? tripIdRemap[r.tripId] : (r.tripId || state.id);
+            const rm = allDayIdRemaps[mappedTripId];
+            const mappedDayId = (rm && r.dayId && rm[r.dayId]) ? rm[r.dayId] : (r.dayId || '');
+            return Object.assign({}, r, { tripId: mappedTripId, dayId: mappedDayId });
           });
         if (filteredRecs.length > 0) {
-          restoredPhotos = await restoreEmbeddedReceipts(filteredRecs);
+          recStats = await restoreEmbeddedReceiptsDetailed(filteredRecs);
         }
+      }
+
+      const summaryTxt = buildMergeSummaryText({
+        addedTrips: addedTrips,
+        updatedTrips: updatedTrips,
+        addedLines: totalAddedLines,
+        updatedLines: totalUpdatedLines,
+        addedDays: totalAddedDays,
+        addedReceipts: recStats.added,
+        updatedReceipts: recStats.updated
+      });
+      if (!silent || addedTrips > 0 || updatedTrips > 0 || recStats.added > 0 || recStats.updated > 0) {
+        recordLastMergeSummary(summaryTxt, sourceName || 'claimflow-db.json');
       }
 
       renderAll();
       await loadTripReceipts();
 
-      // Persist merged captures straight back to cloud/local sync targets when triggered explicitly or when local gained captures
-      if (needsWriteBack || restoredPhotos > 0) {
+      // Persist merged captures straight back to local folder DB if linked
+      if (needsWriteBack || recStats.added > 0 || recStats.updated > 0) {
         scheduleCloudWrite(!silent);
       }
 
-      if (!silent || added > 0 || updated > 0 || restoredPhotos > 0) {
-        showToast('Smart-Merged ' + added + ' new, ' + updated + ' updated trip(s)' + (restoredPhotos > 0 ? (' + ' + restoredPhotos + ' receipt(s)') : '') + ' ✓', 'green');
+      if (!silent || addedTrips > 0 || updatedTrips > 0 || recStats.added > 0 || recStats.updated > 0) {
+        showToast('Smart-Merge: ' + summaryTxt, 'green');
       }
     }
 
@@ -9557,20 +9487,23 @@
       const jsonStr = JSON.stringify(payload, null, 2);
       const fileName = 'claimflow-db.json';
       try {
-        const file = new File([jsonStr], fileName, { type: 'application/json' });
-        if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-          await navigator.share({
-            files: [file],
-            title: 'ClaimFlow Backup (' + store.trips.length + ' trips' + (photoCount > 0 ? (', ' + photoCount + ' receipts') : '') + ')'
-          });
-          showToast('Shared claimflow-db.json' + (photoCount > 0 ? (' (' + photoCount + ' receipts embedded)') : '') + ' ✓', 'green');
-          return;
+        if (typeof File === 'function' && navigator.share) {
+          const file = new File([jsonStr], fileName, { type: 'application/json' });
+          if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: 'ClaimFlow Backup (' + store.trips.length + ' trips' + (photoCount > 0 ? (', ' + photoCount + ' receipts') : '') + ')'
+            });
+            showToast('Shared claimflow-db.json' + (photoCount > 0 ? (' (' + photoCount + ' receipts embedded)') : '') + ' ✓', 'green');
+            return;
+          }
         }
       } catch (err) {
         if (err && err.name === 'AbortError') return;
+        // Fall through cleanly to direct file download if iOS Share Sheet rejects .json
       }
       downloadFile(jsonStr, fileName, 'application/json');
-      showToast('Saved claimflow-db.json (' + store.trips.length + ' trips' + (photoCount > 0 ? (', ' + photoCount + ' receipts') : '') + ') ✓', 'green');
+      showToast('Downloaded claimflow-db.json (' + store.trips.length + ' trips' + (photoCount > 0 ? (', ' + photoCount + ' receipts') : '') + ') ✓', 'green');
     }
 
     function handleImportWorkspaceJSON(evt) {
@@ -9582,9 +9515,9 @@
         try {
           const parsed = JSON.parse(String(reader.result || '{}'));
           if (parsed && Array.isArray(parsed.trips)) {
-            await mergeWorkspacePayload(parsed, false);
+            await mergeWorkspacePayload(parsed, false, file.name);
           } else if (parsed && parsed.trip) {
-            await mergeWorkspacePayload({ trips: [parsed] }, false);
+            await mergeWorkspacePayload({ trips: [parsed] }, false, file.name);
           } else {
             throw new Error('Invalid ClaimFlow backup file');
           }
@@ -9645,11 +9578,108 @@
       lightboxPhotoId: null,
       bwMode: (function () {
         try {
-          const saved = localStorage.getItem(BW_MODE_KEY);
-          return saved === null ? true : saved === '1';
-        } catch (e) { return true; }
+          return localStorage.getItem(BW_MODE_KEY) === '1';
+        } catch (e) { return false; }
       })()
     };
+    function receiptFingerprint(r) {
+      if (!r) return '';
+      const b = Number(r.bytes) || estimateDataUrlBytes(r.dataUrl);
+      return [
+        String(r.tripId || ''),
+        String(r.width || 0),
+        String(r.height || 0),
+        String(b),
+        String(r.dataUrl || '').slice(-40)
+      ].join('|');
+    }
+
+    /** Deduplicates receipts cleanly while preserving linked itemId/dayId/scope/note metadata from both sides */
+    async function restoreEmbeddedReceiptsDetailed(list) {
+      if (!Array.isArray(list) || list.length === 0) return { added: 0, updated: 0, skipped: 0 };
+      const existingAll = await idbGetAllReceipts();
+      const byId = {};
+      const byFp = {};
+      existingAll.forEach(function (ex) {
+        if (!ex || !ex.id) return;
+        byId[ex.id] = ex;
+        const fp = receiptFingerprint(ex);
+        if (fp) byFp[fp] = ex;
+      });
+
+      let added = 0;
+      let updated = 0;
+      let skipped = 0;
+
+      for (let i = 0; i < list.length; i++) {
+        const r = list[i];
+        if (!r || !r.id || !r.dataUrl) continue;
+        const cleanRec = {
+          id: String(r.id),
+          tripId: String(r.tripId || state.id),
+          scope: r.scope || 'unmatched',
+          itemId: r.itemId || '',
+          dayId: r.dayId || '',
+          role: r.role === 'bank' ? 'bank' : (r.role === 'policy' ? 'policy' : 'receipt'),
+          orient: (r.orient === 'landscape' || r.orient === 'portrait') ? r.orient : 'auto',
+          name: r.name || 'receipt.jpg',
+          note: r.note || '',
+          dataUrl: r.dataUrl,
+          width: Number(r.width) || 0,
+          height: Number(r.height) || 0,
+          bytes: Number(r.bytes) || estimateDataUrlBytes(r.dataUrl),
+          isBW: !!r.isBW,
+          createdAt: Number(r.createdAt) || Date.now()
+        };
+
+        const fp = receiptFingerprint(cleanRec);
+        const existing = byId[cleanRec.id] || (fp ? byFp[fp] : null);
+        if (existing) {
+          const mergedRec = Object.assign({}, existing);
+          let changed = false;
+          if (!mergedRec.itemId && cleanRec.itemId) { mergedRec.itemId = cleanRec.itemId; changed = true; }
+          if (!mergedRec.dayId && cleanRec.dayId) { mergedRec.dayId = cleanRec.dayId; changed = true; }
+          if ((!mergedRec.scope || mergedRec.scope === 'unmatched') && cleanRec.scope && cleanRec.scope !== 'unmatched') {
+            mergedRec.scope = cleanRec.scope;
+            changed = true;
+          }
+          if (!mergedRec.note && cleanRec.note) { mergedRec.note = cleanRec.note; changed = true; }
+          if (mergedRec.role === 'receipt' && cleanRec.role !== 'receipt') { mergedRec.role = cleanRec.role; changed = true; }
+          if (mergedRec.orient === 'auto' && cleanRec.orient !== 'auto') { mergedRec.orient = cleanRec.orient; changed = true; }
+
+          if (changed) {
+            await idbPutReceipt(mergedRec);
+            byId[mergedRec.id] = mergedRec;
+            if (mergedRec.tripId === state.id) {
+              const vIdx = receiptVault.photos.findIndex(function (p) { return p.id === mergedRec.id; });
+              if (vIdx >= 0) receiptVault.photos[vIdx] = mergedRec;
+              else receiptVault.photos.push(mergedRec);
+            }
+            updated++;
+          } else {
+            skipped++;
+          }
+          continue;
+        }
+
+        await idbPutReceipt(cleanRec);
+        byId[cleanRec.id] = cleanRec;
+        if (fp) byFp[fp] = cleanRec;
+        if (cleanRec.tripId === state.id) {
+          const existIdx = receiptVault.photos.findIndex(function (p) { return p.id === cleanRec.id; });
+          if (existIdx >= 0) receiptVault.photos[existIdx] = cleanRec;
+          else receiptVault.photos.push(cleanRec);
+        }
+        added++;
+      }
+      updateVaultCountBadges();
+      return { added: added, updated: updated, skipped: skipped };
+    }
+
+    async function restoreEmbeddedReceipts(list) {
+      const res = await restoreEmbeddedReceiptsDetailed(list);
+      return res.added + res.updated;
+    }
 
     function openReceiptDB() {
       return new Promise(function (resolve, reject) {
@@ -9684,7 +9714,7 @@
     async function idbDeleteReceipt(id) {
       try {
         const db = await openReceiptDB();
-        await new Promise(function (resolve) {
+        await new Promise(function (resolve, reject) {
           const tx = db.transaction(RECEIPT_STORE_NAME, 'readwrite');
           tx.objectStore(RECEIPT_STORE_NAME).delete(id);
           tx.oncomplete = resolve;
@@ -9719,41 +9749,6 @@
       } catch (e) {
         return receiptVault.photos.filter(function (p) { return p.tripId === tripId; });
       }
-    }
-
-    async function restoreEmbeddedReceipts(list) {
-      if (!Array.isArray(list) || list.length === 0) return 0;
-      let restored = 0;
-      for (let i = 0; i < list.length; i++) {
-        const r = list[i];
-        if (!r || !r.id || !r.dataUrl) continue;
-        const cleanRec = {
-          id: String(r.id),
-          tripId: String(r.tripId || state.id),
-          scope: r.scope || 'unmatched',
-          itemId: r.itemId || '',
-          dayId: r.dayId || '',
-          role: r.role === 'bank' ? 'bank' : (r.role === 'policy' ? 'policy' : 'receipt'),
-          orient: (r.orient === 'landscape' || r.orient === 'portrait') ? r.orient : 'auto',
-          name: r.name || 'receipt.jpg',
-          note: r.note || '',
-          dataUrl: r.dataUrl,
-          width: Number(r.width) || 0,
-          height: Number(r.height) || 0,
-          bytes: Number(r.bytes) || 0,
-          isBW: !!r.isBW,
-          createdAt: Number(r.createdAt) || Date.now()
-        };
-        await idbPutReceipt(cleanRec);
-        if (cleanRec.tripId === state.id) {
-          const existIdx = receiptVault.photos.findIndex(function (p) { return p.id === cleanRec.id; });
-          if (existIdx >= 0) receiptVault.photos[existIdx] = cleanRec;
-          else receiptVault.photos.push(cleanRec);
-        }
-        restored++;
-      }
-      updateVaultCountBadges();
-      return restored;
     }
 
     async function loadTripReceipts() {
@@ -10032,7 +10027,7 @@
       const bwBtn = document.getElementById('vault-bw-toggle-btn');
       if (bwBtn) {
         bwBtn.className = 'btn btn-sm ' + (receiptVault.bwMode ? 'btn-green-soft' : '');
-        bwBtn.textContent = receiptVault.bwMode ? '🖤 B&W (<300 KB): ON' : '🎨 Color (<300 KB)';
+        bwBtn.textContent = receiptVault.bwMode ? '🖤 B&W Scan (<300 KB): ON' : '🎨 Full Color (<300 KB)';
       }
 
       const optBtn = document.getElementById('vault-optimize-btn');
@@ -10201,12 +10196,12 @@
     }
 
     /**
-     * Adaptive Document Scanner (B&W):
+     * Optional Crisp B&W Document Scanner (Off by default — Full Color is default):
      * 1. Auto-inverts dark-mode iPhone bank screenshots to white paper.
-     * 2. Estimates local paper illumination across a smoothed 85th-percentile tile grid
-     *    so uneven phone camera shadows & warm lighting normalize cleanly to pure white.
-     * 3. Applies an ink-darkening gamma (2.15) curve so faded grey thermal receipt ink
-     *    stays dark, crisp, and legible instead of washing out.
+     * 2. Estimates local paper illumination using a smoothed 95th-percentile tile grid
+     *    so ink-heavy regions never darken the white reference.
+     * 3. Uses a high 0.965 white cutoff + deeper gamma (2.35) ink curve so faint grey
+     *    thermal receipt text stays dark, sharp, and never washes out.
      */
     function applyBWFilterToCanvas(ctx, w, h) {
       const imgData = ctx.getImageData(0, 0, w, h);
@@ -10228,7 +10223,7 @@
         for (let p = 0; p < pxCount; p++) lums[p] = 255 - lums[p];
       }
 
-      // Coarse adaptive illumination grid (up to 16x16 tiles) using local 85th-percentile paper white
+      // Coarse adaptive illumination grid (up to 16x16 tiles) using local 95th-percentile paper white
       const gridCols = Math.max(4, Math.min(16, Math.round(w / 90)));
       const gridRows = Math.max(4, Math.min(16, Math.round(h / 90)));
       const tileWhite = new Float32Array(gridCols * gridRows);
@@ -10251,17 +10246,17 @@
               samples++;
             }
           }
-          const targetRank = Math.max(1, Math.floor(samples * 0.85));
+          const targetRank = Math.max(1, Math.floor(samples * 0.95));
           let acc = 0;
-          let p85 = 220;
+          let p95 = 235;
           for (let v = 0; v < 256; v++) {
             acc += hist[v];
             if (acc >= targetRank) {
-              p85 = v;
+              p95 = v;
               break;
             }
           }
-          tileWhite[gy * gridCols + gx] = Math.max(72, p85);
+          tileWhite[gy * gridCols + gx] = Math.max(84, p95);
         }
       }
 
@@ -10286,17 +10281,17 @@
         }
       }
 
-      // Precompute gamma 2.15 ink-darkening lookup table (0..1024 -> 0..255)
+      // Precompute deeper ink-preserving LUT: 0.965 white cutoff + 0.10 black floor + gamma 2.35
       const gammaLut = new Uint8Array(1025);
       for (let k = 0; k <= 1024; k++) {
         const norm = k / 1024;
-        if (norm >= 0.905) {
+        if (norm >= 0.965) {
           gammaLut[k] = 255;
-        } else if (norm <= 0.16) {
+        } else if (norm <= 0.10) {
           gammaLut[k] = 0;
         } else {
-          const stretched = (norm - 0.16) / (0.905 - 0.16);
-          const curved = Math.pow(stretched, 2.15);
+          const stretched = (norm - 0.10) / (0.965 - 0.10);
+          const curved = Math.pow(stretched, 2.35);
           gammaLut[k] = Math.max(0, Math.min(255, Math.round(curved * 255)));
         }
       }
@@ -10929,7 +10924,7 @@
       receiptVault.bwMode = !receiptVault.bwMode;
       try { localStorage.setItem(BW_MODE_KEY, receiptVault.bwMode ? '1' : '0'); } catch (e) {}
       renderReceiptModal();
-      showToast(receiptVault.bwMode ? 'B&W Document Scan ON (Auto < 300 KB)' : 'Color Mode ON (Auto < 300 KB)', 'indigo');
+      showToast(receiptVault.bwMode ? 'Optional B&W Scan ON (< 300 KB)' : 'Full Color Default ON (< 300 KB)', 'indigo');
     }
 
     function openReceiptLightbox(photoId) {
@@ -13045,7 +13040,7 @@
       updateMobileNavActive();
       if (currentMobileView === 'daily' && state.ui.collapsed.meals) {
         state.ui.collapsed.meals = false;
-        persistStore(false);
+        persistUiOnly();
       }
       if (currentMobileView !== 'hrms') {
         renderWorkspace();
@@ -13054,20 +13049,7 @@
     }
 
     function jumpToMealsMobile() {
-      setMobileView('entry');
-      if (state.ui.collapsed.meals) {
-        state.ui.collapsed.meals = false;
-        persistStore(false);
-        renderWorkspace();
-      }
-      const btnEntry = document.getElementById('mnav-entry');
-      const btnMeals = document.getElementById('mnav-meals');
-      if (btnEntry) btnEntry.classList.remove('active');
-      if (btnMeals) btnMeals.classList.add('active');
-      setTimeout(function () {
-        const el = document.getElementById('section-meals-card');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 60);
+      setMobileView('daily');
     }
 
     function openQuickMenu() {
@@ -13233,6 +13215,7 @@
 
     window.addEventListener('focus', function () { checkCloudFileUpdates(); });
     window.addEventListener('online', function () {
+      if (!CLOUD_APIS_ENABLED) return;
       if (oneDriveSync.cfg.enabled && (oneDriveSync.pendingPush || oneDriveSync.cfg.autoPull !== false)) {
         syncOneDriveTwoWay(true, !!oneDriveSync.pendingPush);
       }
